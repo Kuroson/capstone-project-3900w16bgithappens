@@ -63,6 +63,14 @@ jobs:
       - name: Prettier
         run: yarn prettier
       - name: Build
+        env:
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          COOKIE_SECRET_CURRENT: "whatever"
+          COOKIE_SECRET_PREVIOUS: "whateverPrev"
         run: yarn build
       - name: Cypress e2e
+        env:
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          COOKIE_SECRET_CURRENT: "whatever"
+          COOKIE_SECRET_PREVIOUS: "whateverPrev"
         run: yarn e2e:headless
