@@ -19,14 +19,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorMiddleware);
 
-connect("")
-    .then((res) => {
-        logger.info("Connected to MongoDB");
-    })
-    .catch((err) => {
-        logger.error("Failed to connected to MongoDB");
-        exit(1);
-    });
+// connect("")
+//     .then((res) => {
+//         logger.info("Connected to MongoDB");
+//     })
+//     .catch((err) => {
+//         logger.error("Failed to connected to MongoDB");
+//         exit(1);
+//     });
 
 // Add routes
 app.use("/", indexRouter);
