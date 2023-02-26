@@ -35,7 +35,7 @@ const LoginPage = (): JSX.Element => {
         <h1 className="text-center pt-4 text-4xl">Login Page</h1>
         <form className="flex flex-col justify justify-center py-10" onSubmit={handleOnSubmit}>
           <TextField
-            id="outlined-basic"
+            id="email-input"
             label="Email"
             type="text"
             variant="outlined"
@@ -50,8 +50,8 @@ const LoginPage = (): JSX.Element => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button variant="contained" type="submit">
-            Contained
+          <Button variant="contained" type="submit" id="loginSubmissionButton">
+            Login
           </Button>
         </form>
       </div>
