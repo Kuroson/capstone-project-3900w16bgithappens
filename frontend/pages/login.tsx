@@ -1,10 +1,10 @@
 import React from "react";
+import { toast } from "react-toastify";
 import Head from "next/head";
 import { Button, TextField } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 import { Footer, Header } from "components";
-import initAuth from "util/firebase";
 
 const LoginPage = (): JSX.Element => {
   const [email, setEmail] = React.useState("");
@@ -19,7 +19,7 @@ const LoginPage = (): JSX.Element => {
       })
       .catch((err) => {
         console.error(err.message);
-        alert("Wrong details");
+        toast.error(err.message);
       });
   };
 
