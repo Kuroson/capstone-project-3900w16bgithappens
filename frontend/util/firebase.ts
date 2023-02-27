@@ -27,16 +27,16 @@ const initAuth = () => {
     // Use application default crauthPageURLedentials (takes precedence over firebaseAdminInitConfig if set)
     // useFirebaseAdminDefaultCredential: true,
     firebaseClientInitConfig: {
-      apiKey: "AIzaSyDpTirBWYSF0_9AgVlyw0HQFbIZutuS-V0",
-      authDomain: "githappens-34657.firebaseapp.com",
-      projectId: "githappens-34657",
-      storageBucket: "githappens-34657.appspot.com",
-      messagingSenderId: "351812384855",
-      appId: "1:351812384855:web:30572239785c0a61044b12",
-      measurementId: "G-Q9FQN5B9NY",
+      apiKey: "AIzaSyA8ZhV0JWeXho7yZ_y9D201BNsTB_VP-0g",
+      authDomain: "capstone390023t1-githappens.firebaseapp.com",
+      projectId: "capstone390023t1-githappens",
+      storageBucket: "capstone390023t1-githappens.appspot.com",
+      messagingSenderId: "913063051631",
+      appId: "1:913063051631:web:62c9e782d7f12c7108689a",
+      measurementId: "G-X0QF3LD741",
     },
     cookies: {
-      name: "githappens", // required
+      name: "capstone390023t1-githappens", // required
       // Keys are required unless you set `signed` to `false`.
       // The keys cannot be accessible on the client side.
       keys: [validateEnv.COOKIE_SECRET_CURRENT, validateEnv.COOKIE_SECRET_PREVIOUS],
