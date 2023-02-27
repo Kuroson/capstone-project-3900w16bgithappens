@@ -1,18 +1,4 @@
-import { GoogleAuthProvider, getAuth } from "firebase/auth";
-import { collection, getDocs, getFirestore, limit, query, where } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
 import { init } from "next-firebase-auth";
-
-// Auth exports
-// export const auth = getAuth(firebaseApp);
-// export const googleAuthProvider = new GoogleAuthProvider();
-
-// Firestore exports
-// export const firestore = getFirestore(firebaseApp);
-
-// Storage exports
-// export const storage = getStorage(firebaseApp);
-// export const STATE_CHANGED = "state_changed";
 
 const initAuth = () => {
   init({
@@ -30,14 +16,15 @@ const initAuth = () => {
     // firebaseAuthEmulatorHost: "localhost:9099",
     firebaseAdminInitConfig: {
       credential: {
-        projectId: "githappens-34657",
-        clientEmail: "firebase-adminsdk-xwbry@githappens-34657.iam.gserviceaccount.com",
+        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? "",
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL ?? "",
         // The private key must not be accessible on the client side.
-        privateKey: process.env.FIREBASE_PRIVATE_KEY
-          ? JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
-          : undefined,
+        privateKey:
+          process.env.FIREBASE_PRIVATE_KEY != null
+            ? JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
+            : undefined,
       },
-      databaseURL: "",
+      databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL ?? "",
     },
     // Use application default crauthPageURLedentials (takes precedence over firebaseAdminInitConfig if set)
     // useFirebaseAdminDefaultCredential: true,
@@ -60,7 +47,11 @@ const initAuth = () => {
       overwrite: true,
       path: "/",
       sameSite: "strict",
-      secure: false, // set this to false in local (non-HTTPS) development
+      // set this to false in local (non-HTTPS) development
+      secure:
+        process.env.NODE_ENV === "development"
+          ? true
+          : process.env.NEXT_PUBLIC_COOKIE_SECURE ?? false,
       signed: true,
     },
     // onVerifyTokenError: (err) => {
