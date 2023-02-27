@@ -1,5 +1,27 @@
 import { init } from "next-firebase-auth";
-import validateEnv from "./validateEnv";
+
+const PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+const CLIENT_EMAIL = process.env.FIREBASE_CLIENT_EMAIL;
+const FIREBASE_PRIVATE_KEY = process.env.FIREBASE_PRIVATE_KEY;
+const FIREBASE_DATABASE_URL = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL;
+const COOKIE_SECRET_CURRENT = process.env.COOKIE_SECRET_CURRENT;
+const COOKIE_SECRET_PREVIOUS = process.env.COOKIE_SECRET_PREVIOUS;
+
+if (PROJECT_ID === undefined) {
+  throw new Error("Missing NEXT_PUBLIC_FIREBASE_PROJECT_ID");
+}
+
+if (CLIENT_EMAIL === undefined) {
+  throw new Error("Missing FIREBASE_CLIENT_EMAIL");
+}
+
+if (FIREBASE_DATABASE_URL === undefined) {
+  throw new Error("Missing NEXT_PUBLIC_FIREBASE_DATABASE_URL");
+}
+
+if (COOKIE_SECRET_CURRENT === undefined || COOKIE_SECRET_PREVIOUS === undefined) {
+  throw new Error("Firebase cookie values not set");
+}
 
 const initAuth = () => {
   init({
@@ -17,12 +39,13 @@ const initAuth = () => {
     // firebaseAuthEmulatorHost: "localhost:9099",
     firebaseAdminInitConfig: {
       credential: {
-        projectId: validateEnv.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        clientEmail: validateEnv.FIREBASE_CLIENT_EMAIL,
+        projectId: PROJECT_ID,
+        clientEmail: CLIENT_EMAIL,
         // The private key must not be accessible on the client side.
-        privateKey: JSON.parse(validateEnv.FIREBASE_PRIVATE_KEY),
+        privateKey:
+          FIREBASE_PRIVATE_KEY !== undefined ? JSON.parse(FIREBASE_PRIVATE_KEY) : undefined,
       },
-      databaseURL: validateEnv.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+      databaseURL: FIREBASE_DATABASE_URL,
     },
     // Use application default crauthPageURLedentials (takes precedence over firebaseAdminInitConfig if set)
     // useFirebaseAdminDefaultCredential: true,
@@ -39,14 +62,17 @@ const initAuth = () => {
       name: "capstone390023t1-githappens", // required
       // Keys are required unless you set `signed` to `false`.
       // The keys cannot be accessible on the client side.
-      keys: [validateEnv.COOKIE_SECRET_CURRENT, validateEnv.COOKIE_SECRET_PREVIOUS],
+      keys: [COOKIE_SECRET_CURRENT, COOKIE_SECRET_PREVIOUS],
       httpOnly: true,
       maxAge: 12 * 60 * 60 * 24 * 1000, // twelve days
       overwrite: true,
       path: "/",
       sameSite: "strict",
       // set this to false in local (non-HTTPS) development
-      secure: validateEnv.isDevelopment ? true : validateEnv.NEXT_PUBLIC_COOKIE_SECURE,
+      secure:
+        process.env.NODE_ENV === "development"
+          ? true
+          : process.env.NEXT_PUBLIC_COOKIE_SECURE ?? false,
       signed: true,
     },
     // onVerifyTokenError: (err) => {
