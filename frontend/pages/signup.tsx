@@ -133,7 +133,7 @@ const SignUpPage = (): JSX.Element => {
         <meta name="description" content="Sign Up" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <SideNavbar />
+      <SideNavbar empty={true} />
       <form className="w-full h-full flex flex-col items-center pt-10" onSubmit={handleOnSubmit}>
         <h1 className="text-6xl">Welcome to GitHappens!</h1>
         <div className="flex flex-col w-full items-center pt-10">

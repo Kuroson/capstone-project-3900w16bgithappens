@@ -30,7 +30,7 @@ const LoginPage = (): JSX.Element => {
         <meta name="description" content="Login Page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <SideNavbar />
+      <SideNavbar empty={true} />
       <div className="w-full flex flex-col px-[5%]">
         <h1 className="text-center pt-4 text-4xl">Login Page</h1>
         <form className="flex flex-col justify justify-center py-10" onSubmit={handleOnSubmit}>
