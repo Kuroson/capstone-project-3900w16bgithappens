@@ -1,0 +1,17 @@
+{
+  "name": "capstone-project-3900w16bgithappen",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unsw-cse-comp3900-9900-23T1/capstone-project-3900w16bgithappens.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unsw-cse-comp3900-9900-23T1/capstone-project-3900w16bgithappens/issues"
+  },
+  "homepage": "https://github.com/unsw-cse-comp3900-9900-23T1/capstone-project-3900w16bgithappens#readme"
+}
