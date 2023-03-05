@@ -1,6 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { Button, TextField } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
@@ -9,9 +10,11 @@ import { ContentContainer, SideNavbar } from "components";
 const LoginPage = (): JSX.Element => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Don't reload page
+    setLoading(true);
     await signInWithEmailAndPassword(getAuth(), email, password)
       .then((user) => {
         console.log("Signed in successfully", user);
@@ -31,7 +34,8 @@ const LoginPage = (): JSX.Element => {
           console.error(err);
           toast.error("Error Uncaught");
         }
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -73,14 +77,15 @@ const LoginPage = (): JSX.Element => {
               />
             </div>
             <div className="w-[25rem] mt-4">
-              <Button
+              <LoadingButton
                 variant="contained"
                 id="submit-form-button"
                 className="w-[25rem]"
                 type="submit"
+                loading={loading}
               >
                 Login
-              </Button>
+              </LoadingButton>
             </div>
           </div>
         </form>

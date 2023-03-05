@@ -1,6 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
+import { LoadingButton } from "@mui/lab";
 import { Button, TextField } from "@mui/material";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { GetStaticProps } from "next";
@@ -93,6 +94,8 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
 
   const [confirmPassword, setConfirmPassword] = React.useState("");
 
+  const [loading, setLoading] = React.useState(false);
+
   const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault(); // Don't reload page
 
@@ -120,7 +123,7 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
       return;
     }
     // Everything should be valid after this
-
+    setLoading(true);
     await createUserWithEmailAndPassword(getAuth(), email, password)
       .then((res) => {
         console.log(res);
@@ -141,7 +144,8 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
           console.error(err);
           toast.error("Error Uncaught");
         }
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -234,14 +238,14 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
                 </ul>
               </div>
               <div className="w-[25rem] mt-4">
-                <Button
+                <LoadingButton
                   variant="contained"
                   id="submit-form-button"
                   className="w-[25rem]"
                   type="submit"
                 >
                   Sign Up
-                </Button>
+                </LoadingButton>
               </div>
             </div>
           </div>
