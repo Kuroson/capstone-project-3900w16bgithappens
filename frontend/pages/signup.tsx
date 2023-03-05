@@ -4,7 +4,7 @@ import Head from "next/head";
 import { Button, TextField } from "@mui/material";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
-import { Footer, Header } from "components";
+import { SideNavbar } from "components";
 
 const isValidEmail = (email: string): boolean => {
   const emailRegex = new RegExp(
@@ -133,7 +133,7 @@ const SignUpPage = (): JSX.Element => {
         <meta name="description" content="Sign Up" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <Header />
+      <SideNavbar />
       <form className="w-full h-full flex flex-col items-center pt-10" onSubmit={handleOnSubmit}>
         <h1 className="text-6xl">Welcome to GitHappens!</h1>
         <div className="flex flex-col w-full items-center pt-10">

@@ -11,14 +11,16 @@
   footer {
     grid-area: footer;
     width: 100%;
+    z-index: 100;
   }
   grid-template-rows: auto 4rem;
-  grid-template-columns: 12.5rem 6fr 12.5rem;
+  grid-template-columns: 13rem 6fr 13rem;
 }
 
-.header {
-  position: fixed; /* Set the navbar to fixed position */
-  top: 0; /* Position the navbar at the top of the page */
-  width: 100%; /* Full width */
+.headerStuff {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 10;
 }

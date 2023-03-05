@@ -4,7 +4,7 @@ import Head from "next/head";
 import { Button, TextField } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
-import { Footer, Header } from "components";
+import { SideNavbar } from "components";
 
 const LoginPage = (): JSX.Element => {
   const [email, setEmail] = React.useState("");
@@ -30,7 +30,7 @@ const LoginPage = (): JSX.Element => {
         <meta name="description" content="Login Page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <Header />
+      <SideNavbar />
       <div className="w-full flex flex-col px-[5%]">
         <h1 className="text-center pt-4 text-4xl">Login Page</h1>
         <form className="flex flex-col justify justify-center py-10" onSubmit={handleOnSubmit}>
@@ -55,7 +55,6 @@ const LoginPage = (): JSX.Element => {
           </Button>
         </form>
       </div>
-      <Footer />
     </>
   );
 };

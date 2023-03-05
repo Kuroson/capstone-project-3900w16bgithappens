@@ -9,7 +9,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
   return (
     <div className={styles.mainContent}>
       {children}
-      <div>right</div>
+      <div></div>
       <Footer />
     </div>
   );
