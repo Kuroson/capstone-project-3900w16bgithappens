@@ -134,23 +134,13 @@ const SignUpPage = (): JSX.Element => {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <SideNavbar empty={true} />
-      <form className="w-full h-full flex flex-col items-center pt-10" onSubmit={handleOnSubmit}>
+      <form
+        className="w-full h-full flex flex-col items-center pt-[6rem]"
+        onSubmit={handleOnSubmit}
+      >
         <h1 className="text-6xl">Welcome to GitHappens!</h1>
-        <div className="flex flex-col w-full items-center pt-10">
-          <TextField
-            id="email-input"
-            label="Email"
-            type="text"
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-[25rem]"
-            autoComplete="email"
-            error={email.length !== 0 && emailError}
-            onBlur={() => setEmailError(!isValidEmail(email))}
-            helperText={email.length !== 0 && emailError && "Please enter a valid email"}
-          />
-          <div className="flex flex-row w-[25rem] justify-between pt-4">
+        <div className="mt-10 w-[25rem]">
+          <div className="flex flex-row justify-between">
             <TextField
               id="first-name-input"
               label="First Name"
@@ -180,40 +170,55 @@ const SignUpPage = (): JSX.Element => {
               error={lastNameError}
             />
           </div>
-          <div className="pt-4">
+          <div className="flex flex-col w-full items-center pt-4">
             <TextField
-              id="outlined-password-input"
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="email-input"
+              label="Email"
+              type="text"
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-[25rem]"
-              autoComplete="new-password"
-              error={password.length !== 0 && passwordError}
-              onBlur={() => setPasswordError(!isValidPassword(password))}
+              autoComplete="email"
+              error={email.length !== 0 && emailError}
+              onBlur={() => setEmailError(!isValidEmail(email))}
+              helperText={email.length !== 0 && emailError && "Please enter a valid email"}
             />
-          </div>
-          <div className="pt-4">
-            <TextField
-              id="outlined-confirm-password-input"
-              label="Confirm Password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-[25rem]"
-              error={confirmPassword.length !== 0 && confirmPassword !== password}
-            />
-          </div>
-          <div className="mt-4 w-[25rem]">
-            <p className="text-lg">Password Rules:</p>
-            <ul className="list-disc pl-[1.25rem]">
-              <PasswordRequirements password={password} passwordError={passwordError} />
-            </ul>
-          </div>
-          <div className="w-[25rem] mt-4">
-            <Button variant="contained" className="w-[25rem]" type="submit">
-              Sign Up
-            </Button>
+            <div className="pt-4">
+              <TextField
+                id="outlined-password-input"
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-[25rem]"
+                autoComplete="new-password"
+                error={password.length !== 0 && passwordError}
+                onBlur={() => setPasswordError(!isValidPassword(password))}
+              />
+            </div>
+            <div className="pt-4">
+              <TextField
+                id="outlined-confirm-password-input"
+                label="Confirm Password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-[25rem]"
+                error={confirmPassword.length !== 0 && confirmPassword !== password}
+              />
+            </div>
+            <div className="mt-4 w-full">
+              <p className="text-lg">Password Rules:</p>
+              <ul className="list-disc pl-[1.25rem]">
+                <PasswordRequirements password={password} passwordError={passwordError} />
+              </ul>
+            </div>
+            <div className="w-[25rem] mt-4">
+              <Button variant="contained" className="w-[25rem]" type="submit">
+                Sign Up
+              </Button>
+            </div>
           </div>
         </div>
       </form>
