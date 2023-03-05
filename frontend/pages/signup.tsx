@@ -121,14 +121,26 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
     }
     // Everything should be valid after this
 
-    createUserWithEmailAndPassword(getAuth(), email, password)
+    await createUserWithEmailAndPassword(getAuth(), email, password)
       .then((res) => {
         console.log(res);
       })
       // TODO need to post to backend to create entry here
       .catch((err) => {
-        console.error(err);
-        toast.error(err);
+        // Error codes:
+        // https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#createuserwithemailandpassword
+        if (err?.code === "auth/email-already-in-use") {
+          toast.error("Email already in use!");
+        } else if (err?.code === "auth/invalid-email") {
+          toast.error("Email is invalid!");
+        } else if (err?.code === "auth/operation-not-allowed") {
+          toast.error("Operation not allowed!");
+        } else if (err?.code === "auth/weak-password") {
+          toast.error("Password is too weak!");
+        } else {
+          console.error(err);
+          toast.error("Error Uncaught");
+        }
       });
   };
 
@@ -222,7 +234,12 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
                 </ul>
               </div>
               <div className="w-[25rem] mt-4">
-                <Button variant="contained" className="w-[25rem]" type="submit">
+                <Button
+                  variant="contained"
+                  id="submit-form-button"
+                  className="w-[25rem]"
+                  type="submit"
+                >
                   Sign Up
                 </Button>
               </div>

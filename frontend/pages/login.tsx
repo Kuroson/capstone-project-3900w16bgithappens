@@ -73,7 +73,12 @@ const LoginPage = (): JSX.Element => {
               />
             </div>
             <div className="w-[25rem] mt-4">
-              <Button variant="contained" className="w-[25rem]" type="submit">
+              <Button
+                variant="contained"
+                id="submit-form-button"
+                className="w-[25rem]"
+                type="submit"
+              >
                 Login
               </Button>
             </div>
