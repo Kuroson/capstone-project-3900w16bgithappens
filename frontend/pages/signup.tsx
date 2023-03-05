@@ -119,6 +119,7 @@ const SignUpPage = (): JSX.Element => {
       .then((res) => {
         console.log(res);
       })
+      // TODO need to post to backend to create entry here
       .catch((err) => {
         console.error(err);
         toast.error(err);
