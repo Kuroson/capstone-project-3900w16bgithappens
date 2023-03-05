@@ -3,8 +3,10 @@ import { toast } from "react-toastify";
 import Head from "next/head";
 import { Button, TextField } from "@mui/material";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { SideNavbar } from "components";
+import { PROCESS_BACKEND_URL } from "util/api";
 
 const isValidEmail = (email: string): boolean => {
   const emailRegex = new RegExp(
@@ -72,7 +74,11 @@ const PasswordRequirements = ({
   );
 };
 
-const SignUpPage = (): JSX.Element => {
+type SignUpPageProps = {
+  BACKEND_URL: string;
+};
+
+const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
 
@@ -226,7 +232,13 @@ const SignUpPage = (): JSX.Element => {
   );
 };
 
-export default withAuthUser({
+export const getStaticProps: GetStaticProps<SignUpPageProps> = async () => {
+  return {
+    props: { BACKEND_URL: PROCESS_BACKEND_URL },
+  };
+};
+
+export default withAuthUser<SignUpPageProps>({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
 })(SignUpPage);
