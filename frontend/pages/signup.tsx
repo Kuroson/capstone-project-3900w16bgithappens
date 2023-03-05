@@ -216,7 +216,6 @@ const SignUpPage = (): JSX.Element => {
           </div>
         </div>
       </form>
-      <Footer />
     </>
   );
 };

@@ -3,19 +3,17 @@
   margin: 0 auto;
   display: grid;
   grid-template-areas:
-    "topbar"
-    "content"
-    "footer";
-  navBar {
-    grid-area: navBar;
-  }
+    "sidebar-left content sidebar-right"
+    "footer   footer  footer";
   main {
     grid-area: content;
   }
   footer {
     grid-area: footer;
+    width: 100%;
   }
-  grid-template-rows: 5rem auto 4rem;
+  grid-template-rows: auto 4rem;
+  grid-template-columns: 12.5rem 6fr 12.5rem;
 }
 
 .header {
