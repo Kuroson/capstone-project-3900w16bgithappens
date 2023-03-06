@@ -2,26 +2,13 @@ import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import { LoadingButton } from "@mui/lab";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, SideNavbar } from "components";
 import { PROCESS_BACKEND_URL } from "util/api";
-
-const isValidEmail = (email: string): boolean => {
-  const emailRegex = new RegExp(
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{1,}))$/,
-  );
-  return emailRegex.test(email);
-};
-
-const isValidPassword = (password: string): boolean => {
-  const passwordRegex = new RegExp(
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&^()~-])[A-Za-z\d@$!%*#?&^()~-]{8,}$/,
-  );
-  return passwordRegex.test(password);
-};
+import { isValidEmail, isValidPassword } from "util/authVerficiation";
 
 type PasswordRequirementsProps = {
   password: string;
@@ -43,31 +30,19 @@ const PasswordRequirements = ({
   const isPasswordSpecialValid = (p: string): boolean => {
     return new RegExp(/[@$!%*#?&^()~-]/).test(p);
   };
-
   const TAILWIND_ERROR_COLOUR = "text-red-500";
+  const getColour = (condition: boolean): string => (condition ? TAILWIND_ERROR_COLOUR : "");
 
   return (
     <>
       <ul className="list-disc pl-[1.25rem]">
-        <li
-          className={
-            password.length !== 0 && !isPasswordLengthValid(password) ? TAILWIND_ERROR_COLOUR : ""
-          }
-        >
+        <li className={getColour(password.length !== 0 && !isPasswordLengthValid(password))}>
           At least 8 characters
         </li>
-        <li
-          className={
-            password.length !== 0 && !isPasswordNumberValid(password) ? TAILWIND_ERROR_COLOUR : ""
-          }
-        >
+        <li className={getColour(password.length !== 0 && !isPasswordNumberValid(password))}>
           At least 1 number
         </li>
-        <li
-          className={
-            password.length !== 0 && !isPasswordSpecialValid(password) ? TAILWIND_ERROR_COLOUR : ""
-          }
-        >
+        <li className={getColour(password.length !== 0 && !isPasswordSpecialValid(password))}>
           At least 1 special character of the following: !@#$%^&*()~-
         </li>
       </ul>

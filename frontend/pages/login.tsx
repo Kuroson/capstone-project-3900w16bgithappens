@@ -2,9 +2,9 @@ import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
+import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, SideNavbar } from "components";
 
 const LoginPage = (): JSX.Element => {
