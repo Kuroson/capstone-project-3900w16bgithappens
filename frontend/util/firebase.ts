@@ -11,24 +11,14 @@ if (FIREBASE_DATABASE_URL === undefined) {
   throw new Error("Missing NEXT_PUBLIC_FIREBASE_DATABASE_URL");
 }
 
-/**
- * Returns true if `item` is json valid
- * @param item string to check if json
- * @returns true if `item` is a valid json
- */
-const isJSON = (item: string): boolean => {
-  item = typeof item !== "string" ? JSON.stringify(item) : item;
-
+const FIREBASE_KEY = (): string => {
   try {
-    item = JSON.parse(item);
-  } catch (e) {
-    return false;
+    return process.env.FIREBASE_PRIVATE_KEY !== undefined
+      ? JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
+      : undefined;
+  } catch (err) {
+    return process.env.FIREBASE_PRIVATE_KEY ?? "";
   }
-
-  if (typeof item === "object" && item !== null) {
-    return true;
-  }
-  return false;
 };
 
 const initAuth = () => {
@@ -50,10 +40,7 @@ const initAuth = () => {
         projectId: FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL ?? "",
         // The private key must not be accessible on the client side.
-        privateKey:
-          process.env.FIREBASE_PRIVATE_KEY !== undefined && isJSON(process.env.FIREBASE_PRIVATE_KEY)
-            ? JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
-            : process.env.FIREBASE_PRIVATE_KEY,
+        privateKey: FIREBASE_KEY(),
       },
       databaseURL: FIREBASE_DATABASE_URL,
     },
