@@ -8,3 +8,16 @@ export const getRoleName = (role: number | null): string => {
   if (role === INSTRUCTOR_NUMBER) return "Instructor";
   return "Student";
 };
+
+export type CourseGETResponse = {
+  courses: CourseInformation[];
+};
+
+export type CourseInformation = {
+  courseId: string;
+  title: string;
+  code: string;
+  description: string;
+  session: string;
+  icon: string;
+};

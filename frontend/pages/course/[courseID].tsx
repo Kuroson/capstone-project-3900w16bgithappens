@@ -8,7 +8,7 @@ import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import { PROCESS_BACKEND_URL, apiGet } from "util/api";
 import initAuth from "util/firebase";
-import { getRoleName } from "util/util";
+import { CourseGETResponse, CourseInformation, getRoleName } from "util/util";
 
 initAuth();
 
@@ -16,19 +16,6 @@ type StudentCoursePageProps = {
   userDetails: UserDetailsPayload;
   courseInformation: CourseInformation | null;
   courseRoutes: Routes[];
-};
-
-type CourseGETResponse = {
-  courses: CourseInformation[];
-};
-
-type CourseInformation = {
-  courseId: string;
-  title: string;
-  code: string;
-  description: string;
-  session: string;
-  icon: string;
 };
 
 const StudentCoursePage = ({
