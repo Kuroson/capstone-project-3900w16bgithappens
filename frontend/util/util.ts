@@ -21,3 +21,21 @@ export type CourseInformation = {
   session: string;
   icon: string;
 };
+
+export type CoursePageSection = {
+  title: string;
+  resources: CourseResource[];
+};
+
+export type CourseResource = {
+  title: string;
+  description: string;
+  fileType: string;
+  storedName: string;
+};
+
+export type CoursePage = {
+  title: string;
+  sections: CoursePageSection[];
+  resources: CourseResource[];
+};
