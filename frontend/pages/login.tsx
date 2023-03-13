@@ -9,7 +9,7 @@ import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, Footer, SideNavbar } from "components";
 import LeftSideBar from "components/Layout/Footer/LeftSideBar";
 
-export const LoginPage = (): JSX.Element => {
+const LoginPage = (): JSX.Element => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [loading, setLoading] = React.useState(false);
