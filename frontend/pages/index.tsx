@@ -11,7 +11,7 @@ import { Nullable, getRoleName } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 
-type UserDetailsPayload = Nullable<{
+export type UserDetailsPayload = Nullable<{
   firstName: string;
   lastName: string;
   email: string;
@@ -23,6 +23,7 @@ type HomePageProps = UserDetailsPayload;
 
 const HomePage = ({ firstName, lastName, email, role, avatar }: HomePageProps): JSX.Element => {
   const authUser = useAuthUser();
+  console.log(authUser);
   console.log(firstName, lastName, email, role, avatar);
 
   const studentRoutes: Routes[] = [
