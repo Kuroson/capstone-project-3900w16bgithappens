@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Avatar,
@@ -23,6 +24,7 @@ type SideNavBarProps = UserDetailsProps & {
   isCoursePage?: boolean; // check if the current page is course page
   courseCode?: string;
   courseIcon?: string;
+  showDashboardRoute?: boolean;
 };
 
 type UserDetailsProps = {
@@ -184,6 +186,7 @@ export default function SideNavbar({
   isCoursePage,
   courseCode,
   courseIcon,
+  showDashboardRoute,
 }: SideNavBarProps): JSX.Element {
   if (empty === true) {
     return <div></div>;
@@ -192,6 +195,17 @@ export default function SideNavbar({
   const handleOnClick = async () => {
     signOut(getAuth());
   };
+
+  const defaultDashboardRoute = {
+    name: "Dashboard",
+    route: "/",
+    Icon: <HomeIcon fontSize="large" color="primary" />,
+  };
+
+  const routesList: Routes[] = [
+    ...(showDashboardRoute === true ? [defaultDashboardRoute] : []),
+    ...list,
+  ];
 
   return (
     <div className="w-full">
@@ -225,7 +239,7 @@ export default function SideNavbar({
                 avatarURL={avatarURL}
               />
             )}
-            <NavBar routes={list} isCoursePage={isCoursePage ?? false} />
+            <NavBar routes={routesList} isCoursePage={isCoursePage ?? false} />
           </div>
           <div className="flex justify-center items-center mb-5">
             {/* Bottom */}
