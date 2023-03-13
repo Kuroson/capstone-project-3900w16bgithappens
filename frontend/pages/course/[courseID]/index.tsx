@@ -8,13 +8,18 @@ import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import { PROCESS_BACKEND_URL, apiGet } from "util/api";
 import initAuth from "util/firebase";
-import { CourseGETResponse, CourseInformation, getRoleName } from "util/util";
+import {
+  CourseGETResponse,
+  CourseInformation,
+  CourseInformationFull,
+  getRoleName,
+} from "util/util";
 
 initAuth();
 
 type StudentCoursePageProps = {
   userDetails: UserDetailsPayload;
-  courseInformation: CourseInformation | null;
+  courseInformation: CourseInformationFull | null;
   courseRoutes: Routes[];
 };
 
@@ -53,57 +58,41 @@ const StudentCoursePage = ({
 export const getServerSideProps: GetServerSideProps<StudentCoursePageProps> = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
 })(async ({ AuthUser, query }): Promise<{ props: StudentCoursePageProps } | { notFound: true }> => {
+  const { courseID } = query;
+
   const [resUserData, errUserData] = await apiGet<any, UserDetailsPayload>(
     `${PROCESS_BACKEND_URL}/user/details`,
     await AuthUser.getIdToken(),
     {},
   );
 
-  // Fetch User's course data
-  const [resCourseData, errCourseData] = await apiGet<any, CourseGETResponse>(
-    `${PROCESS_BACKEND_URL}/course`,
+  // Fetch Course Specific Information
+  const [resCourseInformation, errCourseInformation] = await apiGet<any, CourseInformationFull>(
+    `${PROCESS_BACKEND_URL}/course/${courseID}`,
     await AuthUser.getIdToken(),
     {},
   );
 
-  if (errUserData !== null || errCourseData !== null) {
-    console.error(errUserData ?? errCourseData);
+  if (errUserData !== null || errCourseInformation !== null) {
+    console.error(errUserData ?? errCourseInformation);
     // handle error
-    return {
-      props: {
-        userDetails: { email: null, firstName: null, lastName: null, role: null, avatar: null },
-        courseInformation: null,
-        courseRoutes: [],
-      },
-    };
-  }
-
-  if (resUserData === null || resCourseData === null)
-    throw new Error("This shouldn't have happened");
-
-  // Validate URL query
-  const { courseID } = query;
-
-  const courseInformation: CourseInformation | undefined =
-    courseID !== undefined
-      ? resCourseData.courses.find((course) => course.courseId === courseID)
-      : undefined;
-
-  if (courseInformation === undefined) {
     return { notFound: true };
   }
 
-  const courseRoutes: Routes[] = resCourseData.courses.map((x) => {
+  if (resUserData === null || resCourseInformation === null)
+    throw new Error("This shouldn't have happened");
+
+  const courseRoutes: Routes[] = resCourseInformation.pages.map((x) => {
     return {
-      name: x.code,
-      route: `/course/${x.courseId}`,
+      name: x.title,
+      route: `/course/${courseID}/${x.pageId}`,
     };
   });
 
   return {
     props: {
       userDetails: { ...resUserData },
-      courseInformation: courseInformation,
+      courseInformation: resCourseInformation,
       courseRoutes: courseRoutes,
     },
   };

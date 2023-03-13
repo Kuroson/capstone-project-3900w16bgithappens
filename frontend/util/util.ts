@@ -22,6 +22,10 @@ export type CourseInformation = {
   icon: string;
 };
 
+export type CourseInformationFull = CourseInformation & {
+  pages: CoursePage[];
+};
+
 export type CoursePageSection = {
   title: string;
   resources: CourseResource[];
@@ -38,4 +42,5 @@ export type CoursePage = {
   title: string;
   sections: CoursePageSection[];
   resources: CourseResource[];
+  pageId: string;
 };
