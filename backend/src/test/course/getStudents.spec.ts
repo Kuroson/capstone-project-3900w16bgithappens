@@ -1,3 +1,4 @@
+import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course.model";
 import User from "@/models/user.model";
 import { addStudents } from "@/routes/course/addStudents.route";
@@ -47,7 +48,10 @@ describe("Test getting a list of students from a course", () => {
     });
 
     it("Invalid course ID should throw", async () => {
-        expect(getCourse("FAKE ID")).rejects.toThrow();
+        await expect(getStudents("FAKE ID")).rejects.toThrow(HttpException);
+        await getStudents("FAKE ID").catch((err) => {
+            expect(err.status).toBe(400);
+        });
     });
 
     afterAll(async () => {

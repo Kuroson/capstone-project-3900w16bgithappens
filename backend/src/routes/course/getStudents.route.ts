@@ -68,6 +68,6 @@ export const getStudents = async (courseId: string): Promise<StudentInfo[]> => {
     const course = await Course.findById(courseId, "students")
         .populate("students", "_id email firebase_uid first_name last_name role avatar")
         .catch(() => null);
-    if (course === null) throw new HttpException(500, "Course does not exist");
+    if (course === null) throw new HttpException(400, `Course of ${courseId} does not exist`);
     return course.students;
 };
