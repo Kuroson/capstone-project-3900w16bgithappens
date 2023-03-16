@@ -28,7 +28,9 @@ describe("Test user details", () => {
     beforeAll(async () => {
         await initialiseMongoose();
         await registerMultipleUsersTestingOnly(userData);
+        // For some reason we have to load the specific models here...
         Course;
+        User;
     });
 
     it("Request bad email", async () => {
