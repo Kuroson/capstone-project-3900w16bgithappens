@@ -30,13 +30,13 @@ export const indexRouter = Router();
 // Base routes
 indexRouter.get("/", indexController);
 
-// Auth routes
+// Admin routes
 indexRouter.get("/admin", adminController);
 indexRouter.get("/admin/access", accessController);
-indexRouter.all("/auth/register", registerController);
 
 // User routes
 indexRouter.all("/user/details", userDetailsController);
+indexRouter.all("/user/register", registerController);
 
 // Course routes
 indexRouter.post("/course", createCourseController);
