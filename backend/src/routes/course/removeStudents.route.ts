@@ -5,6 +5,7 @@ import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
+import { checkAdmin } from "../admin/admin.route";
 
 type ResponsePayload = {
     invalidEmails: Array<string>;
@@ -68,11 +69,18 @@ export const removeStudents = async (
     studentEmails: string[],
     firebaseUID: string,
 ): Promise<string[]> => {
+    // 1. Validate if user is an admin
+    if (!(await checkAdmin(firebaseUID))) {
+        throw new HttpException(403, "User is not an admin. Unauthorized");
+    }
+
+    // 2. Find the course matching courseId
     const invalidEmails = Array<string>();
 
     const course = await Course.findById(courseId).catch(() => null);
     if (course === null) throw new HttpException(400, `Failed to retrieve course of ${courseId}`);
 
+    // 3. Try and remove all students from the course
     const promiseList = studentEmails.map((email) => {
         return new Promise<void>(async (resolve, reject): Promise<void> => {
             const user = await User.findOne({ email: email });

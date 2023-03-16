@@ -65,13 +65,13 @@ export const addStudentsController = async (
  * Attempts to add all students to the matching course
  * @param courseId course to add to
  * @param studentEmails emails of students to add
- * @param firebaseID requester's id
+ * @param firebaseUID requester's id
  * @throws { HttpException } if user is not an admin or if courseId doesn't exist
  * @returns list of emails failed to be added
  */
-export const addStudents = async (courseId, studentEmails, firebaseID): Promise<string[]> => {
+export const addStudents = async (courseId, studentEmails, firebaseUID): Promise<string[]> => {
     // 1. Validate if user is an admin
-    if (!(await checkAdmin(firebaseID))) {
+    if (!(await checkAdmin(firebaseUID))) {
         throw new HttpException(403, "User is not an admin. Unauthorized");
     }
 
