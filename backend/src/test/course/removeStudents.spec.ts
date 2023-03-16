@@ -57,10 +57,7 @@ describe("Test removing a student", () => {
     });
 
     it("Remove no users from course", async () => {
-        await removeStudents({
-            courseId: courseId,
-            students: Array<string>(),
-        });
+        await removeStudents(courseId, [], admin.firebaseUID);
 
         const myCourse = await Course.findById(courseId);
         const students = await User.find({
@@ -83,15 +80,16 @@ describe("Test removing a student", () => {
 
     it("Remove users from course", async () => {
         expect(
-            await removeStudents({
-                courseId: courseId,
-                students: Array<string>(
+            await removeStudents(
+                courseId,
+                [
                     "fakeRemoveStudent@email.com",
                     `removestudent1${id}@email.com`,
                     `removestudent2${id}@email.com`,
                     `removestudent3${id}@email.com`,
-                ),
-            }),
+                ],
+                admin.firebaseUID,
+            ),
         ).toEqual(["fakeRemoveStudent@email.com"]);
 
         const myCourse = await Course.findById(courseId);
