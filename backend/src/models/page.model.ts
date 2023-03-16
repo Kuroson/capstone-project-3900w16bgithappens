@@ -1,6 +1,6 @@
 import { Document, Schema, Types, model } from "mongoose";
-import { Resource } from "./resource.model";
-import { Section } from "./section.model";
+import { ResourceInterface } from "./resource.model";
+import { SectionInterface } from "./section.model";
 
 /**
  * Course pages denote a custom page for the course
@@ -11,8 +11,8 @@ import { Section } from "./section.model";
  */
 export interface PageInterface extends Document {
     title: string;
-    sections: Types.DocumentArray<Section["_id"]>;
-    resources: Types.DocumentArray<Resource["_id"]>;
+    sections: Types.DocumentArray<SectionInterface["_id"]>;
+    resources: Types.DocumentArray<ResourceInterface["_id"]>;
 }
 
 const pageSchema: Schema = new Schema<PageInterface>({

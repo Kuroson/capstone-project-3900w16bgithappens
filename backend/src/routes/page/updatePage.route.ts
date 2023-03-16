@@ -2,7 +2,7 @@ import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course.model";
 import Page from "@/models/page.model";
 import Resource from "@/models/resource.model";
-import Section, { Section as SectionType } from "@/models/section.model";
+import Section, { SectionInterface } from "@/models/section.model";
 import { recallFileUrl, verifyIdTokenValid } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { Nullable, getMissingBodyIDs, isValidBody } from "@/utils/util";
@@ -151,7 +151,7 @@ export const updatePage = async (queryBody: QueryPayload, firebase_uid: string) 
     // Move through sections and add new ones (and accompanying resources)
     for (const section of sections) {
         const { title, sectionId } = section;
-        let currSection: SectionType | null = null;
+        let currSection: SectionInterface | null = null;
         if (sectionId === undefined) {
             currSection = new Section({ title });
         } else {
