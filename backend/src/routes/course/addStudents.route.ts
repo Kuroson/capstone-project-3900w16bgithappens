@@ -18,6 +18,13 @@ type QueryPayload = {
     studentEmails: Array<string>;
 };
 
+/**
+ * PUT /course/students/add
+ * Adds students to a course. Must be an admin to use
+ * @param req
+ * @param res
+ * @returns
+ */
 export const addStudentsController = async (
     req: Request<QueryPayload>,
     res: Response<ResponsePayload | ErrorResponsePayload>,
@@ -60,7 +67,7 @@ export const addStudentsController = async (
  * @param studentEmails emails of students to add
  * @param firebaseID requester's id
  * @throws { HttpException } if user is not an admin or if courseId doesn't exist
- * @returns
+ * @returns list of emails failed to be added
  */
 export const addStudents = async (courseId, studentEmails, firebaseID): Promise<string[]> => {
     // 1. Validate if user is an admin
@@ -97,7 +104,7 @@ export const addStudents = async (courseId, studentEmails, firebaseID): Promise<
     });
     await Promise.all(promiseList);
     await course.save().catch((err) => {
-        throw new HttpException(500, "Failed to update course");
+        throw new HttpException(500, "Failed to update course", err);
     });
     return invalidEmails;
 };
