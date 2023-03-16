@@ -38,13 +38,13 @@ indexRouter.get("/user/details", userDetailsController);
 indexRouter.post("/user/register", registerController);
 
 // Course routes
+indexRouter.get("/course", getCourseController);
 indexRouter.post("/course/create", createCourseController);
 indexRouter.get("/course/all", getAllCoursesController);
-indexRouter.get("/course/:courseCode", getCourseController);
-indexRouter.put("/course/:courseCode", updateCourseController);
+indexRouter.put("/course/update", updateCourseController);
+indexRouter.get("/course/students", getStudentsController);
 indexRouter.put("/course/students/add", addStudentsController);
 indexRouter.put("/course/students/remove", removeStudentsController);
-indexRouter.get("/course/students/:courseId", getStudentsController);
 
 // Page routes
 indexRouter.post("/page/:courseId", createPageController);
