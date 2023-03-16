@@ -69,7 +69,7 @@ export const addStudents = async (courseId, studentEmails, firebaseID): Promise<
     }
 
     // 2. Find the course matching courseId
-    const course = await Course.findById(courseId);
+    const course = await Course.findOne({ _id: courseId }).catch(() => null);
     if (course === null) throw new HttpException(400, `Failed to retrieve course of ${courseId}`);
 
     // 3. Try and add all students to the course

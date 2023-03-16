@@ -1,3 +1,4 @@
+import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course.model";
 import User from "@/models/user.model";
 import { addStudents } from "@/routes/course/addStudents.route";
@@ -18,10 +19,16 @@ describe("Test adding a student", () => {
     let courseId: string;
 
     const admin = genUserTestOnly("first_name1", "last_name1", `admin${id}@email.com`, `acc${id}`);
+    const student = genUserTestOnly(
+        "first_name2",
+        "last_name2",
+        `student1${id}@email.com`,
+        `acc1${id}`,
+    );
 
     const userData = [
         admin,
-        genUserTestOnly("first_name2", "last_name2", `student1${id}@email.com`, `acc1${id}`),
+        student,
         genUserTestOnly("first_name3", "last_name3", `student2${id}@email.com`, `acc2${id}`),
         genUserTestOnly("first_name4", "last_name4", `student3${id}@email.com`, `acc3${id}`),
     ];
@@ -106,6 +113,42 @@ describe("Test adding a student", () => {
         expect(students.at(0)?.enrolments).toEqual([myCourse?._id]);
         expect(students.at(1)?.enrolments).toEqual([myCourse?._id]);
         expect(students.at(2)?.enrolments).toEqual([myCourse?._id]);
+    });
+
+    it("Test adding to bad courseId", async () => {
+        await expect(
+            addStudents(
+                "badId",
+                [`student1${id}@email.com`, `student2${id}@email.com`, `student3${id}@email.com`],
+                admin.firebaseUID,
+            ),
+        ).rejects.toThrow(HttpException);
+
+        await addStudents(
+            "badId",
+            [`student1${id}@email.com`, `student2${id}@email.com`, `student3${id}@email.com`],
+            admin.firebaseUID,
+        ).catch((err) => {
+            expect(err.status).toEqual(400);
+        });
+    });
+
+    it("Test student trying to add other students", async () => {
+        await expect(
+            addStudents(
+                courseId,
+                [`student1${id}@email.com`, `student2${id}@email.com`],
+                student.firebaseUID,
+            ),
+        ).rejects.toThrow(HttpException);
+
+        await addStudents(
+            courseId,
+            [`student1${id}@email.com`, `student2${id}@email.com`],
+            student.firebaseUID,
+        ).catch((err) => {
+            expect(err.status).toEqual(403);
+        });
     });
 
     afterAll(async () => {
