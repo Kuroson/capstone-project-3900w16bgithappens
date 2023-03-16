@@ -35,8 +35,8 @@ indexRouter.get("/admin", adminController);
 indexRouter.get("/admin/access", accessController);
 
 // User routes
-indexRouter.all("/user/details", userDetailsController);
-indexRouter.all("/user/register", registerController);
+indexRouter.get("/user/details", userDetailsController);
+indexRouter.post("/user/register", registerController);
 
 // Course routes
 indexRouter.post("/course", createCourseController);
