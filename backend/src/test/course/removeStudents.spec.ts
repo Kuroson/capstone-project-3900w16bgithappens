@@ -17,8 +17,15 @@ describe("Test removing a student", () => {
     const id = uuidv4();
     let courseId: string;
 
+    const admin = genUserTestOnly(
+        "first_name1",
+        "last_name1",
+        `removeadmin${id}@email.com`,
+        `acc${id}`,
+    );
+
     const userData = [
-        genUserTestOnly("first_name1", "last_name1", `removeadmin${id}@email.com`, `acc${id}`),
+        admin,
         genUserTestOnly("first_name2", "last_name2", `removestudent1${id}@email.com`, `acc1${id}`),
         genUserTestOnly("first_name3", "last_name3", `removestudent2${id}@email.com`, `acc2${id}`),
         genUserTestOnly("first_name4", "last_name4", `removestudent3${id}@email.com`, `acc3${id}`),
@@ -37,15 +44,16 @@ describe("Test removing a student", () => {
             },
             `acc${id}`,
         );
-        await addStudents({
-            courseId: courseId,
-            students: Array<string>(
+        await addStudents(
+            courseId,
+            [
                 "fakeRemoveStudent@email.com",
                 `removestudent1${id}@email.com`,
                 `removestudent2${id}@email.com`,
                 `removestudent3${id}@email.com`,
-            ),
-        });
+            ],
+            admin.firebaseUID,
+        );
     });
 
     it("Remove no users from course", async () => {

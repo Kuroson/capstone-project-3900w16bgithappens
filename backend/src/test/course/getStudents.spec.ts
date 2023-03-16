@@ -13,8 +13,10 @@ describe("Test getting a list of students from a course", () => {
     const id = uuidv4();
     let courseId: string;
 
+    const admin = genUserTestOnly("first_name1", "last_name1", `admin${id}@email.com`, `acc${id}`);
+
     const userData = [
-        genUserTestOnly("first_name1", "last_name1", `admin${id}@email.com`, `acc${id}`),
+        admin,
         genUserTestOnly("first_name2", "last_name2", `student1${id}@email.com`, `acc1${id}`),
     ];
 
@@ -34,10 +36,7 @@ describe("Test getting a list of students from a course", () => {
             `acc${id}`,
         );
 
-        await addStudents({
-            courseId: courseId,
-            students: [`student1${id}@email.com`],
-        });
+        await addStudents(courseId, [`student1${id}@email.com`], admin.firebaseUID);
     });
 
     it("Can get student information", async () => {

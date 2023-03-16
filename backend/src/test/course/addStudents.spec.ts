@@ -17,8 +17,10 @@ describe("Test adding a student", () => {
     const id = uuidv4();
     let courseId: string;
 
+    const admin = genUserTestOnly("first_name1", "last_name1", `admin${id}@email.com`, `acc${id}`);
+
     const userData = [
-        genUserTestOnly("first_name1", "last_name1", `admin${id}@email.com`, `acc${id}`),
+        admin,
         genUserTestOnly("first_name2", "last_name2", `student1${id}@email.com`, `acc1${id}`),
         genUserTestOnly("first_name3", "last_name3", `student2${id}@email.com`, `acc2${id}`),
         genUserTestOnly("first_name4", "last_name4", `student3${id}@email.com`, `acc3${id}`),
@@ -41,21 +43,17 @@ describe("Test adding a student", () => {
     });
 
     it("Add no users to course", async () => {
-        await addStudents({
-            courseId: courseId,
-            students: Array<string>(),
-        });
-
+        await addStudents(courseId, [], admin.firebaseUID);
         const myCourse = await Course.findById(courseId);
-
         expect(myCourse?.students).toEqual([]);
     });
 
     it("Add students to course", async () => {
-        await addStudents({
-            courseId: courseId,
-            students: Array<string>(`student1${id}@email.com`, `student2${id}@email.com`),
-        });
+        await addStudents(
+            courseId,
+            [`student1${id}@email.com`, `student2${id}@email.com`],
+            admin.firebaseUID,
+        );
 
         const myCourse = await Course.findById(courseId);
         const students = await User.find({
@@ -76,15 +74,16 @@ describe("Test adding a student", () => {
 
     it("Add student to course", async () => {
         expect(
-            await addStudents({
-                courseId: courseId,
-                students: Array<string>(
+            await addStudents(
+                courseId,
+                [
                     "fakeStudent@email.com",
                     `student1${id}@email.com`,
                     `student2${id}@email.com`,
                     `student3${id}@email.com`,
-                ),
-            }),
+                ],
+                admin.firebaseUID,
+            ),
         ).toEqual(["fakeStudent@email.com"]);
 
         const myCourse = await Course.findById(courseId);
@@ -97,10 +96,6 @@ describe("Test adding a student", () => {
         });
 
         expect(students.length).toEqual(3);
-
-        // const student1 = students.at(0);
-        // const student2 = students.at(1);
-        // const student3 = students.at(2);
 
         const expectedStudentsIds = students.map((x) => stringifyOutput(x._id));
 
