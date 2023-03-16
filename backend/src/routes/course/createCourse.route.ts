@@ -21,7 +21,7 @@ type QueryPayload = {
 
 /**
  * GET /course/create
- * Creates a course in the database based on the body information
+ * Creates a course in the database based on the body
  * @param req
  * @param res
  * @returns

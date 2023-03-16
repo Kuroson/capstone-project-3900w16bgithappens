@@ -1,6 +1,7 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course.model";
 import User from "@/models/user.model";
+import { createCourse } from "@/routes/course/createCourse.route";
 import { registerUser } from "@/routes/user/register.route";
 import { getUserDetails } from "@/routes/user/userDetails.route";
 import { disconnect } from "mongoose";
@@ -87,6 +88,50 @@ describe("Test user details", () => {
     afterAll(async () => {
         // Clean up
         await User.deleteMany({ email: userData.map((x) => x.email) }).exec();
+        await disconnect();
+    });
+});
+
+describe("Check if created courses are turned as a part of user details", () => {
+    const id = uuidv4();
+    let courseId: string;
+
+    const admin = genUserTestOnly("first_name", "last_name", `admin${id}@email.com`, `acc${id}`);
+    const userData = [admin];
+
+    beforeAll(async () => {
+        await initialiseMongoose();
+
+        await registerMultipleUsersTestingOnly(userData);
+        courseId = await createCourse(
+            {
+                code: "TEST",
+                title: "Test",
+                session: "T1",
+                description: "This is a test course",
+                icon: "",
+            },
+            `acc${id}`,
+        );
+    });
+
+    it("Admin created course should be in created_courses", async () => {
+        const userDetails = await getUserDetails(admin.email, admin.email);
+        expect(userDetails.created_courses.length).toEqual(1);
+        expect(userDetails.created_courses.at(0)?._id).toEqual(courseId);
+        expect(userDetails.created_courses.at(0)?.code).toBe("TEST");
+        expect(userDetails.created_courses.at(0)?.title).toBe("Test");
+        expect(userDetails.created_courses.at(0)?.session).toBe("T1");
+        expect(userDetails.created_courses.at(0)?.description).toBe("This is a test course");
+        expect(userDetails.created_courses.at(0)?.icon).toBe("");
+    });
+
+    // TODO student enrolment
+
+    afterAll(async () => {
+        // Clean up
+        await Course.findByIdAndDelete(courseId);
+        await User.deleteMany({ firebase_uid: userData.map((x) => x.firebaseUID) }).exec();
         await disconnect();
     });
 });
