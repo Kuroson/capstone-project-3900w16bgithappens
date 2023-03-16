@@ -77,7 +77,7 @@ export const verifyIdTokenValid = async (token: string) => {
  */
 export const checkAuth = async (req: Request) => {
     if (req.headers.authorization === undefined)
-        throw new HttpException(405, "No authorization header found");
+        throw new HttpException(401, "No authorization header found");
 
     // Verify token
     const token = req.headers.authorization.split(" ")[1];
