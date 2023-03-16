@@ -1,6 +1,6 @@
 import { Document, Schema, Types, model } from "mongoose";
 import { Page } from "./page.model";
-import { User } from "./user.model";
+import { UserInterface } from "./user.model";
 
 /**
  * Model to represent a course in the system
@@ -15,9 +15,9 @@ export interface Course extends Document {
     description?: string;
     session: string;
     icon?: string;
-    creator: User["_id"];
+    creator: UserInterface["_id"];
     pages: Types.DocumentArray<Page["_id"]>;
-    students: Types.DocumentArray<User["_id"]>;
+    students: Types.DocumentArray<UserInterface["_id"]>;
 }
 
 const courseSchema: Schema = new Schema<Course>({
