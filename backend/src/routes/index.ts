@@ -2,7 +2,6 @@ import { firebaseUpload } from "@/utils/firebase";
 import { Router } from "express";
 import { accessController } from "./admin/access.route";
 import { adminController } from "./admin/admin.route";
-import { registerController } from "./auth/register.route";
 import { addStudentsController } from "./course/addStudents.route";
 import { createCourseController } from "./course/createCourse.route";
 import { getAllCoursesController } from "./course/getAllCourses.route";
@@ -23,6 +22,7 @@ import { deleteSectionController } from "./page/deleteSection.route";
 import { getPageController } from "./page/getPage.route";
 import { getPagesController } from "./page/getPages.route";
 import { updatePageController } from "./page/updatePage.route";
+import { registerController } from "./user/register.route";
 import { userDetailsController } from "./user/userDetails.route";
 
 export const indexRouter = Router();
