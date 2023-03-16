@@ -56,7 +56,7 @@ export const getUserDetails = async (
         .exec();
 
     if (userLookup === null) {
-        throw new HttpException(400, `Email associated with token doesn't exist: ${email}`);
+        throw new HttpException(400, `Email queried does not exist: ${email}`);
     }
 
     return userLookup;
