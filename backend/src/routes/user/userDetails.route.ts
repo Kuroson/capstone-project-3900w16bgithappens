@@ -1,6 +1,6 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Course, { CourseInterface, CourseInterfaceFull } from "@/models/course.model";
-import User, { UserInterface, isRoleAdmin } from "@/models/user.model";
+import Course, { CourseInterface } from "@/models/course.model";
+import User, { UserInterface, UserInterfaceFull, isRoleAdmin } from "@/models/user.model";
 import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { Nullable, getMissingBodyIDs, isValidBody } from "@/utils/util";
@@ -11,7 +11,7 @@ type ErrorPayload = {
 };
 
 type ResponsePayload = {
-    userDetails: CourseInterfaceFull;
+    userDetails: UserInterfaceFull;
 };
 
 type QueryPayload = {
@@ -35,7 +35,7 @@ type QueryPayload = {
 export const getUserDetails = async (
     email: string,
     authUserEmail: string,
-): Promise<CourseInterfaceFull> => {
+): Promise<UserInterfaceFull> => {
     // 1. Get the user details of the firebase authUser;
     const requester = await User.findOne({ email: authUserEmail })
         .populate("enrolments", "_id title code description session icon")

@@ -40,3 +40,9 @@ export default User;
 export const isRoleAdmin = (role: number) => {
     return role === 0;
 };
+
+export type UserInterfaceFull = Omit<Omit<UserInterface, "enrolments">, "created_courses"> & {
+    // Omit the two arrays of ids and replace them with the full objects
+    enrolments: CourseInterface[];
+    created_courses: CourseInterface[];
+};

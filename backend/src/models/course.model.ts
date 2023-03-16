@@ -1,5 +1,5 @@
 import { Document, Schema, Types, model } from "mongoose";
-import { Page } from "./page.model";
+import { PageInterface } from "./page.model";
 import { UserInterface } from "./user.model";
 
 /**
@@ -16,15 +16,9 @@ export interface CourseInterface extends Document {
     session: string;
     icon?: string;
     creator: UserInterface["_id"];
-    pages: Types.DocumentArray<Page["_id"]>;
+    pages: Types.DocumentArray<PageInterface["_id"]>;
     students: Types.DocumentArray<UserInterface["_id"]>;
 }
-
-export type CourseInterfaceFull = Omit<Omit<UserInterface, "enrolments">, "created_courses"> & {
-    // Omit the two arrays of ids and replace them with the full objects
-    enrolments: CourseInterface[];
-    created_courses: CourseInterface[];
-};
 
 const courseSchema: Schema = new Schema<CourseInterface>({
     title: { type: String, required: true },
