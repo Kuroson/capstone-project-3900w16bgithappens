@@ -11,7 +11,6 @@ import { getCoursesController } from "./course/getCourses.route";
 import { getStudentsController } from "./course/getStudents.route";
 import { removeStudentsController } from "./course/removeStudents.route";
 import { updateCourseController } from "./course/updateCourse.route";
-import { exampleController } from "./example.route";
 import { downloadFileController } from "./file/downloadFile.route";
 import { uploadFileController } from "./file/uploadFile.route";
 import { indexController } from "./index.route";
