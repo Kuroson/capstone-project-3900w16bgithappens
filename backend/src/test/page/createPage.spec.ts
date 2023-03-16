@@ -30,13 +30,7 @@ describe("Test creating a page", () => {
     });
 
     it("Should create a new page within the database", async () => {
-        const pageId = await createPage(
-            {
-                title: "Test page",
-                courseId,
-            },
-            `acc${id}`,
-        );
+        const pageId = await createPage(courseId, "Test page", `acc${id}`);
 
         const myPage = await Page.findById(pageId);
 
@@ -48,26 +42,13 @@ describe("Test creating a page", () => {
     });
 
     it("Multiple pages should be addable to the course", async () => {
-        const pageId1 = await createPage(
-            {
-                title: "Test page",
-                courseId,
-            },
-            `acc${id}`,
-        );
-
-        const pageId2 = await createPage(
-            {
-                title: "Test page 2",
-                courseId,
-            },
-            `acc${id}`,
-        );
+        const pageId1 = await createPage(courseId, "Test page", `acc${id}`);
+        const pageId2 = await createPage(courseId, "Test page 2", `acc${id}`);
 
         const myCourse = await Course.findById(courseId);
-        expect(myCourse === null).toBe(false);
+        expect(myCourse).not.toBeNull();
 
-        expect(myCourse?.pages.length).toBe(2);
+        expect(myCourse?.pages.length).toEqual(2);
         expect(myCourse?.pages[0] as string).toEqual(pageId1);
         expect(myCourse?.pages[1] as string).toEqual(pageId2);
 

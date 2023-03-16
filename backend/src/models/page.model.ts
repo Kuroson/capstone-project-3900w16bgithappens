@@ -17,8 +17,8 @@ export interface PageInterface extends Document {
 
 const pageSchema: Schema = new Schema<PageInterface>({
     title: { type: String, required: true },
-    sections: [{ type: Schema.Types.ObjectId, ref: "Section" }],
-    resources: [{ type: Schema.Types.ObjectId, ref: "Resource" }],
+    sections: [{ type: Schema.Types.ObjectId, ref: "Section", required: true }],
+    resources: [{ type: Schema.Types.ObjectId, ref: "Resource", required: true }],
 });
 
 const Page = model<PageInterface & Document>("Page", pageSchema);
