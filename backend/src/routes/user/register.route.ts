@@ -81,7 +81,7 @@ export const registerController = async (
 
             if (email !== authUser.email) {
                 logger.warning(`Emails do not match for ${authUser.uid}`);
-                throw new HttpException(401, "Emails do not match JWT token");
+                throw new HttpException(401, "Email does not match email from JWT token");
             }
 
             await registerUser(firstName, lastName, email, authUser.uid);
