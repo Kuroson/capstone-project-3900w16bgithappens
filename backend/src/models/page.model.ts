@@ -9,18 +9,18 @@ import { Section } from "./section.model";
  * The resources may be directly on the page or partitioned into sections
  * (where each section has its own resources);
  */
-export interface Page extends Document {
+export interface PageInterface extends Document {
     title: string;
     sections: Types.DocumentArray<Section["_id"]>;
     resources: Types.DocumentArray<Resource["_id"]>;
 }
 
-const pageSchema: Schema = new Schema<Page>({
+const pageSchema: Schema = new Schema<PageInterface>({
     title: { type: String, required: true },
     sections: [{ type: Schema.Types.ObjectId, ref: "Section" }],
     resources: [{ type: Schema.Types.ObjectId, ref: "Resource" }],
 });
 
-const Page = model<Page & Document>("Page", pageSchema);
+const Page = model<PageInterface & Document>("Page", pageSchema);
 
 export default Page;

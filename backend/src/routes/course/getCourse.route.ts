@@ -1,23 +1,16 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Course from "@/models/course.model";
-import Page from "@/models/page.model";
-import { verifyIdTokenValid } from "@/utils/firebase";
+import Course, { CourseInterface } from "@/models/course.model";
+import Page, { PageInterface } from "@/models/page.model";
+import { UserInterface } from "@/models/user.model";
+import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
+import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 
-type PageInfo = {
-    pageId: string;
-    title: string;
-};
+type ResponsePayload = CourseInformation;
 
-type ResponsePayload = {
-    code?: string;
-    title?: string;
-    description?: string;
-    session?: string;
-    icon?: string;
-    pages?: Array<PageInfo>;
-    message?: string;
+type CourseInformation = Omit<CourseInterface, "students" | "pages" | "creator"> & {
+    pages: PageInterface[];
 };
 
 type QueryPayload = {
@@ -26,22 +19,23 @@ type QueryPayload = {
 
 export const getCourseController = async (
     req: Request<QueryPayload>,
-    res: Response<ResponsePayload>,
+    res: Response<ResponsePayload | ErrorResponsePayload>,
 ) => {
     try {
-        if (req.headers.authorization === undefined)
-            throw new HttpException(405, "No authorization header found");
+        const authUser = await checkAuth(req);
+        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseCode"];
+        if (isValidBody<QueryPayload>(req.params, KEYS_TO_CHECK)) {
+            const { courseCode } = req.params;
 
-        // Verify token
-        const token = req.headers.authorization.split(" ")[1];
-        const authUser = await verifyIdTokenValid(token);
+            const courseData = await getCourse(courseCode);
 
-        // User has been verified
-        // Get course id from url param
-        const ret_data = await getCourse(req.params.courseCode);
-
-        logger.info(ret_data);
-        return res.status(200).json(ret_data);
+            return res.status(200).json({ ...courseData });
+        } else {
+            throw new HttpException(
+                400,
+                `Missing body keys: ${getMissingBodyIDs<QueryPayload>(req.body, KEYS_TO_CHECK)}`,
+            );
+        }
     } catch (error) {
         if (error instanceof HttpException) {
             logger.error(error.getMessage());
@@ -61,30 +55,11 @@ export const getCourseController = async (
  * @param courseId The ID of the course to be recalled
  * @returns Base information on the course based on return requirements in ResponsePayload
  */
-export const getCourse = async (courseId: string) => {
-    const myCourse = await Course.findById(courseId);
+export const getCourse = async (courseId: string): Promise<CourseInformation> => {
+    const myCourse = await Course.findById(courseId)
+        .select("_id title code description session icon pages")
+        .populate("pages");
 
-    if (myCourse === null) throw new HttpException(500, "Course does not exist");
-
-    const courseInfo = {
-        code: myCourse.code,
-        title: myCourse.title,
-        description: myCourse.description,
-        session: myCourse.session,
-        icon: myCourse.icon,
-        pages: new Array<PageInfo>(),
-    };
-
-    // Get each page info
-    for (const page of myCourse.pages) {
-        const myPage = await Page.findById(page);
-        if (myPage === null) throw new HttpException(500, "Failed to retrieve page");
-
-        courseInfo.pages.push({
-            title: myPage.title,
-            pageId: myPage._id,
-        });
-    }
-
-    return courseInfo;
+    if (myCourse === null) throw new HttpException(400, `Course of ${courseId} does not exist`);
+    return myCourse;
 };
