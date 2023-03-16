@@ -30,7 +30,6 @@ export const indexRouter = Router();
 
 // Base routes
 indexRouter.get("/", indexController);
-indexRouter.all("/example", exampleController);
 
 // Auth routes
 indexRouter.get("/admin", adminController);
