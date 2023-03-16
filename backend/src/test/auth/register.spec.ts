@@ -1,5 +1,5 @@
 import User from "@/models/user.model";
-import { registerUser } from "@/routes/auth/register.route";
+import { registerUser } from "@/routes/user/register.route";
 import { disconnect } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import initialiseMongoose, { genUserTestOnly, registerMultipleUsersTestingOnly } from "../testUtil";
