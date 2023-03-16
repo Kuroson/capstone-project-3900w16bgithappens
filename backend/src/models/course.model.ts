@@ -9,7 +9,7 @@ import { UserInterface } from "./user.model";
  *
  * A course is split up to have many pages that can have information added to them
  */
-export interface Course extends Document {
+export interface CourseInterface extends Document {
     title: string;
     code: string;
     description?: string;
@@ -20,7 +20,13 @@ export interface Course extends Document {
     students: Types.DocumentArray<UserInterface["_id"]>;
 }
 
-const courseSchema: Schema = new Schema<Course>({
+export type CourseInterfaceFull = Omit<Omit<UserInterface, "enrolments">, "created_courses"> & {
+    // Omit the two arrays of ids and replace them with the full objects
+    enrolments: CourseInterface[];
+    created_courses: CourseInterface[];
+};
+
+const courseSchema: Schema = new Schema<CourseInterface>({
     title: { type: String, required: true },
     code: { type: String, required: true },
     description: { type: String },
@@ -31,6 +37,6 @@ const courseSchema: Schema = new Schema<Course>({
     students: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
-const Course = model<Course & Document>("Course", courseSchema);
+const Course = model<CourseInterface & Document>("Course", courseSchema);
 
 export default Course;

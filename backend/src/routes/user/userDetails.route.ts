@@ -1,5 +1,5 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Course from "@/models/course.model";
+import Course, { CourseInterface, CourseInterfaceFull } from "@/models/course.model";
 import User, { UserInterface, isRoleAdmin } from "@/models/user.model";
 import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
@@ -11,7 +11,7 @@ type ErrorPayload = {
 };
 
 type ResponsePayload = {
-    userDetails: UserInterface;
+    userDetails: CourseInterfaceFull;
 };
 
 type QueryPayload = {
@@ -20,7 +20,12 @@ type QueryPayload = {
 };
 
 /**
- * Get the user's details
+ * Get the user's details.
+ *
+ * Finds all the courses for a given user. If this is an admin/instructor it
+ * will be the courses they have created. If this is a student, this will be
+ * their enrolled courses.
+ *
  * @param email user to look for
  * @param authUserEmail user asking for the details
  * @throws { HttpException } if it fails to find the user or if the authUserEmail is not
@@ -30,10 +35,12 @@ type QueryPayload = {
 export const getUserDetails = async (
     email: string,
     authUserEmail: string,
-): Promise<UserInterface> => {
+): Promise<CourseInterfaceFull> => {
     // 1. Get the user details of the firebase authUser;
     const requester = await User.findOne({ email: authUserEmail })
         .populate("enrolments", "_id title code description session icon")
+        // Because only admins have this array filled,its ok to probably just request everything
+        .populate("created_courses")
         .exec();
     if (requester === null) {
         // Failed to find the owner of the token
@@ -53,6 +60,7 @@ export const getUserDetails = async (
     // 2. Get the user details of the requested user
     const userLookup = await User.findOne({ email: email })
         .populate("enrolments", "_id title code description session icon")
+        .populate("created_courses")
         .exec();
 
     if (userLookup === null) {

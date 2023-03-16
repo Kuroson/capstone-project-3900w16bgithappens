@@ -1,5 +1,5 @@
 import { Document, Schema, Types, model } from "mongoose";
-import { Course } from "./course.model";
+import { CourseInterface } from "./course.model";
 
 export const STUDENT_ROLE = "1";
 export const INSTRUCTOR_ROLE = "0";
@@ -17,8 +17,8 @@ export interface UserInterface extends Document {
     first_name: string;
     last_name: string;
     role: number; // 0=instructor, 1=student
-    enrolments: Types.DocumentArray<Course["_id"]>;
-    created_courses: Types.DocumentArray<Course["_id"]>;
+    enrolments: Types.DocumentArray<CourseInterface["_id"]>;
+    created_courses: Types.DocumentArray<CourseInterface["_id"]>;
     avatar?: string;
 }
 
