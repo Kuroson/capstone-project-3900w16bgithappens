@@ -47,7 +47,7 @@ indexRouter.put("/course/students/add", addStudentsController);
 indexRouter.put("/course/students/remove", removeStudentsController);
 
 // Page routes
-indexRouter.post("/page/:courseId", createPageController);
+indexRouter.post("/page/create", createPageController); // done
 indexRouter.get("/page/:courseId", getPagesController);
 indexRouter.delete("/page/:courseId", deletePageController);
 indexRouter.put("/page/:courseId/:pageId", updatePageController);
