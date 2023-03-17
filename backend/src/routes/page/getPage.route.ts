@@ -1,32 +1,25 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Page from "@/models/page.model";
-import Resource from "@/models/resource.model";
-import Section from "@/models/section.model";
-import { recallFileUrl, verifyIdTokenValid } from "@/utils/firebase";
+import Course from "@/models/course.model";
+import Page, { PageInterface } from "@/models/page.model";
+import Resource, { ResourceInterface } from "@/models/resource.model";
+import Section, { SectionInterface } from "@/models/section.model";
+import { checkAuth, recallFileUrl, verifyIdTokenValid } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
+import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 
-type ResponseResourceInfo = {
-    resourceId: string;
-    title: string;
-    description: string;
-    fileType: string;
-    linkToResource: string;
+export type PageData = Omit<PageInterface, "sections" | "resources"> & {
+    sections: Array<
+        Omit<SectionInterface, "resources"> & {
+            resources: ResourceInterface[];
+        }
+    >;
+    resources: ResourceInterface[];
 };
 
-type ResponseSectionInfo = {
-    sectionId: string;
-    title: string;
-    resources: Array<ResponseResourceInfo>;
-};
-
-type ResponsePayload = {
-    courseId?: string;
-    pageId?: string;
-    title?: string;
-    resources?: Array<ResponseResourceInfo>;
-    sections?: Array<ResponseSectionInfo>;
-    message?: string;
+type ResponsePayload = PageData & {
+    courseId: string;
+    pageId: string;
 };
 
 type QueryPayload = {
@@ -34,24 +27,36 @@ type QueryPayload = {
     pageId: string;
 };
 
+/**
+ * GET /course/page
+ * Get the all of the pages information for a specific courseId and pageId.
+ * Returns resources
+ * @param req
+ * @param res
+ * @returns
+ */
 export const getPageController = async (
     req: Request<QueryPayload>,
-    res: Response<ResponsePayload>,
+    res: Response<ResponsePayload | ErrorResponsePayload>,
 ) => {
     try {
-        if (req.headers.authorization === undefined)
-            throw new HttpException(405, "No authorization header found");
+        const authUser = await checkAuth(req);
+        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseId", "pageId"];
 
-        // Verify token
-        const token = req.headers.authorization.split(" ")[1];
-        const authUser = await verifyIdTokenValid(token);
-
-        // User has been verified
-        // Get course id from url param
-        const ret_data = await getPage(req.params.pageId, req.params.courseId);
-
-        logger.info(ret_data);
-        return res.status(200).json(ret_data);
+        if (isValidBody<QueryPayload>(req.query, KEYS_TO_CHECK)) {
+            const { pageId, courseId } = req.query;
+            const data = await getPage(pageId, courseId);
+            return res.status(200).json({
+                courseId: courseId,
+                pageId: pageId,
+                ...data,
+            });
+        } else {
+            throw new HttpException(
+                400,
+                `Missing body keys: ${getMissingBodyIDs<QueryPayload>(req.query, KEYS_TO_CHECK)}`,
+            );
+        }
     } catch (error) {
         if (error instanceof HttpException) {
             logger.error(error.getMessage());
@@ -71,66 +76,28 @@ export const getPageController = async (
  *
  * @param pageId The ID of the page to get information for
  * @param courseId The course the page is located within
+ * @throws { HttpException } if the pageId or courseId cannot be found or if pageId cannot be found inside courseId
  * @returns The state of the page in the format defined within ResponsePayload
  */
-export const getPage = async (pageId: string, courseId: string) => {
-    const myPage = await Page.findById(pageId);
-    if (myPage === null) throw new HttpException(500, "Failed to recall page");
+export const getPage = async (pageId: string, courseId: string): Promise<PageData> => {
+    const myCourse = await Course.findById(courseId).catch(() => null);
+    if (myCourse === null) throw new HttpException(500, `Failed to recall course of ${courseId}`);
 
-    const pageInfo = {
-        courseId,
-        pageId,
-        title: myPage.title,
-        resources: new Array<ResponseResourceInfo>(),
-        sections: new Array<ResponseSectionInfo>(),
-    };
+    if (!myCourse.pages.includes(pageId))
+        throw new HttpException(400, `Page ${pageId} is not in course ${courseId}`);
 
-    // Get all resources directly on the page
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getResourcesInfo = async (resources: Iterable<any>) => {
-        const resourcesInfo = new Array<ResponseResourceInfo>();
+    const myPage = await Page.findById(pageId, "_id title sections resources")
+        .populate("sections", "_id title resources")
+        .populate({
+            path: "sections",
+            populate: { path: "resources", select: "_id title description file_type stored_name" },
+            select: "_id title resources",
+        })
+        .populate("resources", "_id title description file_type stored_name")
+        .exec()
+        .catch(() => null);
+    if (myPage === null) throw new HttpException(500, `Failed to recall page of ${pageId}`);
 
-        for (const resource of resources) {
-            const currResource = await Resource.findById(resource);
-            if (currResource === null) throw new HttpException(500, "Failed to fetch resource");
-
-            const { title, description, file_type, stored_name } = currResource;
-            const resourceInfo: ResponseResourceInfo = {
-                resourceId: currResource._id,
-                title,
-                description: description === undefined ? "" : description,
-                fileType: "",
-                linkToResource: "",
-            };
-
-            if (stored_name !== undefined && file_type !== undefined) {
-                const linkToResource = await recallFileUrl(stored_name);
-                resourceInfo.fileType = file_type;
-                resourceInfo.linkToResource = linkToResource;
-            }
-
-            resourcesInfo.push(resourceInfo);
-        }
-
-        return resourcesInfo;
-    };
-
-    pageInfo.resources = await getResourcesInfo(myPage.resources);
-
-    // Get all sections and accompanying resources
-    for (const section of myPage.sections) {
-        const currSection = await Section.findById(section);
-        if (currSection === null) throw new HttpException(500, "Failed to fetch section");
-
-        const { title } = currSection;
-        const sectionInfo: ResponseSectionInfo = {
-            sectionId: currSection._id,
-            title,
-            resources: await getResourcesInfo(currSection.resources),
-        };
-
-        pageInfo.sections.push(sectionInfo);
-    }
-
-    return pageInfo;
+    // Force the type comparison
+    return myPage as unknown as PageData;
 };

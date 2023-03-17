@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Course from "@/models/course.model";
 import User from "@/models/user.model";
 import { createCourse } from "@/routes/course/createCourse.route";
@@ -54,7 +55,7 @@ describe("Test updating a page", () => {
             `acc${id}`,
         );
 
-        expect(pageState.courseId).toBe(courseId);
+        expect(pageState._id).toEqual(pageId);
         expect(pageState.resources.length).toBe(2);
         expect(pageState.resources[0].title).toBe("res1");
         expect(pageState.resources[1].title).toBe("res2");
@@ -87,14 +88,40 @@ describe("Test updating a page", () => {
             `acc${id}`,
         );
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (initialPage as any).resources.push({ title: "newOne" });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (initialPage as any).sections[1].resources.push({ title: "newOne2" });
+        const parsedResources = initialPage.resources.map((x) => {
+            return {
+                resourceId: x._id,
+                title: x.title,
+                description: x.description,
+            };
+        });
 
-        const updatedPageState = await updatePage(initialPage, `acc${id}`);
+        const parsedSections = initialPage.sections.map((x) => {
+            return {
+                sectionId: x._id,
+                title: x.title,
+                resources: x.resources.map((z) => {
+                    return {
+                        resourceId: z._id,
+                        title: z.title,
+                        description: z.description,
+                    };
+                }),
+            };
+        });
 
-        expect(updatedPageState.courseId).toBe(courseId);
+        const newPayload = {
+            courseId,
+            pageId,
+            resources: [...parsedResources, { title: "newOne" }],
+            sections: [...parsedSections],
+        } as any;
+
+        newPayload.sections[1].resources.push({ title: "newOne2" });
+
+        const updatedPageState = await updatePage(newPayload, `acc${id}`);
+
+        expect(updatedPageState._id).toEqual(pageId);
         expect(updatedPageState.resources.length).toBe(3);
         expect(updatedPageState.resources[0].title).toBe("res1");
         expect(updatedPageState.resources[1].title).toBe("res2");

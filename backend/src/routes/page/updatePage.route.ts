@@ -5,10 +5,10 @@ import Resource from "@/models/resource.model";
 import Section, { SectionInterface } from "@/models/section.model";
 import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
-import { Nullable, getMissingBodyIDs, isValidBody } from "@/utils/util";
+import { ErrorResponsePayload, Nullable, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 import { checkAdmin } from "../admin/admin.route";
-import { getPage } from "./getPage.route";
+import { PageData, getPage } from "./getPage.route";
 
 type ResponseResourceInfo = {
     resourceId: string;
@@ -24,12 +24,9 @@ type ResponseSectionInfo = {
     resources: Array<ResponseResourceInfo>;
 };
 
-type ResponsePayload = {
-    courseId?: string;
-    pageId?: string;
-    resources?: Array<ResponseResourceInfo>;
-    sections?: Array<ResponseSectionInfo>;
-    message?: string;
+type ResponsePayload = PageData & {
+    courseId: string;
+    pageId: string;
 };
 
 type QueryResourceInfo = {
@@ -60,7 +57,7 @@ type QueryPayload = {
  */
 export const updatePageController = async (
     req: Request<QueryPayload>,
-    res: Response<ResponsePayload>,
+    res: Response<ResponsePayload | ErrorResponsePayload>,
 ) => {
     try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,8 +73,12 @@ export const updatePageController = async (
         if (isValidBody<QueryPayload>(req.body, KEYS_TO_CHECK)) {
             // Body has been verified
             const queryBody = req.body;
-            const ret_data = await updatePage(queryBody, authUser.uid);
-            return res.status(200).json(ret_data);
+            const data = await updatePage(queryBody, authUser.uid);
+            return res.status(200).json({
+                courseId: queryBody.courseId,
+                pageId: queryBody.pageId,
+                ...data,
+            });
         } else {
             throw new HttpException(
                 400,
@@ -115,7 +116,10 @@ export const updatePageController = async (
  * @returns The state of the page in the same format passed, giving the sectionId
  * and resourceId of each section and page respectively.
  */
-export const updatePage = async (queryBody: QueryPayload, firebase_uid: string) => {
+export const updatePage = async (
+    queryBody: QueryPayload,
+    firebase_uid: string,
+): Promise<PageData> => {
     if (!(await checkAdmin(firebase_uid))) {
         throw new HttpException(403, "Must be an admin to get all courses");
     }
