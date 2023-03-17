@@ -34,7 +34,12 @@ export const addSectionController = async (
 ) => {
     try {
         const authUser = await checkAuth(req as any);
-        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseId", "pageId", "title"];
+        const KEYS_TO_CHECK: Array<keyof QueryPayload> = [
+            "courseId",
+            "pageId",
+            "title",
+            "sectionId",
+        ];
 
         // User has been verified
         if (isValidBody<QueryPayload>(req.body, KEYS_TO_CHECK)) {
