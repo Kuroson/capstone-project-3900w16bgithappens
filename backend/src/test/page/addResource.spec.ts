@@ -39,7 +39,14 @@ describe("Test adding a resource", () => {
 
     it("Adding resource to base page", async () => {
         const resourceId = await addResource(
-            { courseId, pageId, title: "Test resource", description: "Test description" },
+            {
+                courseId,
+                pageId,
+                title: "Test resource",
+                description: "Test description",
+                sectionId: null,
+                resourceId: null,
+            },
             `acc${id}`,
         );
 
@@ -63,6 +70,8 @@ describe("Test adding a resource", () => {
                 pageId,
                 sectionId,
                 title: "Another resource",
+                resourceId: null,
+                description: "",
             },
             `acc${id}`,
         );
@@ -75,14 +84,21 @@ describe("Test adding a resource", () => {
         const myResource = await Resource.findById(resourceId);
         expect(myResource === null).toBe(false);
         expect(myResource?.title).toBe("Another resource");
-        expect(myResource?.description).toBe(undefined);
+        expect(myResource?.description).toBe("");
 
         await deleteResource({ courseId, pageId, sectionId, resourceId }, `acc${id}`);
     });
 
     it("Updating resource information", async () => {
         const resourceId = await addResource(
-            { courseId, pageId, title: "Test resource" },
+            {
+                courseId,
+                pageId,
+                title: "Test resource",
+                sectionId: null,
+                resourceId: null,
+                description: "",
+            },
             `acc${id}`,
         );
 
@@ -94,7 +110,7 @@ describe("Test adding a resource", () => {
         let myResource = await Resource.findById(resourceId);
         expect(myResource === null).toBe(false);
         expect(myResource?.title).toBe("Test resource");
-        expect(myResource?.description).toBe(undefined);
+        expect(myResource?.description).toBe("");
 
         await addResource(
             {
@@ -103,6 +119,7 @@ describe("Test adding a resource", () => {
                 resourceId,
                 title: "New title",
                 description: "Now has a description",
+                sectionId: null,
             },
             `acc${id}`,
         );
