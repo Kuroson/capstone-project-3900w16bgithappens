@@ -33,13 +33,7 @@ describe("Test adding a resource", () => {
             },
             `acc${id}`,
         );
-        pageId = await createPage(
-            {
-                courseId,
-                title: "New section",
-            },
-            `acc${id}`,
-        );
+        pageId = await createPage(courseId, "New section", `acc${id}`);
         sectionId = await addSection({ courseId, pageId, title: "Test section" }, `acc${id}`);
     });
 

@@ -32,13 +32,7 @@ describe("Test removing a section from a page", () => {
             },
             `acc${id}`,
         );
-        pageId = await createPage(
-            {
-                courseId,
-                title: "New section",
-            },
-            `acc${id}`,
-        );
+        pageId = await createPage(courseId, "New section", `acc${id}`);
     });
 
     it("Should remove section", async () => {

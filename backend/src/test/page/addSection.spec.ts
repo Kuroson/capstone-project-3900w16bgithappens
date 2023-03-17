@@ -31,13 +31,7 @@ describe("Test adding a section to a page", () => {
             },
             `acc${id}`,
         );
-        pageId = await createPage(
-            {
-                courseId,
-                title: "New section",
-            },
-            `acc${id}`,
-        );
+        pageId = await createPage(courseId, "New section", `acc${id}`);
     });
 
     it("Should add a section to the page", async () => {

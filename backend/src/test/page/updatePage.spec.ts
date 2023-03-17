@@ -31,13 +31,7 @@ describe("Test updating a page", () => {
     });
 
     beforeEach(async () => {
-        pageId = await createPage(
-            {
-                title: "Test page",
-                courseId,
-            },
-            `acc${id}`,
-        );
+        pageId = await createPage(courseId, "Test page", `acc${id}`);
     });
 
     it("Should add page information to the course", async () => {
