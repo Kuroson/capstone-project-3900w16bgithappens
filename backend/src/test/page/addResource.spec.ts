@@ -68,7 +68,15 @@ describe("Test adding a resource", () => {
         expect(myResource?.title).toBe("Test resource");
         expect(myResource?.description).toBe("Test description");
 
-        await deleteResource({ courseId, pageId, resourceId }, `acc${id}`);
+        await deleteResource(
+            {
+                courseId,
+                pageId,
+                resourceId,
+                sectionId: null,
+            },
+            `acc${id}`,
+        );
     });
 
     it("Adding resource to section", async () => {
@@ -142,7 +150,15 @@ describe("Test adding a resource", () => {
         expect(myResource?.title).toBe("New title");
         expect(myResource?.description).toBe("Now has a description");
 
-        await deleteResource({ courseId, pageId, resourceId }, `acc${id}`);
+        await deleteResource(
+            {
+                courseId,
+                pageId,
+                resourceId,
+                sectionId: null,
+            },
+            `acc${id}`,
+        );
     });
 
     afterAll(async () => {

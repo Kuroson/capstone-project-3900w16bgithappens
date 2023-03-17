@@ -69,7 +69,15 @@ describe("Test adding a resource", () => {
         expect(myResource?.title).toBe("Test resource");
         expect(myResource?.description).toBe("Test description");
 
-        await deleteResource({ courseId, pageId, resourceId }, `acc${id}`);
+        await deleteResource(
+            {
+                courseId,
+                pageId,
+                resourceId,
+                sectionId: null,
+            },
+            `acc${id}`,
+        );
 
         myPage = await Page.findById(pageId);
 
