@@ -45,18 +45,18 @@ indexRouter.put("/course/update", updateCourseController);
 indexRouter.get("/course/students", getStudentsController);
 indexRouter.put("/course/students/add", addStudentsController);
 indexRouter.put("/course/students/remove", removeStudentsController);
+indexRouter.get("/course/page", getPageController); // done
 
 // Page routes
+indexRouter.get("/page", getPagesController); // done
+indexRouter.delete("/page", deletePageController); // done
+indexRouter.put("/page/update", updatePageController); // done ish
 indexRouter.post("/page/create", createPageController); // done
-indexRouter.get("/page/:courseId", getPagesController);
-indexRouter.delete("/page/:courseId", deletePageController);
-indexRouter.put("/page/:courseId/:pageId", updatePageController);
-indexRouter.get("/page/:courseId/:pageId", getPageController);
-indexRouter.put("/page/:courseId/:pageId/resource", addResourceController);
-indexRouter.put("/page/:courseId/:pageId/section", addSectionController);
-indexRouter.delete("/page/:courseId/:pageId/resource", deleteResourceController);
-indexRouter.delete("/page/:courseId/:pageId/section", deleteSectionController);
+indexRouter.put("/page/add/resource", addResourceController); // done
+indexRouter.put("/page/add/section", addSectionController); // done
+indexRouter.delete("/page/remove/resource", deleteResourceController);
+indexRouter.delete("/page/removes/section", deleteSectionController);
 
 // File routes
 indexRouter.post("/file/upload", firebaseUpload.single("file"), uploadFileController);
-indexRouter.get("/file/download/:resourceId", downloadFileController);
+indexRouter.get("/file", downloadFileController);
