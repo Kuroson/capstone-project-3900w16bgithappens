@@ -34,7 +34,7 @@ describe("Test getting course pages", () => {
 
         const coursePages = await getPages(courseId);
         expect(coursePages.length).toBe(1);
-        expect(coursePages[0].pageId).toEqual(pageId);
+        expect(coursePages[0]._id).toEqual(pageId);
 
         // Delete the page
         await deletePage({ courseId, pageId }, `acc${id}`);
@@ -49,8 +49,8 @@ describe("Test getting course pages", () => {
 
         const coursePages = await getPages(courseId);
         expect(coursePages.length).toBe(2);
-        expect(coursePages[0].pageId).toEqual(pageId1);
-        expect(coursePages[1].pageId).toEqual(pageId3);
+        expect(coursePages[0]._id).toEqual(pageId1);
+        expect(coursePages[1]._id).toEqual(pageId3);
 
         // Delete the pages
         await deletePage({ courseId, pageId: pageId1 }, `acc${id}`);
