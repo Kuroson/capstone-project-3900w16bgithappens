@@ -45,15 +45,15 @@ indexRouter.put("/course/update", updateCourseController);
 indexRouter.get("/course/students", getStudentsController);
 indexRouter.put("/course/students/add", addStudentsController);
 indexRouter.put("/course/students/remove", removeStudentsController);
-indexRouter.get("/course/page", getPageController); // done
+indexRouter.get("/course/page", getPageController);
 
 // Page routes
-indexRouter.get("/page", getPagesController); // done
-indexRouter.delete("/page", deletePageController); // done
-indexRouter.put("/page/update", updatePageController); // done ish
-indexRouter.post("/page/create", createPageController); // done
-indexRouter.put("/page/add/resource", addResourceController); // done
-indexRouter.put("/page/add/section", addSectionController); // done
+indexRouter.get("/page", getPagesController);
+indexRouter.delete("/page", deletePageController);
+indexRouter.put("/page/update", updatePageController);
+indexRouter.post("/page/create", createPageController);
+indexRouter.put("/page/add/resource", addResourceController);
+indexRouter.put("/page/add/section", addSectionController);
 indexRouter.delete("/page/remove/resource", deleteResourceController);
 indexRouter.delete("/page/removes/section", deleteSectionController);
 
