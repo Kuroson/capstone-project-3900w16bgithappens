@@ -51,8 +51,8 @@ export const verifyIdToken = (token: string) => {
 
 /**
  * Verifies the firebase id `token`
- * @throws HttpException if token is invalid or expired
  * @param token token to validate
+ * @throws { HttpException } if token is invalid or expired
  * @returns
  */
 export const verifyIdTokenValid = async (token: string) => {
@@ -67,6 +67,22 @@ export const verifyIdTokenValid = async (token: string) => {
         .catch((err) => {
             throw new HttpException(401, "Invalid token", err);
         });
+};
+
+/**
+ * Check if user has passed in authorization token
+ * @param req
+ * @throws { HttpException } if token is invalid or expired or authorization header doesn't exist
+ * @returns
+ */
+export const checkAuth = async (req: Request) => {
+    if (req.headers.authorization === undefined)
+        throw new HttpException(401, "No authorization header found");
+
+    // Verify token
+    const token = req.headers.authorization.split(" ")[1];
+    const authUser = await verifyIdTokenValid(token);
+    return authUser;
 };
 
 /**
