@@ -36,7 +36,15 @@ describe("Test removing a section from a page", () => {
     });
 
     it("Should remove section", async () => {
-        const sectionId = await addSection({ courseId, pageId, title: "Test section" }, `acc${id}`);
+        const sectionId = await addSection(
+            {
+                courseId,
+                pageId,
+                title: "Test section",
+                sectionId: null,
+            },
+            `acc${id}`,
+        );
 
         let myPage = await Page.findById(pageId);
 
