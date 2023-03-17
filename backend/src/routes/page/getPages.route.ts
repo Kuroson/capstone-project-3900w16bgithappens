@@ -29,8 +29,8 @@ export const getPagesController = async (
         const authUser = await checkAuth(req);
         const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseId"];
 
-        if (isValidBody<QueryPayload>(req.params, KEYS_TO_CHECK)) {
-            const { courseId } = req.params;
+        if (isValidBody<QueryPayload>(req.query, KEYS_TO_CHECK)) {
+            const { courseId } = req.query;
             const myPages = await getPages(courseId);
 
             return res.status(200).json({ pages: myPages });

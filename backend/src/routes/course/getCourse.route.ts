@@ -24,8 +24,8 @@ export const getCourseController = async (
     try {
         const authUser = await checkAuth(req);
         const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseCode"];
-        if (isValidBody<QueryPayload>(req.params, KEYS_TO_CHECK)) {
-            const { courseCode } = req.params;
+        if (isValidBody<QueryPayload>(req.query, KEYS_TO_CHECK)) {
+            const { courseCode } = req.query;
 
             const courseData = await getCourse(courseCode);
 

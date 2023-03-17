@@ -34,8 +34,8 @@ export const getStudentsController = async (
         const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseId"];
         // Get course id from url param
 
-        if (isValidBody<QueryPayload>(req.params, KEYS_TO_CHECK)) {
-            const { courseId } = req.params;
+        if (isValidBody<QueryPayload>(req.query, KEYS_TO_CHECK)) {
+            const { courseId } = req.query;
             const students = await getStudents(courseId);
             return res.status(200).json({ students: [...students] });
         } else {
