@@ -35,7 +35,15 @@ describe("Test adding a section to a page", () => {
     });
 
     it("Should add a section to the page", async () => {
-        const sectionId = await addSection({ courseId, pageId, title: "Test section" }, `acc${id}`);
+        const sectionId = await addSection(
+            {
+                courseId,
+                pageId,
+                title: "Test section",
+                sectionId: null,
+            },
+            `acc${id}`,
+        );
 
         const myPage = await Page.findById(pageId);
 
@@ -51,7 +59,15 @@ describe("Test adding a section to a page", () => {
     });
 
     it("Should update information in a section", async () => {
-        const sectionId = await addSection({ courseId, pageId, title: "Test section" }, `acc${id}`);
+        const sectionId = await addSection(
+            {
+                courseId,
+                pageId,
+                title: "Test section",
+                sectionId: null,
+            },
+            `acc${id}`,
+        );
 
         await addSection({ courseId, pageId, sectionId, title: "New title" }, `acc${id}`);
 

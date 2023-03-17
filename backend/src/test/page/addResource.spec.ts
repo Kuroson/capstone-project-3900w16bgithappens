@@ -34,7 +34,15 @@ describe("Test adding a resource", () => {
             `acc${id}`,
         );
         pageId = await createPage(courseId, "New section", `acc${id}`);
-        sectionId = await addSection({ courseId, pageId, title: "Test section" }, `acc${id}`);
+        sectionId = await addSection(
+            {
+                courseId,
+                pageId,
+                title: "Test section",
+                sectionId: null,
+            },
+            `acc${id}`,
+        );
     });
 
     it("Adding resource to base page", async () => {
