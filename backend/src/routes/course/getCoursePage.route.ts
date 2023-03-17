@@ -35,7 +35,7 @@ type QueryPayload = {
  * @param res
  * @returns
  */
-export const getPageController = async (
+export const getCoursePageController = async (
     req: Request<QueryPayload>,
     res: Response<ResponsePayload | ErrorResponsePayload>,
 ) => {

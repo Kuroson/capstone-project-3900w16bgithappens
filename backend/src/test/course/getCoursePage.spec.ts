@@ -2,9 +2,9 @@
 import Course from "@/models/course.model";
 import User from "@/models/user.model";
 import { createCourse } from "@/routes/course/createCourse.route";
+import { getPage } from "@/routes/course/getCoursePage.route";
 import { createPage } from "@/routes/page/createPage.route";
 import { deletePage } from "@/routes/page/deletePage.route";
-import { getPage } from "@/routes/page/getPage.route";
 import { updatePage } from "@/routes/page/updatePage.route";
 import { registerUser } from "@/routes/user/register.route";
 import { disconnect } from "mongoose";

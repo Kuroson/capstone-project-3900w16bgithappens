@@ -6,6 +6,7 @@ import { addStudentsController } from "./course/addStudents.route";
 import { createCourseController } from "./course/createCourse.route";
 import { getAllCoursesController } from "./course/getAllCourses.route";
 import { getCourseController } from "./course/getCourse.route";
+import { getCoursePageController } from "./course/getCoursePage.route";
 import { getStudentsController } from "./course/getStudents.route";
 import { removeStudentsController } from "./course/removeStudents.route";
 import { updateCourseController } from "./course/updateCourse.route";
@@ -18,7 +19,6 @@ import { createPageController } from "./page/createPage.route";
 import { deletePageController } from "./page/deletePage.route";
 import { deleteResourceController } from "./page/deleteResource.route";
 import { deleteSectionController } from "./page/deleteSection.route";
-import { getPageController } from "./page/getPage.route";
 import { getPagesController } from "./page/getPages.route";
 import { updatePageController } from "./page/updatePage.route";
 import { registerController } from "./user/register.route";
@@ -42,10 +42,10 @@ indexRouter.get("/course", getCourseController);
 indexRouter.post("/course/create", createCourseController);
 indexRouter.get("/course/all", getAllCoursesController);
 indexRouter.put("/course/update", updateCourseController);
+indexRouter.get("/course/page", getCoursePageController);
 indexRouter.get("/course/students", getStudentsController);
 indexRouter.put("/course/students/add", addStudentsController);
 indexRouter.put("/course/students/remove", removeStudentsController);
-indexRouter.get("/course/page", getPageController);
 
 // Page routes
 indexRouter.get("/page", getPagesController);

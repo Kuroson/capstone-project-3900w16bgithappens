@@ -7,7 +7,7 @@ import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 import { checkAdmin } from "../admin/admin.route";
-import { PageData, getPage } from "./getPage.route";
+import { PageData, getPage } from "../course/getCoursePage.route";
 
 type ResponseResourceInfo = {
     resourceId: string;
