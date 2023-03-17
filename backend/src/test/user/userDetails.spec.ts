@@ -2,7 +2,6 @@ import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course.model";
 import User from "@/models/user.model";
 import { createCourse } from "@/routes/course/createCourse.route";
-import { registerUser } from "@/routes/user/register.route";
 import { getUserDetails } from "@/routes/user/userDetails.route";
 import { disconnect } from "mongoose";
 import { v4 as uuidv4 } from "uuid";

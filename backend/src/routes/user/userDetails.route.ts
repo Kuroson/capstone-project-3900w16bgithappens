@@ -1,7 +1,6 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Course, { CourseInterface } from "@/models/course.model";
-import User, { UserInterface, UserInterfaceFull, isRoleAdmin } from "@/models/user.model";
-import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
+import User, { UserInterfaceFull, isRoleAdmin } from "@/models/user.model";
+import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { Nullable, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";

@@ -1,6 +1,6 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Resource from "@/models/resource.model";
-import { checkAuth, recallFileUrl, verifyIdTokenValid } from "@/utils/firebase";
+import { checkAuth, recallFileUrl } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";

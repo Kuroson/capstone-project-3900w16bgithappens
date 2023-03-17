@@ -1,11 +1,10 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course.model";
-import User, { UserInterface } from "@/models/user.model";
-import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
+import { UserInterface } from "@/models/user.model";
+import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
-import { getAllCourses } from "./getAllCourses.route";
 
 type StudentInfo = Omit<UserInterface, "enrolments" | "created_courses">;
 

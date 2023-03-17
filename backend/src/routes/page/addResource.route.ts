@@ -3,7 +3,7 @@ import Course from "@/models/course.model";
 import Page from "@/models/page.model";
 import Resource from "@/models/resource.model";
 import Section from "@/models/section.model";
-import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
+import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";

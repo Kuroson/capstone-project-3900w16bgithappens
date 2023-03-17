@@ -1,6 +1,6 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course.model";
-import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
+import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";

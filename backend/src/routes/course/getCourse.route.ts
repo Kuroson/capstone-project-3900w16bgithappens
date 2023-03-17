@@ -1,8 +1,7 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course, { CourseInterface } from "@/models/course.model";
-import Page, { PageInterface } from "@/models/page.model";
-import { UserInterface } from "@/models/user.model";
-import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
+import { PageInterface } from "@/models/page.model";
+import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";

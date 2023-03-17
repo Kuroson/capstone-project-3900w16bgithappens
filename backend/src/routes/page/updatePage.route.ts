@@ -1,11 +1,10 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Course from "@/models/course.model";
 import Page from "@/models/page.model";
 import Resource from "@/models/resource.model";
 import Section, { SectionInterface } from "@/models/section.model";
-import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
+import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
-import { ErrorResponsePayload, Nullable, getMissingBodyIDs, isValidBody } from "@/utils/util";
+import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 import { checkAdmin } from "../admin/admin.route";
 import { PageData, getPage } from "./getPage.route";

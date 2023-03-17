@@ -1,13 +1,11 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course.model";
 import User from "@/models/user.model";
-import { checkAuth, verifyIdTokenValid } from "@/utils/firebase";
+import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
-import { checkAccess } from "../admin/access.route";
 import { checkAdmin } from "../admin/admin.route";
-import { getUserDetails } from "../user/userDetails.route";
 
 type ResponsePayload = {
     invalidEmails: Array<string>;
