@@ -1,6 +1,6 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Resource from "@/models/resource.model";
-import { recallFileUrl, verifyIdTokenValid } from "@/utils/firebase";
+import { checkAuth, recallFileUrl, verifyIdTokenValid } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
@@ -15,34 +15,42 @@ type QueryPayload = {
     resourceId: string;
 };
 
+/**
+ * GET /file
+ * Attempt to get the details of a file based on resourceId
+ * @param req
+ * @param res
+ * @returns
+ */
 export const downloadFileController = async (
     req: Request<QueryPayload>,
     res: Response<ResponsePayload>,
 ) => {
     try {
-        if (req.headers.authorization === undefined)
-            throw new HttpException(405, "No authorization header found");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const authUser = await checkAuth(req as any);
+        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["resourceId"];
 
-        // Verify token
-        const token = req.headers.authorization.split(" ")[1];
-        const authUser = await verifyIdTokenValid(token);
+        if (isValidBody<QueryPayload>(req.query, KEYS_TO_CHECK)) {
+            const { resourceId } = req.query;
 
-        // User has been verified
-        const resourceId = req.params.resourceId;
+            // Fetch from database
+            const myFile = await Resource.findById(resourceId).catch((err) => null);
+            if (myFile === null)
+                throw new HttpException(400, `Failed to retrieve resource of ${resourceId}`);
 
-        // Fetch from database
-        const myFile = await Resource.findById(resourceId).catch((err) => {
-            throw new HttpException(500, "Failed to retrieve file");
-        });
-        if (myFile === null) throw new HttpException(500, "Cannot find resource");
+            if (myFile.stored_name === undefined || myFile.stored_name === "") {
+                return res.status(200).json({ linkToFile: "", fileType: "" });
+            }
 
-        if (myFile.stored_name === undefined || myFile.stored_name === "") {
-            return res.status(200).json({ linkToFile: "", fileType: "" });
+            const fileUrl = await recallFileUrl(myFile.stored_name);
+            return res.status(200).json({ linkToFile: fileUrl, fileType: myFile.file_type });
+        } else {
+            throw new HttpException(
+                400,
+                `Missing body keys: ${getMissingBodyIDs<QueryPayload>(req.query, KEYS_TO_CHECK)}`,
+            );
         }
-
-        const fileUrl = await recallFileUrl(myFile.stored_name);
-
-        return res.status(200).json({ linkToFile: fileUrl, fileType: myFile.file_type });
     } catch (error) {
         if (error instanceof HttpException) {
             logger.error(error.getMessage());
