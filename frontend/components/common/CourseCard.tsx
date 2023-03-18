@@ -22,7 +22,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, href }): JSX.Element =>
         </div>
         <span className="bg-[#b0e3de] p-1 rounded-md font-bold text-white">{course.session}</span>
       </div>
-      <h4 className="my-0">{course.title}</h4>
+      <h4 className="my-1.5">{course.title}</h4>
       <p className="h-[150px] overflow-hidden">{course.description}</p>
     </Link>
   );
