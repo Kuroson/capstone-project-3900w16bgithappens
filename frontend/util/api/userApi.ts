@@ -12,6 +12,7 @@ type RegisterUserPayloadResponse = {
 
 /**
  * Register new user with payload
+ * @precondition Must only be called on the client side
  * @param token JWT token from firebase
  * @param payload payload to register new user
  * @returns
