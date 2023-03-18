@@ -9,7 +9,7 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { ContentContainer, SideNavbar } from "components";
 import CourseCard from "components/common/CourseCard";
 import { HttpException } from "util/HttpExceptions";
-import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api/api";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 import { adminRoutes } from "./index";

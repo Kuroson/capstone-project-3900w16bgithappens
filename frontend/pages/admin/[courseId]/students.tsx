@@ -13,7 +13,7 @@ import { UserDetailsPayload } from "pages";
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import { HttpException } from "util/HttpExceptions";
-import { CLIENT_BACKEND_URL, apiGet, apiPut } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPut } from "util/api/api";
 import initAuth from "util/firebase";
 import { CourseInformationFull, Nullable, getRoleName } from "util/util";
 

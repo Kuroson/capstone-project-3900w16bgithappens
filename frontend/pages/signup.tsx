@@ -8,7 +8,7 @@ import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
 import { HttpException } from "util/HttpExceptions";
-import { CLIENT_BACKEND_URL, apiPost } from "util/api";
+import { CLIENT_BACKEND_URL, apiPost } from "util/api/api";
 import { isValidEmail, isValidPassword } from "util/authVerficiation";
 
 type PasswordRequirementsProps = {

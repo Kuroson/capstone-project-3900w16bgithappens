@@ -9,7 +9,7 @@ import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
-import { CLIENT_BACKEND_URL, apiGet, apiUploadFile } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiUploadFile } from "util/api/api";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 

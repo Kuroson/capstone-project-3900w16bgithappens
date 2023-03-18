@@ -1,4 +1,4 @@
-import { HttpException } from "./HttpExceptions";
+import { HttpException } from "../HttpExceptions";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const examplePost = async (

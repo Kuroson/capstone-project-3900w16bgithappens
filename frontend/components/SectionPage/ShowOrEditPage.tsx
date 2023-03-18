@@ -3,7 +3,7 @@ import { Button, Divider } from "@mui/material";
 import { AuthUserContext } from "next-firebase-auth";
 import { PageType, ResourcesType, SectionsType } from "pages/admin/[courseId]/[pageId]";
 import ShowOrEditResource from "components/common/ShowOrEditResource";
-import { CLIENT_BACKEND_URL, apiDelete, apiPost, apiPut } from "util/api";
+import { CLIENT_BACKEND_URL, apiDelete, apiPost, apiPut } from "util/api/api";
 import AddResource from "./AddResource";
 import AddSection from "./AddSection";
 import ShowOrEditSectionT from "./ShowOrEditSectionT";

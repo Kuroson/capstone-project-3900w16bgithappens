@@ -8,7 +8,7 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import CourseCard from "components/common/CourseCard";
-import { CLIENT_BACKEND_URL, apiGet } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet } from "util/api/api";
 import initAuth from "util/firebase";
 import { CourseGETResponse, Nullable, getCourseURL, getRoleName } from "util/util";
 

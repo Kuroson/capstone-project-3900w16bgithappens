@@ -7,7 +7,7 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
-import { CLIENT_BACKEND_URL } from "util/api";
+import { CLIENT_BACKEND_URL } from "util/api/api";
 import { isValidEmail } from "util/authVerficiation";
 
 type ForgetPasswordPageProps = {

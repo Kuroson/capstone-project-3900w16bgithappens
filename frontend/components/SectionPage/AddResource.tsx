@@ -5,7 +5,7 @@ import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import { Button, TextField } from "@mui/material";
 import { useAuthUser } from "next-firebase-auth";
 import { ResourcesType, SectionsType } from "pages/admin/[courseId]/[pageId]";
-import { CLIENT_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api/api";
 import ShowFile from "./ShowFile";
 import { Feature } from "./ShowOrEditPage";
 

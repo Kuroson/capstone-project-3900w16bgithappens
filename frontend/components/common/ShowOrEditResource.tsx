@@ -8,7 +8,7 @@ import { Button, IconButton, TextField } from "@mui/material";
 import { useAuthUser } from "next-firebase-auth";
 import { PageType, ResourcesType } from "pages/admin/[courseId]/[pageId]";
 import { Feature } from "components/SectionPage/ShowOrEditPage";
-import { CLIENT_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api/api";
 
 const ShowOrEditResource: React.FC<{
   resource: ResourcesType;

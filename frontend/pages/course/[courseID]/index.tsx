@@ -6,7 +6,7 @@ import { AuthAction, withAuthUser, withAuthUserTokenSSR } from "next-firebase-au
 import { UserDetailsPayload } from "pages";
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
-import { CLIENT_BACKEND_URL, apiGet } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet } from "util/api/api";
 import initAuth from "util/firebase";
 import {
   CourseGETResponse,

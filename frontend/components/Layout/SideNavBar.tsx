@@ -21,7 +21,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { useAuthUser } from "next-firebase-auth";
 import TitleWithIcon from "components/common/TitleWithIcon";
 import { HttpException } from "util/HttpExceptions";
-import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api/api";
 import { Nullable } from "util/util";
 
 type SideNavBarProps = UserDetailsProps & {

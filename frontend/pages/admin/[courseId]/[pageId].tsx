@@ -10,7 +10,7 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import ShowOrEditPage from "components/SectionPage/ShowOrEditPage";
-import { CLIENT_BACKEND_URL, apiDelete, apiGet } from "util/api";
+import { CLIENT_BACKEND_URL, apiDelete, apiGet } from "util/api/api";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 
