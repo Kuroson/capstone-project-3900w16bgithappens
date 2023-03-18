@@ -8,7 +8,6 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import { TextField } from "@mui/material";
 import { BasicCourseInfo } from "models/course.model";
 import { UserDetails } from "models/user.model";
-import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer, SideNavbar } from "components";
 import { Routes, defaultAdminRoutes } from "components/Layout/NavBars/NavBar";
@@ -24,14 +23,9 @@ initAuth(); // SSR maybe, i think...
 const Admin = (): JSX.Element => {
   const user = useUser();
   const [loading, setLoading] = React.useState(user.userDetails === null);
-  const [showedCourses, setShowedCourses] = useState<BasicCourseInfo[]>(
-    user.userDetails?.created_courses ?? [],
-  );
-  const [searchCode, setSearchCode] = useState("");
 
   // const allCourses = courses;
   const authUser = useAuthUser();
-  const router = useRouter();
   React.useEffect(() => {
     // Build user data for user context
     const fetchUserData = async () => {
@@ -55,7 +49,6 @@ const Admin = (): JSX.Element => {
           if (user.setUserDetails !== undefined) {
             user.setUserDetails(res.userDetails);
           }
-          setShowedCourses(res.userDetails.created_courses);
         })
         .then(() => setLoading(false))
         .catch((err) => {
@@ -70,21 +63,10 @@ const Admin = (): JSX.Element => {
   if (loading || user.userDetails === null) return <div>Loading...</div>;
   const userDetails = user.userDetails as UserDetails;
 
-  // search course id
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      if (userDetails.enrolments !== undefined) {
-        setShowedCourses([
-          ...userDetails.enrolments.filter((course) => course.code.includes(searchCode)),
-        ]);
-      }
-    }
-  };
-
   return (
     <>
       <Head>
-        <title>Admin page</title>
+        <title>Admin Allocation page</title>
         <meta name="description" content="Home page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
@@ -96,29 +78,7 @@ const Admin = (): JSX.Element => {
               Welcome, {`${userDetails.first_name} ${userDetails.last_name}`}
             </span>
           </h1>
-          {/* admin dashboard */}
-          <div className="flex justify-between mx-6 pt-2">
-            <h2>Course Overview</h2>
-            <TextField
-              id="search course"
-              label="Search Course Code"
-              variant="outlined"
-              sx={{ width: "300px" }}
-              onKeyDown={handleKeyDown}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchCode(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-wrap w-full mx-3">
-            {showedCourses?.map((course, index) => (
-              <CourseCard key={index} course={course} href={`/admin/${course._id}`} />
-            ))}
-            <div
-              className="flex flex-col rounded-lg shadow-md p-5 my-2 mx-5 w-[370px] h-[264px] cursor-pointer hover:shadow-lg items-center justify-center"
-              onClick={() => router.push("/admin/create-course")}
-            >
-              <AddIcon fontSize="large" color="primary" />
-            </div>
-          </div>
+          <p> TODO</p>
         </div>
       </ContentContainer>
     </>
