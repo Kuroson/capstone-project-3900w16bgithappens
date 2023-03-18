@@ -125,7 +125,7 @@ const Admin = (): JSX.Element => {
   );
 };
 
-export default withAuthUser<HomePageProps>({
+export default withAuthUser({
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
   // LoaderComponent: MyLoader,
