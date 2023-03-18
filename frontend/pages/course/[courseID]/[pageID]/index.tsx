@@ -83,9 +83,9 @@ const ResourcesDisplay = ({ resources }: ResourceDisplayProps): JSX.Element => {
  * Page for a course
  */
 const CoursePage = ({ courseData, pageData }: CoursePageProps): JSX.Element => {
-  const [loading, setLoading] = React.useState(true);
-  const authUser = useAuthUser();
   const user = useUser();
+  const [loading, setLoading] = React.useState(user.userDetails === null);
+  const authUser = useAuthUser();
 
   React.useEffect(() => {
     // Build user data for user context
@@ -104,16 +104,20 @@ const CoursePage = ({ courseData, pageData }: CoursePageProps): JSX.Element => {
       return resUserData;
     };
 
-    fetchUserData()
-      .then((res) => {
-        if (user.setUserDetails !== undefined) {
-          user.setUserDetails(res.userDetails);
-        }
-      })
-      .then(() => setLoading(false))
-      .catch((err) => {
-        toast.error("failed to fetch shit");
-      });
+    if (user.userDetails === null) {
+      fetchUserData()
+        .then((res) => {
+          if (user.setUserDetails !== undefined) {
+            user.setUserDetails(res.userDetails);
+          }
+        })
+        .then(() => setLoading(false))
+        .catch((err) => {
+          toast.error("failed to fetch shit");
+        });
+    } else {
+      setLoading(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

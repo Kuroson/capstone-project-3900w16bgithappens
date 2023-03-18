@@ -32,12 +32,12 @@ type HomePageProps = {
 };
 
 const HomePage = (): JSX.Element => {
-  const [loading, setLoading] = React.useState(true);
+  const user = useUser();
+  const [loading, setLoading] = React.useState(user.userDetails === null);
   const [searchCode, setSearchCode] = useState("");
   const [showedCourses, setShowedCourses] = useState<BasicCourseInfo[]>([]);
 
   const authUser = useAuthUser();
-  const user = useUser();
 
   React.useEffect(() => {
     // Build user data for user context
@@ -56,17 +56,21 @@ const HomePage = (): JSX.Element => {
       return resUserData;
     };
 
-    fetchUserData()
-      .then((res) => {
-        if (user.setUserDetails !== undefined) {
-          user.setUserDetails(res.userDetails);
-          setShowedCourses(res.userDetails.enrolments);
-        }
-      })
-      .then(() => setLoading(false))
-      .catch((err) => {
-        toast.error("failed to fetch shit");
-      });
+    if (user.userDetails === null) {
+      fetchUserData()
+        .then((res) => {
+          if (user.setUserDetails !== undefined) {
+            user.setUserDetails(res.userDetails);
+            setShowedCourses(res.userDetails.enrolments);
+          }
+        })
+        .then(() => setLoading(false))
+        .catch((err) => {
+          toast.error("failed to fetch shit");
+        });
+    } else {
+      setLoading(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
