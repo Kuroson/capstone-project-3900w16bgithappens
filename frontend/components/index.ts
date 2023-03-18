@@ -1,4 +1,5 @@
 import {
+  AdminNavBar,
   ContentContainer,
   EmptyNavBar,
   Footer,
@@ -8,4 +9,13 @@ import {
   StudentNavBar,
 } from "./Layout";
 
-export { ContentContainer, SideNavbar, Footer, Layout, LeftSideBar, StudentNavBar, EmptyNavBar };
+export {
+  ContentContainer,
+  SideNavbar,
+  Footer,
+  Layout,
+  LeftSideBar,
+  StudentNavBar,
+  EmptyNavBar,
+  AdminNavBar,
+};
