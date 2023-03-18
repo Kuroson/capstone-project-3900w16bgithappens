@@ -235,6 +235,11 @@ const NavBar = ({
   );
 };
 
+/**
+ * @deprecated
+ * @param param0
+ * @returns
+ */
 export default function SideNavbar({
   empty,
   firstName,
