@@ -52,7 +52,7 @@ const PasswordRequirements = ({
 };
 
 type SignUpPageProps = {
-  BACKEND_URL: string;
+  CLIENT_BACKEND_URL: string;
 };
 
 type APIPayload = {
@@ -65,7 +65,7 @@ type APIResponse = {
   message: string;
 };
 
-const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
+const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
 
@@ -147,7 +147,7 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
     };
 
     const [res, err] = await apiPost<APIPayload, APIResponse>(
-      `${BACKEND_URL}/auth/register`,
+      `${CLIENT_BACKEND_URL}/auth/register`,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (authUser as any).user?.accessToken,
       payload,
@@ -278,7 +278,7 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
 
 export const getStaticProps: GetStaticProps<SignUpPageProps> = async () => {
   return {
-    props: { BACKEND_URL: FE_BACKEND_URL },
+    props: { CLIENT_BACKEND_URL: FE_BACKEND_URL },
   };
 };
 
