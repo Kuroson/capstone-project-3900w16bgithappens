@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import Head from "next/head";
 import HomeIcon from "@mui/icons-material/Home";
 import { TextField } from "@mui/material";
-import { UserCourseInfo } from "models/course.model";
+import { BasicCourseInfo } from "models/course.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
@@ -34,7 +34,7 @@ type HomePageProps = {
 const HomePage = (): JSX.Element => {
   const [loading, setLoading] = React.useState(true);
   const [searchCode, setSearchCode] = useState("");
-  const [showedCourses, setShowedCourses] = useState<UserCourseInfo[]>([]);
+  const [showedCourses, setShowedCourses] = useState<BasicCourseInfo[]>([]);
 
   const authUser = useAuthUser();
   const user = useUser();

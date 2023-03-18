@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { Avatar, Card, CardContent, Typography } from "@mui/material";
-import { UserCourseInfo } from "models/course.model";
+import { BasicCourseInfo } from "models/course.model";
 import { CourseInfo } from "pages/admin";
 
 type CourseCardProps = {
-  course: UserCourseInfo;
+  course: BasicCourseInfo;
   href: string;
 };
 

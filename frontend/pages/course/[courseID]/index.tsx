@@ -3,26 +3,27 @@ import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import HomeIcon from "@mui/icons-material/Home";
-import { UserCourseInfo } from "models/course.model";
+import { BasicCourseInfo } from "models/course.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, StudentNavBar } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
 import { useUser } from "util/UserContext";
+import { getUserCourseDetails } from "util/api/courseApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 
 initAuth();
 
 type StudentCoursePageProps = {
-  courseData: UserCourseInfo;
+  courseData: BasicCourseInfo;
 };
 
 const StudentCoursePage = ({ courseData }: StudentCoursePageProps): JSX.Element => {
   const [loading, setLoading] = React.useState(true);
   const authUser = useAuthUser();
-
+  console.log(authUser);
   const user = useUser();
 
   React.useEffect(() => {
@@ -44,6 +45,7 @@ const StudentCoursePage = ({ courseData }: StudentCoursePageProps): JSX.Element 
 
     fetchUserData()
       .then((res) => {
+        console.log(res);
         if (user.setUserDetails !== undefined) {
           user.setUserDetails(res.userDetails);
         }
@@ -113,6 +115,14 @@ export const getServerSideProps: GetServerSideProps<StudentCoursePageProps> = wi
   if (course === undefined) {
     return { notFound: true };
   }
+
+  const [courseDetails, courseDetailsErr] = await getUserCourseDetails(
+    await AuthUser.getIdToken(),
+    courseID as string,
+    "ssr",
+  );
+
+  console.log(courseDetails, courseDetailsErr);
 
   return { props: { courseData: course } };
 });
