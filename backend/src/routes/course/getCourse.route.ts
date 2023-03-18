@@ -1,20 +1,30 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course, { CourseInterface } from "@/models/course.model";
 import { PageInterface } from "@/models/page.model";
+import { ResourceInterface } from "@/models/resource.model";
+import { SectionInterface } from "@/models/section.model";
 import User from "@/models/user.model";
 import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 
-type ResponsePayload = CourseInformation;
+type ResponsePayload = UserCourseInformation;
 
-type CourseInformation = Omit<CourseInterface, "students" | "pages" | "creator"> & {
-    pages: PageInterface[];
+// Basically joined all the tables, contains all information about pages, sections, and resources
+type UserCourseInformation = Omit<CourseInterface, "students" | "pages" | "creator"> & {
+    pages: Omit<PageInterface, "section" | "resources"> &
+        {
+            section: Omit<SectionInterface, "resources"> &
+                {
+                    resources: ResourceInterface[];
+                }[];
+            resources: ResourceInterface[];
+        }[];
 };
 
 type QueryPayload = {
-    courseCode: string;
+    courseId: string;
 };
 
 /**
@@ -32,17 +42,17 @@ export const getCourseController = async (
 ) => {
     try {
         const authUser = await checkAuth(req);
-        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseCode"];
+        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseId"];
         if (isValidBody<QueryPayload>(req.query, KEYS_TO_CHECK)) {
-            const { courseCode } = req.query;
+            const { courseId } = req.query;
 
-            const courseData = await getCourse(courseCode, authUser.uid);
+            const courseData = await getCourse(courseId, authUser.uid);
 
             return res.status(200).json({ ...courseData });
         } else {
             throw new HttpException(
                 400,
-                `Missing body keys: ${getMissingBodyIDs<QueryPayload>(req.body, KEYS_TO_CHECK)}`,
+                `Missing body keys: ${getMissingBodyIDs<QueryPayload>(req.query, KEYS_TO_CHECK)}`,
             );
         }
     } catch (error) {
@@ -68,7 +78,7 @@ export const getCourseController = async (
 export const getCourse = async (
     courseId: string,
     firebaseUID: string,
-): Promise<CourseInformation> => {
+): Promise<UserCourseInformation> => {
     // Find user first
     const user = await User.findOne({ firebase_uid: firebaseUID }).catch(() => null);
     if (user === null) throw new HttpException(400, `User of ${firebaseUID} does not exist`);
@@ -76,11 +86,26 @@ export const getCourse = async (
     // Check if user is enrolled in course
     const myCourse = await Course.findById(courseId)
         .select("_id title code description session icon pages")
-        .populate("pages");
+        .populate("pages")
+        .populate({
+            path: "pages",
+            populate: { path: "resources" },
+        })
+        .populate({
+            path: "pages",
+            populate: {
+                path: "sections",
+                populate: {
+                    path: "resources",
+                },
+            },
+        })
+        .exec()
+        .catch(() => null);
 
     if (myCourse === null) throw new HttpException(400, `Course of ${courseId} does not exist`);
-    if (!myCourse.students.includes(user._id))
+    if (!user.enrolments.includes(courseId) && user.role !== 0)
         throw new HttpException(400, "User is not enrolled in course");
 
-    return myCourse;
+    return myCourse.toJSON() as UserCourseInformation;
 };
