@@ -184,7 +184,6 @@ export const getServerSideProps: GetServerSideProps<CoursePageProps> = withAuthU
   ): Promise<ResourceInterface[]> => {
     const parsedResources: ResourceInterface[] = [];
     const resourcesPromises = originalResources.map(async (resource) => {
-      console.log(resource);
       if (resource.file_type !== undefined && resource.file_type !== null) {
         // Its a file
         const [link, linkErr] = await getFileDownloadLink(
