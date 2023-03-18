@@ -18,7 +18,11 @@ import { Routes } from "components/Layout/NavBars/NavBar";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { CLIENT_BACKEND_URL, apiGet, apiPut } from "util/api/api";
-import { addStudentToCourse, getUserCourseDetails } from "util/api/courseApi";
+import {
+  addStudentToCourse,
+  getUserCourseDetails,
+  removeStudentFromCourse,
+} from "util/api/courseApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 import { CourseInformationFull, Nullable, getRoleName } from "util/util";
@@ -79,8 +83,7 @@ const AddStudentsPage = ({ courseData }: AddStudentPageProps): JSX.Element => {
   if (loading || user.userDetails === null) return <div>Loading...</div>;
   const userDetails = user.userDetails as UserDetails;
 
-  const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleOnClickAdd = async () => {
     if (studentEmail === "") {
       toast.warning("Please enter a student email");
       return;
@@ -88,6 +91,40 @@ const AddStudentsPage = ({ courseData }: AddStudentPageProps): JSX.Element => {
     // data valid
     setButtonLoading(true);
     const [res, err] = await addStudentToCourse(
+      await authUser.getIdToken(),
+      courseData._id,
+      studentEmail,
+      "client",
+    );
+
+    if (err !== null) {
+      if (err instanceof HttpException) {
+        toast.error(err.message);
+      } else {
+        toast.error(err);
+      }
+      setButtonLoading(false);
+      return;
+    }
+    if (res === null) throw new Error("Response and error are null"); // Actual error that should never happen
+    if (res.invalidEmails.length !== 0) {
+      toast.error(`${res.invalidEmails.length} emails were not added: ${res.invalidEmails}`);
+      setButtonLoading(false);
+      return;
+    }
+
+    toast.info("Student added successfully");
+    setButtonLoading(false);
+  };
+
+  const handleOnClickRemove = async () => {
+    if (studentEmail === "") {
+      toast.warning("Please enter a student email");
+      return;
+    }
+    // data valid
+    setButtonLoading(true);
+    const [res, err] = await removeStudentFromCourse(
       await authUser.getIdToken(),
       courseData._id,
       studentEmail,
@@ -146,11 +183,9 @@ const AddStudentsPage = ({ courseData }: AddStudentPageProps): JSX.Element => {
           <h1 className="text-3xl w-full text-left border-solid border-t-0 border-x-0 border-[#EEEEEE] pt-3">
             <span className="ml-4">Students</span>
           </h1>
-          <form
-            className="w-full flex flex-col justify-center items-center pt-4"
-            onSubmit={handleOnSubmit}
-          >
-            <div className="flex w-full">
+          <div className="w-full flex flex-col justify-center items-center pt-4">
+            <h2 className="text-left w-full pb-4">Add Students</h2>
+            <div className="flex w-full flex-col">
               <TextField
                 id="outlined-basic"
                 label="Student Email"
@@ -161,11 +196,26 @@ const AddStudentsPage = ({ courseData }: AddStudentPageProps): JSX.Element => {
               />
             </div>
             <div className="pt-10 flex w-full justify-start">
-              <LoadingButton variant="contained" type="submit" loading={buttonLoading}>
-                Submit
+              <LoadingButton
+                variant="contained"
+                type="submit"
+                loading={buttonLoading}
+                onClick={handleOnClickAdd}
+              >
+                Add Student
               </LoadingButton>
+              <div className="pl-5">
+                <LoadingButton
+                  variant="contained"
+                  type="submit"
+                  loading={buttonLoading}
+                  onClick={handleOnClickRemove}
+                >
+                  Remove student
+                </LoadingButton>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
       </ContentContainer>
     </>

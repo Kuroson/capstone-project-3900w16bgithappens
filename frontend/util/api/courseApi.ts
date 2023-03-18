@@ -66,3 +66,19 @@ export const addStudentToCourse = (
     { studentEmails: [email], courseId: courseId },
   );
 };
+
+type RemoveStudentPayloadRequest = AddStudentPayloadRequest;
+type RemoveStudentPayloadResponse = AddStudentPayloadResponse;
+
+export const removeStudentFromCourse = (
+  token: string | null,
+  courseId: string,
+  email: string,
+  type: BackendLinkType,
+) => {
+  return apiPut<RemoveStudentPayloadRequest, RemoveStudentPayloadResponse>(
+    `${getBackendLink(type)}/course/students/remove`,
+    token,
+    { studentEmails: [email], courseId: courseId },
+  );
+};
