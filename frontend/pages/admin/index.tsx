@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import AddIcon from "@mui/icons-material/Add";
 import HomeIcon from "@mui/icons-material/Home";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import { TextField } from "@mui/material";
+import { BasicCourseInfo } from "models/course.model";
+import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import CourseCard from "components/common/CourseCard";
+import { useUser } from "util/UserContext";
 import { CLIENT_BACKEND_URL, apiGet } from "util/api/api";
+import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 
@@ -58,45 +63,67 @@ export const adminRoutes: Routes[] = [
   },
 ];
 
-const Admin = ({ userDetails }: HomePageProps): JSX.Element => {
+const Admin = (): JSX.Element => {
+  const user = useUser();
+  const [loading, setLoading] = React.useState(user.userDetails === null);
+  const [showedCourses, setShowedCourses] = useState<BasicCourseInfo[]>(
+    user.userDetails?.enrolments ?? [],
+  );
+  const [searchCode, setSearchCode] = useState("");
+
   // const allCourses = courses;
   const authUser = useAuthUser();
   const router = useRouter();
+  React.useEffect(() => {
+    // Build user data for user context
+    const fetchUserData = async () => {
+      const [resUserData, errUserData] = await getUserDetails(
+        await authUser.getIdToken(),
+        authUser.email ?? "bad",
+        "client",
+      );
+
+      if (errUserData !== null) {
+        throw errUserData;
+      }
+
+      if (resUserData === null) throw new Error("This shouldn't have happened");
+      return resUserData;
+    };
+
+    if (user.userDetails === null) {
+      fetchUserData()
+        .then((res) => {
+          if (user.setUserDetails !== undefined) {
+            user.setUserDetails(res.userDetails);
+          }
+          setShowedCourses(res.userDetails.created_courses);
+        })
+        .then(() => setLoading(false))
+        .catch((err) => {
+          toast.error("failed to fetch shit");
+        });
+    } else {
+      setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (loading || user.userDetails === null) return <div>Loading...</div>;
+  const userDetails = user.userDetails as UserDetails;
 
   // const allCourses = userDetails.coursesEnrolled;
-  const [allCourses, setAllCourses] = useState<coursesInfo>([]);
-  const [showedCourses, setShowedCourses] = useState<coursesInfo>([]);
-  const [code, setCode] = useState("");
-  // search course id
+
+  /// search course id
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      if (allCourses != null) {
-        setShowedCourses(allCourses.filter((course) => course.code.includes(code)));
+      if (userDetails.enrolments !== undefined) {
+        setShowedCourses([
+          ...userDetails.enrolments.filter((course) => course.code.includes(searchCode)),
+        ]);
       }
     }
   };
-
-  // Fetch all this admin's courses
-  useEffect(() => {
-    const fetchData = async () => {
-      const [data, err] = await apiGet<any, coursesInfoPayload>(
-        `${CLIENT_BACKEND_URL}/course`,
-        await authUser.getIdToken(),
-        {},
-      );
-
-      if (err !== null) {
-        console.error(err);
-      }
-
-      if (data === null) throw new Error("This shouldn't have happened");
-
-      setAllCourses(data.courses);
-      setShowedCourses(data.courses);
-    };
-
-    fetchData().catch(console.error);
-  }, []);
 
   return (
     <>
@@ -106,8 +133,8 @@ const Admin = ({ userDetails }: HomePageProps): JSX.Element => {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <SideNavbar
-        firstName={userDetails.firstName}
-        lastName={userDetails.lastName}
+        firstName={userDetails.first_name}
+        lastName={userDetails.last_name}
         role={getRoleName(userDetails.role)}
         avatarURL={userDetails.avatar}
         list={adminRoutes}
@@ -116,7 +143,7 @@ const Admin = ({ userDetails }: HomePageProps): JSX.Element => {
         <div className="flex flex-col w-full justify-center px-[5%]">
           <h1 className="text-3xl w-full text-left border-solid border-t-0 border-x-0 border-[#EEEEEE]">
             <span className="ml-4">
-              Welcome, {`${userDetails.firstName} ${userDetails.lastName}`}
+              Welcome, {`${userDetails.first_name} ${userDetails.last_name}`}
             </span>
           </h1>
           {/* admin dashboard */}
@@ -128,12 +155,12 @@ const Admin = ({ userDetails }: HomePageProps): JSX.Element => {
               variant="outlined"
               sx={{ width: "300px" }}
               onKeyDown={handleKeyDown}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchCode(e.target.value)}
             />
           </div>
           <div className="flex flex-wrap w-full mx-3">
             {showedCourses?.map((course, index) => (
-              <CourseCard key={index} course={course} href={`/admin/${course.courseId}`} />
+              <CourseCard key={index} course={course} href={`/admin/${course._id}`} />
             ))}
             <div
               className="flex flex-col rounded-lg shadow-md p-5 my-2 mx-5 w-[370px] h-[264px] cursor-pointer hover:shadow-lg items-center justify-center"
