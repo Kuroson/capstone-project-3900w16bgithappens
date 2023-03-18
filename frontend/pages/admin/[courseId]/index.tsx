@@ -1,99 +1,91 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import GridViewIcon from "@mui/icons-material/GridView";
+import HomeIcon from "@mui/icons-material/Home";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import { UserCourseInformation } from "models/course.model";
+import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { ContentContainer, SideNavbar } from "components";
-import { Routes } from "components/Layout/SideNavBar";
+import { AdminNavBar, ContentContainer } from "components";
+import { Routes } from "components/Layout/NavBars/NavBar";
+import { useUser } from "util/UserContext";
 import { CLIENT_BACKEND_URL, apiGet } from "util/api/api";
+import { getUserCourseDetails } from "util/api/courseApi";
+import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 
-type UserDetailsPayload = Nullable<{
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: number;
-  avatar: string;
-}>;
-
-type PageProps = UserDetailsPayload & {
-  courseId?: string;
+type AdminCoursePageProps = {
+  courseData: UserCourseInformation;
 };
 
-type courseInfo = {
-  code: string;
-  title: string;
-  description: string;
-  session: string;
-  icon: string;
-  pages: Array<{ title: string; pageId: string }>;
-};
-type coursesInfoPayload = courseInfo;
-
-const course: courseInfo = {
-  code: "",
-  title: "",
-  description: "",
-  session: "",
-  icon: "",
-  pages: [],
-};
-
-const CoursePage = ({
-  firstName,
-  lastName,
-  email,
-  role,
-  avatar,
-  courseId,
-}: PageProps): JSX.Element => {
-  const [courseInfo, setCourseInfo] = useState<courseInfo>(course);
+const AdminCoursePage = ({ courseData }: AdminCoursePageProps): JSX.Element => {
+  const user = useUser();
   const authUser = useAuthUser();
-  const router = useRouter();
-  const courseRoutes: Routes[] = [
+  const [loading, setLoading] = React.useState(user.userDetails === null);
+
+  console.log(authUser);
+
+  React.useEffect(() => {
+    // Build user data for user context
+    const fetchUserData = async () => {
+      const [resUserData, errUserData] = await getUserDetails(
+        await authUser.getIdToken(),
+        authUser.email ?? "bad",
+        "client",
+      );
+
+      if (errUserData !== null) {
+        throw errUserData;
+      }
+
+      if (resUserData === null) throw new Error("This shouldn't have happened");
+      return resUserData;
+    };
+
+    if (user.userDetails === null) {
+      fetchUserData()
+        .then((res) => {
+          if (user.setUserDetails !== undefined) {
+            user.setUserDetails(res.userDetails);
+          }
+        })
+        .then(() => setLoading(false))
+        .catch((err) => {
+          toast.error("failed to fetch shit");
+        });
+    } else {
+      setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (loading || user.userDetails === null) return <div>Loading...</div>;
+  const userDetails = user.userDetails as UserDetails;
+
+  const navRoutes: Routes[] = [
+    { name: "Dashboard", route: "/admin", icon: <HomeIcon fontSize="large" color="primary" /> },
     {
       name: "Home",
-      route: `/admin/${courseId}`,
-      Icon: <GridViewIcon fontSize="large" color="primary" />,
+      route: `/admin/${courseData._id}`,
+      icon: <GridViewIcon fontSize="large" color="primary" />,
     },
     {
       name: "Students",
-      route: `/admin/${courseId}/students`,
-      Icon: <PeopleAltIcon fontSize="large" color="primary" />,
+      route: `/admin/${courseData._id}/students`,
+      icon: <PeopleAltIcon fontSize="large" color="primary" />,
       hasLine: true,
     },
+    ...courseData.pages.map((page) => ({
+      name: page.title,
+      route: `/admin/${courseData._id}/${page._id}`,
+    })),
   ];
-
-  const pages = courseInfo.pages.map((page) => ({
-    name: page.title,
-    route: `/admin/${courseId}/${page.pageId}`,
-  }));
-
-  // Fetch all the course information
-  useEffect(() => {
-    const fetchData = async () => {
-      const [data, err] = await apiGet<any, coursesInfoPayload>(
-        `${CLIENT_BACKEND_URL}/course/${courseId}`,
-        await authUser.getIdToken(),
-        {},
-      );
-
-      if (err !== null) {
-        console.error(err);
-      }
-
-      if (data === null) throw new Error("This shouldn't have happened");
-
-      setCourseInfo(data);
-    };
-
-    fetchData().catch(console.error);
-  }, []);
 
   return (
     <>
@@ -102,63 +94,47 @@ const CoursePage = ({
         <meta name="description" content="Home page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <SideNavbar
-        firstName={firstName}
-        lastName={lastName}
-        role={getRoleName(role)}
-        avatarURL={avatar}
-        list={courseRoutes.concat(pages)}
-        isCoursePage={true}
-        courseCode={courseInfo.code}
-        courseIcon={courseInfo.icon}
-        courseId={courseId}
-      />
+      <AdminNavBar userDetails={userDetails} routes={navRoutes} />
       <ContentContainer>
         <div className="flex flex-col w-full justify-center px-[5%]">
-          <h1 className="text-3xl w-full text-left border-solid border-t-0 border-x-0 border-[#EEEEEE]">
-            <span className="ml-4">Welcome to {courseInfo.title}</span>
+          <h1 className="text-3xl w-full text-left border-solid border-t-0 border-x-0 border-[#EEEEEE] pt-3">
+            <span className="ml-4">Welcome to {courseData.title}</span>
           </h1>
+          <p className="pt-1.5">{courseData.description}</p>
         </div>
       </ContentContainer>
     </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = withAuthUserTokenSSR({
+export const getServerSideProps: GetServerSideProps<AdminCoursePageProps> = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async ({ AuthUser, query }): Promise<{ props: PageProps }> => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, err] = await apiGet<any, UserDetailsPayload>(
-    `${CLIENT_BACKEND_URL}/user/details`,
-    await AuthUser.getIdToken(),
-    {},
-  );
+})(async ({ AuthUser, query }): Promise<{ props: AdminCoursePageProps } | { notFound: true }> => {
+  const { courseId } = query;
 
-  if (err !== null) {
-    console.error(err);
-    // handle error
-    return {
-      props: {
-        email: null,
-        firstName: null,
-        lastName: null,
-        role: null,
-        avatar: null,
-      },
-    };
+  if (courseId === undefined || typeof courseId !== "string") {
+    return { notFound: true };
   }
 
-  if (data === null) throw new Error("This shouldn't have happened");
-  return {
-    props: {
-      ...data,
-      courseId: query?.courseId as string,
-    },
-  };
+  const [courseDetails, courseDetailsErr] = await getUserCourseDetails(
+    await AuthUser.getIdToken(),
+    courseId as string,
+    "ssr",
+  );
+
+  if (courseDetailsErr !== null) {
+    console.error(courseDetailsErr);
+    // handle error
+    return { notFound: true };
+  }
+
+  if (courseDetails === null) throw new Error("This shouldn't have happened");
+
+  return { props: { courseData: courseDetails } };
 });
 
-export default withAuthUser<PageProps>({
+export default withAuthUser<AdminCoursePageProps>({
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
   // LoaderComponent: MyLoader,
-})(CoursePage);
+})(AdminCoursePage);
