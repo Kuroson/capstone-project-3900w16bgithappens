@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import AddIcon from "@mui/icons-material/Add";
+import { LoadingButton } from "@mui/lab";
 import { Avatar, Button, TextField } from "@mui/material";
+import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { ContentContainer, SideNavbar } from "components";
+import { AdminNavBar, ContentContainer, SideNavbar } from "components";
+import { defaultAdminRoutes } from "components/Layout/NavBars/NavBar";
 import CourseCard from "components/common/CourseCard";
 import { HttpException } from "util/HttpExceptions";
+import { useUser } from "util/UserContext";
 import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api/api";
+import { createNewCourse } from "util/api/courseApi";
+import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
-import { adminRoutes } from "./index";
 
 initAuth(); // SSR maybe, i think...
 
@@ -32,17 +37,56 @@ type CreateCoursePayload = Nullable<{
   icon: string;
 }>;
 
-type HomePageProps = UserDetailsPayload;
-
-const CreateCourse = ({ firstName, lastName, email, role, avatar }: HomePageProps): JSX.Element => {
+const CreateCourse = (): JSX.Element => {
+  const user = useUser();
   const authUser = useAuthUser();
   const router = useRouter();
+  const [loading, setLoading] = React.useState(user.userDetails === null);
+
   const [image, setImage] = useState<string>();
   const [code, setCode] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [session, setSession] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [icon, setIcon] = useState<string>("");
+  const [buttonLoading, setButtonLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    // Build user data for user context
+    const fetchUserData = async () => {
+      const [resUserData, errUserData] = await getUserDetails(
+        await authUser.getIdToken(),
+        authUser.email ?? "bad",
+        "client",
+      );
+
+      if (errUserData !== null) {
+        throw errUserData;
+      }
+
+      if (resUserData === null) throw new Error("This shouldn't have happened");
+      return resUserData;
+    };
+
+    if (user.userDetails === null) {
+      fetchUserData()
+        .then((res) => {
+          if (user.setUserDetails !== undefined) {
+            user.setUserDetails(res.userDetails);
+          }
+        })
+        .then(() => setLoading(false))
+        .catch((err) => {
+          toast.error("failed to fetch shit");
+        });
+    } else {
+      setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (loading || user.userDetails === null) return <div>Loading...</div>;
+  const userDetails = user.userDetails as UserDetails;
 
   // upload image
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,18 +103,19 @@ const CreateCourse = ({ firstName, lastName, email, role, avatar }: HomePageProp
   const handleCreateCourse = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    const [res, err] = await apiPost<CreateCoursePayload, any>(
-      `${CLIENT_BACKEND_URL}/course`,
-      await authUser.getIdToken(),
-      {
-        code,
-        title,
-        session,
-        description,
-        icon,
-      },
-    );
-
+    if ([code, title, session, description].some((x) => x.length === 0)) {
+      toast.error("Please fill out all fields");
+      return;
+    }
+    const dataPayload = {
+      code,
+      title,
+      session,
+      description,
+      icon,
+    };
+    setButtonLoading(true);
+    const [res, err] = await createNewCourse(await authUser.getIdToken(), dataPayload, "client");
     if (err !== null) {
       console.error(err);
       if (err instanceof HttpException) {
@@ -78,9 +123,11 @@ const CreateCourse = ({ firstName, lastName, email, role, avatar }: HomePageProp
       } else {
         toast.error(err);
       }
+      setButtonLoading(false);
+      return;
     }
-
     if (res === null) throw new Error("Response and error are null"); // Actual error that should never happen
+    setButtonLoading(false);
     router.push(`/admin/${res.courseId}`);
   };
 
@@ -91,13 +138,7 @@ const CreateCourse = ({ firstName, lastName, email, role, avatar }: HomePageProp
         <meta name="description" content="Home page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <SideNavbar
-        firstName={firstName}
-        lastName={lastName}
-        role={getRoleName(role)}
-        avatarURL={avatar}
-        list={adminRoutes}
-      />
+      <AdminNavBar userDetails={userDetails} routes={defaultAdminRoutes} />
       <ContentContainer>
         <div className="py-5 px-9">
           <h1>Create Course</h1>
@@ -142,9 +183,9 @@ const CreateCourse = ({ firstName, lastName, email, role, avatar }: HomePageProp
               rows={9}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <Button variant="contained" fullWidth type="submit">
+            <LoadingButton variant="contained" fullWidth type="submit">
               Create
-            </Button>
+            </LoadingButton>
           </div>
         </form>
       </ContentContainer>
@@ -152,39 +193,7 @@ const CreateCourse = ({ firstName, lastName, email, role, avatar }: HomePageProp
   );
 };
 
-export const getServerSideProps: GetServerSideProps<HomePageProps> = withAuthUserTokenSSR({
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async ({ AuthUser }): Promise<{ props: HomePageProps }> => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, err] = await apiGet<any, UserDetailsPayload>(
-    `${CLIENT_BACKEND_URL}/user/details`,
-    await AuthUser.getIdToken(),
-    {},
-  );
-
-  if (err !== null) {
-    console.error(err);
-    // handle error
-    return {
-      props: {
-        email: null,
-        firstName: null,
-        lastName: null,
-        role: null,
-        avatar: null,
-      },
-    };
-  }
-
-  if (data === null) throw new Error("This shouldn't have happened");
-  return {
-    props: {
-      ...data,
-    },
-  };
-});
-
-export default withAuthUser<HomePageProps>({
+export default withAuthUser({
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
   // LoaderComponent: MyLoader,
