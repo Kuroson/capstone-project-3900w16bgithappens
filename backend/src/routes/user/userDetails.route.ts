@@ -79,7 +79,7 @@ export const getUserDetails = async (
  */
 export const userDetailsController = async (
     req: Request<QueryPayload>,
-    res: Response<Nullable<ResponsePayload> | ErrorPayload>,
+    res: Response<ResponsePayload | ErrorPayload>,
 ) => {
     try {
         if (req.method !== "GET") throw new HttpException(405, "Method not allowed");
