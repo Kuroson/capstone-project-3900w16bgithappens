@@ -19,3 +19,9 @@ export type UserDetails = Omit<UserInterface, "enrolments" | "created_courses"> 
   enrolments: UserCourseInfo[];
   created_courses: UserCourseInfo[];
 };
+
+export type RoleText = "Instructor" | "Student";
+
+export const getRoleText = (role: number): RoleText => {
+  return role === 0 ? "Instructor" : "Student";
+};

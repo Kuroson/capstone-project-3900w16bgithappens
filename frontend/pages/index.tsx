@@ -8,8 +8,8 @@ import { UserCourseInfo } from "models/course.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
-import { Routes } from "components/Layout/SideNavBar";
+import { ContentContainer, Footer, LeftSideBar, SideNavbar, StudentNavBar } from "components";
+import { Routes } from "components/Layout/NavBars/NavBar";
 import CourseCard from "components/common/CourseCard";
 import { useUser } from "util/UserContext";
 import { getUserDetails } from "util/api/userApi";
@@ -85,7 +85,7 @@ const HomePage = (): JSX.Element => {
   };
 
   const studentRoutes: Routes[] = [
-    { name: "Dashboard", route: "/", Icon: <HomeIcon fontSize="large" color="primary" /> },
+    { name: "Dashboard", route: "/", icon: <HomeIcon fontSize="large" color="primary" /> },
     ...userDetails.enrolments.map((x) => {
       return {
         name: x.code,
@@ -102,13 +102,7 @@ const HomePage = (): JSX.Element => {
         <meta name="description" content="Home page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <SideNavbar
-        firstName={userDetails.first_name}
-        lastName={userDetails.last_name}
-        role={getRoleName(userDetails.role)}
-        avatarURL={userDetails.avatar}
-        list={studentRoutes} //Only shows dashboard as per discussion
-      />
+      <StudentNavBar userDetails={userDetails} routes={studentRoutes} />
       <ContentContainer>
         <div className="flex flex-col w-full justify-center px-[5%]">
           <h1 className="text-3xl w-full text-left border-solid border-t-0 border-x-0 border-[#EEEEEE]">
