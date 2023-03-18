@@ -1,6 +1,6 @@
 import { CourseInterface } from "models";
 import { UserCourseInformation } from "models/course.model";
-import { BackendLinkType, apiGet, apiPost } from "./api";
+import { BackendLinkType, apiGet, apiPost, apiPut } from "./api";
 import { getBackendLink } from "./userApi";
 
 type UserCourseDetailsPayloadRequest = {
@@ -42,5 +42,27 @@ export const createNewCourse = (
     `${getBackendLink(type)}/course/create`,
     token,
     payload,
+  );
+};
+
+type AddStudentPayloadRequest = {
+  courseId: string;
+  studentEmails: Array<string>;
+};
+
+type AddStudentPayloadResponse = {
+  invalidEmails: Array<string>;
+};
+
+export const addStudentToCourse = (
+  token: string | null,
+  courseId: string,
+  email: string,
+  type: BackendLinkType,
+) => {
+  return apiPut<AddStudentPayloadRequest, AddStudentPayloadResponse>(
+    `${getBackendLink(type)}/course/students/add`,
+    token,
+    { studentEmails: [email], courseId: courseId },
   );
 };
