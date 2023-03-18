@@ -1,4 +1,5 @@
 import { MongooseDocument, MongooseId, ResourceInterface, SectionInterface } from "models";
+import { SectionFull } from "./section.model";
 
 export interface PageInterface extends MongooseDocument {
   title: string;
@@ -7,11 +8,7 @@ export interface PageInterface extends MongooseDocument {
 }
 
 export type PageFull = Omit<PageInterface, "sections" | "resources"> & {
-  sections: Array<
-    Omit<SectionInterface, "resources"> & {
-      resources: ResourceInterface[];
-    }
-  >;
+  sections: Array<SectionFull>;
   resources: ResourceInterface[];
   // Idk why the type isn't inferred here
   title: string;

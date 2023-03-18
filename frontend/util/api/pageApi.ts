@@ -1,4 +1,4 @@
-import { BackendLinkType, apiPost } from "./api";
+import { BackendLinkType, apiDelete, apiPost } from "./api";
 import { getBackendLink } from "./userApi";
 
 type CreateNewPagePayloadRequest = {
@@ -20,5 +20,27 @@ export const createNewPage = (
     `${getBackendLink(type)}/page/create`,
     token,
     { courseId: courseId, title: title },
+  );
+};
+
+type DeletePagePayloadRequest = {
+  courseId: string;
+  pageId: string;
+};
+
+type DeletePagePayloadResponse = {
+  message: string;
+};
+
+export const deletePage = (
+  token: string | null,
+  courseId: string,
+  pageId: string,
+  type: BackendLinkType,
+) => {
+  return apiDelete<DeletePagePayloadRequest, DeletePagePayloadResponse>(
+    `${getBackendLink(type)}/page`,
+    token,
+    { courseId: courseId, pageId: pageId },
   );
 };

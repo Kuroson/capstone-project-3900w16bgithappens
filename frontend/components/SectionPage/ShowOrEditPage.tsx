@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Divider } from "@mui/material";
+import { ResourceInterface, SectionInterface } from "models";
+import { PageFull } from "models/page.model";
+import { SectionFull } from "models/section.model";
 import { AuthUserContext } from "next-firebase-auth";
-import { PageType, ResourcesType, SectionsType } from "pages/admin/[courseId]/[pageId]";
 import ShowOrEditResource from "components/common/ShowOrEditResource";
 import { CLIENT_BACKEND_URL, apiDelete, apiPost, apiPut } from "util/api/api";
 import AddResource from "./AddResource";
@@ -20,32 +22,33 @@ export enum Feature {
   AddSectionResource,
 }
 
-const ShowOrEditPage: React.FC<{
-  pageInfo: PageType;
+type ShowOrEditPageProps = {
+  pageData: PageFull;
+  setPageData: React.Dispatch<React.SetStateAction<PageFull>>;
   courseId: string;
   authUser: AuthUserContext;
-}> = ({ pageInfo, courseId, authUser }) => {
-  const [newMaterials, setNewMaterials] = useState<PageType>(pageInfo);
-  const RESOURCE_URL = `${CLIENT_BACKEND_URL}/page/${courseId}/${pageInfo.pageId}/resource`;
-  const SECTION_URL = `${CLIENT_BACKEND_URL}/page/${courseId}/${pageInfo.pageId}/section`;
+};
 
-  useEffect(() => {
-    setNewMaterials(pageInfo);
-  }, [pageInfo]);
+const ShowOrEditPage: React.FC<ShowOrEditPageProps> = ({
+  pageData,
+  setPageData,
+  courseId,
+  authUser,
+}): JSX.Element => {
+  const RESOURCE_URL = `${CLIENT_BACKEND_URL}/page/${courseId}/${pageData._id}/resource`;
+  const SECTION_URL = `${CLIENT_BACKEND_URL}/page/${courseId}/${pageData._id}/section`;
 
   // edit and remove each resource outside and inside of sections
   const handleEditResource = async (
-    resource: ResourcesType,
+    resource: ResourceInterface,
     feature: Feature,
     sectionId?: string,
-  ) => {
+  ): Promise<void> => {
     // change materials showing on the page
-    setNewMaterials((prev) => {
+    setPageData((prev) => {
       const copy = { ...prev };
       if (feature === Feature.EditResourceOut || feature === Feature.RemoveResourceOut) {
-        const oldResourceIndex = copy.resources.findIndex(
-          (re) => re.resourceId === resource.resourceId,
-        );
+        const oldResourceIndex = copy.resources.findIndex((re) => re._id === resource._id);
         if (feature === Feature.EditResourceOut) {
           // edit outside resource
           copy.resources.splice(oldResourceIndex, 1, resource);
@@ -58,11 +61,9 @@ const ShowOrEditPage: React.FC<{
         feature === Feature.RemoveSectionResource
       ) {
         // edit section resource
-        const sectionIndex = copy.sections.findIndex((se) => se.sectionId === sectionId);
+        const sectionIndex = copy.sections.findIndex((se) => se._id === sectionId);
         const section = copy.sections[sectionIndex];
-        const oldResourceIndex = section.resources.findIndex(
-          (re) => re.resourceId === resource.resourceId,
-        );
+        const oldResourceIndex = section.resources.findIndex((re) => re._id === resource._id);
         if (feature === Feature.EditSectionResource) {
           section.resources.splice(oldResourceIndex, 1, resource);
           copy.sections[sectionIndex] = section;
@@ -78,36 +79,36 @@ const ShowOrEditPage: React.FC<{
     if (feature === Feature.EditResourceOut) {
       const body = {
         courseId: courseId,
-        pageId: pageInfo.pageId,
+        pageId: pageData._id,
         title: resource.title,
         description: resource.description,
-        resourceId: resource.resourceId,
+        resourceId: resource._id,
       };
       await sendToBackend(body, RESOURCE_URL);
     } else if (feature === Feature.EditSectionResource) {
       const body = {
         courseId: courseId,
-        pageId: pageInfo.pageId,
+        pageId: pageData._id,
         title: resource?.title,
         description: resource?.description,
         sectionId: sectionId,
-        resourceId: resource.resourceId,
+        resourceId: resource._id,
       };
       await sendToBackend(body, RESOURCE_URL);
     } else if (feature === Feature.RemoveResourceOut) {
       const body = {
         courseId: courseId,
-        pageId: pageInfo.pageId,
-        resourceId: resource.resourceId,
+        pageId: pageData._id,
+        resourceId: resource._id,
       };
       await deleteInBackend(body, RESOURCE_URL);
     } else {
       // remove resource inside section
       const body = {
         courseId: courseId,
-        pageId: pageInfo.pageId,
+        pageId: pageData._id,
         sectionId: sectionId,
-        resourceId: resource.resourceId,
+        resourceId: resource._id,
       };
       await deleteInBackend(body, RESOURCE_URL);
     }
@@ -116,9 +117,9 @@ const ShowOrEditPage: React.FC<{
   // edit title of Section and remove section
   const handleEditTitle = async (newTitle: string, sectionId: string, feature: Feature) => {
     // change materials showing on the page
-    setNewMaterials((prev) => {
+    setPageData((prev) => {
       const copy = { ...prev };
-      const getIdx = copy.sections.findIndex((se) => se.sectionId === sectionId);
+      const getIdx = copy.sections.findIndex((se) => se._id === sectionId);
       if (feature === Feature.EditSectionTitle) {
         // change section title
         copy.sections[getIdx].title = newTitle;
@@ -135,7 +136,7 @@ const ShowOrEditPage: React.FC<{
       const body = {
         sectionId: sectionId,
         courseId: courseId,
-        pageId: pageInfo.pageId,
+        pageId: pageData._id,
         title: newTitle,
       };
       await sendToBackend(body, SECTION_URL);
@@ -143,7 +144,7 @@ const ShowOrEditPage: React.FC<{
       // delete section
       const body = {
         courseId: courseId,
-        pageId: pageInfo.pageId,
+        pageId: pageData._id,
         sectionId: sectionId,
       };
       await deleteInBackend(body, SECTION_URL);
@@ -182,52 +183,52 @@ const ShowOrEditPage: React.FC<{
   // Add Resource outside or in section
   const handleAddResource = async (
     feature: Feature,
-    newResource?: ResourcesType,
-    newSection?: SectionsType,
+    newResource?: ResourceInterface,
+    newSection?: SectionFull,
     sectionId?: string,
   ) => {
     if (feature === Feature.AddResourceOut) {
       const resourseOut = {
         courseId: courseId,
-        pageId: pageInfo.pageId,
+        pageId: pageData._id,
         title: newResource?.title,
         description: newResource?.description,
       };
       if (newResource) {
-        newResource.resourceId = await sendToBackend(resourseOut, RESOURCE_URL);
+        newResource._id = await sendToBackend(resourseOut, RESOURCE_URL);
       }
     } else if (feature === Feature.AddSectionResource) {
       const sectionResourse = {
         courseId: courseId,
-        pageId: pageInfo.pageId,
+        pageId: pageData._id,
         title: newResource?.title,
         description: newResource?.description,
         sectionId: sectionId,
       };
       if (newResource) {
-        newResource.resourceId = await sendToBackend(sectionResourse, RESOURCE_URL);
+        newResource._id = await sendToBackend(sectionResourse, RESOURCE_URL);
       }
     } else {
       // add section
       const sectionBody = {
         courseId: courseId,
-        pageId: pageInfo.pageId,
+        pageId: pageData._id,
         title: newSection?.title,
       };
 
       if (newSection) {
-        newSection.sectionId = await sendToBackend(sectionBody, SECTION_URL);
+        newSection._id = await sendToBackend(sectionBody, SECTION_URL);
       }
     }
 
-    setNewMaterials((prev) => {
+    setPageData((prev) => {
       const copy = { ...prev };
       if (feature === Feature.AddResourceOut && newResource) {
         copy.resources.push(newResource);
       } else if (feature === Feature.AddSection && newSection) {
         copy.sections.push(newSection);
       } else if (feature === Feature.AddSectionResource && newResource) {
-        const idx = copy.sections.findIndex((se) => se.sectionId === sectionId);
+        const idx = copy.sections.findIndex((se) => se._id === sectionId);
         copy.sections[idx].resources.push(newResource);
       }
       return copy;
@@ -238,7 +239,7 @@ const ShowOrEditPage: React.FC<{
     <>
       {/* Resources outside*/}
       <div className="flex flex-col mb-7">
-        {newMaterials.resources.map((resource, index) => (
+        {pageData.resources.map((resource, index) => (
           <ShowOrEditResource
             resource={resource}
             key={`resource_out_${index}`}
@@ -248,27 +249,27 @@ const ShowOrEditPage: React.FC<{
         <AddResource handleAddResource={handleAddResource} />
       </div>
       {/* Sections */}
-      {newMaterials.sections.map((section, index) => (
+      {/* {pageData.sections.map((section, index) => (
         <div key={`section_${index}`} className="mb-7">
           <Divider />
           <ShowOrEditSectionT
             title={section.title}
-            sectionId={section.sectionId ?? ""}
+            sectionId={section._id}
             handleEditTitle={handleEditTitle}
           />
-          {section.resources.map((resource, resourceIdx) => (
+          {pageData.resources.map((resource, resourceIdx) => (
             <ShowOrEditResource
               resource={resource}
               key={`${index}_${resourceIdx}`}
               handleEditResource={handleEditResource}
-              sectionId={section.sectionId}
+              sectionId={section._id}
             />
           ))}
-          <AddResource handleAddResource={handleAddResource} sectionId={section.sectionId} />
+          <AddResource handleAddResource={handleAddResource} sectionId={section._id} />
         </div>
-      ))}
-      <Divider />
-      <AddSection handleAddResource={handleAddResource} />
+      ))} */}
+      {/* <Divider /> */}
+      {/* <AddSection handleAddResource={handleAddResource} /> */}
     </>
   );
 };

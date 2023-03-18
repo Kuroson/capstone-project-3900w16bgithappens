@@ -5,27 +5,33 @@ import DoneIcon from "@mui/icons-material/Done";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, IconButton, TextField } from "@mui/material";
+import { ResourceInterface } from "models";
 import { useAuthUser } from "next-firebase-auth";
-import { PageType, ResourcesType } from "pages/admin/[courseId]/[pageId]";
 import { Feature } from "components/SectionPage/ShowOrEditPage";
 import { CLIENT_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api/api";
 
-const ShowOrEditResource: React.FC<{
-  resource: ResourcesType;
+type ShowOrEditResourceProps = {
+  resource: ResourceInterface;
   handleEditResource: (
-    resource: ResourcesType,
+    resource: ResourceInterface,
     feature: Feature,
     sectionId?: string,
   ) => Promise<void> | (() => void);
   sectionId?: string;
-}> = ({ resource, handleEditResource, sectionId }) => {
+};
+
+const ShowOrEditResource: React.FC<ShowOrEditResourceProps> = ({
+  resource,
+  handleEditResource,
+  sectionId,
+}) => {
   const authUser = useAuthUser();
   const router = useRouter();
   const [editResource, setEditResource] = useState(false);
   const [title, setTitle] = useState(resource.title);
   const [description, setDescription] = useState(resource.description);
-  const [linkToResource, setLinkToResource] = useState(resource.linkToResource);
-  const [fileType, setFileType] = useState(resource.fileType);
+  const [linkToResource, setLinkToResource] = useState(resource.stored_name);
+  const [fileType, setFileType] = useState(resource.file_type);
   const [file, setFile] = useState<File | null>(null);
 
   type FileDetailsPayload = {
@@ -54,15 +60,18 @@ const ShowOrEditResource: React.FC<{
     return data;
   };
 
-  const handleEditClick = async () => {
+  /**
+   * Edit a resource
+   */
+  const handleEditClick = async (): Promise<void> => {
     // click tick
     if (editResource) {
-      const newResource: ResourcesType = {
-        resourceId: resource.resourceId,
+      const newResource: ResourceInterface = {
+        _id: resource._id,
         title: title,
         description: description,
-        fileType: resource.fileType, //todo: new file, currently is old file
-        linkToResource: resource.linkToResource, //todo: new, currently is old
+        file_type: resource.file_type, //todo: new file, currently is old file
+        stored_name: resource.stored_name, //todo: new, currently is old
       };
       if (sectionId === null || sectionId === undefined) {
         // finish edit outside resource
@@ -73,21 +82,21 @@ const ShowOrEditResource: React.FC<{
       }
 
       // Upload file if uploaded/changed
-      if (file !== null && resource.resourceId !== undefined) {
+      if (file !== null && resource._id !== undefined) {
         await apiUploadFile(
           `${CLIENT_BACKEND_URL}/file/upload`,
           await authUser.getIdToken(),
           file,
           {
-            resourceId: resource.resourceId,
+            resourceId: resource._id,
           },
         );
 
         // Call backend to get new resource
-        const newFileInfo = await updateFileInfo(resource.resourceId);
+        const newFileInfo = await updateFileInfo(resource._id);
         if (newFileInfo.linkToFile !== null && newFileInfo.fileType !== null) {
-          resource.linkToResource = newFileInfo.linkToFile;
-          resource.fileType = newFileInfo.fileType;
+          resource.stored_name = newFileInfo.linkToFile;
+          resource.file_type = newFileInfo.fileType;
           setLinkToResource(newFileInfo.linkToFile);
           setFileType(newFileInfo.fileType);
         }
@@ -141,8 +150,8 @@ const ShowOrEditResource: React.FC<{
           {linkToResource !== "" && (
             // Show resource
             <div>
-              {fileType?.includes("image") ? (
-                <img src={linkToResource} />
+              {fileType?.includes("image") ?? false ? (
+                <img src={linkToResource} alt="" />
               ) : (
                 <Button href={linkToResource}>Download existing resource</Button>
               )}
