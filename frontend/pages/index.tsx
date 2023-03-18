@@ -6,15 +6,13 @@ import HomeIcon from "@mui/icons-material/Home";
 import { TextField } from "@mui/material";
 import { BasicCourseInfo } from "models/course.model";
 import { UserDetails } from "models/user.model";
-import { GetServerSideProps } from "next";
-import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { ContentContainer, Footer, LeftSideBar, SideNavbar, StudentNavBar } from "components";
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
+import { ContentContainer, StudentNavBar } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
 import CourseCard from "components/common/CourseCard";
 import { useUser } from "util/UserContext";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
-import { getRoleName } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 

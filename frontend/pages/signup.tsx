@@ -6,7 +6,7 @@ import { TextField } from "@mui/material";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
-import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
+import { ContentContainer, EmptyNavBar } from "components";
 import { HttpException } from "util/HttpExceptions";
 import { CLIENT_BACKEND_URL, apiPost } from "util/api/api";
 import { registerNewUser } from "util/api/userApi";
@@ -162,7 +162,7 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
         <meta name="description" content="Sign Up" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <SideNavbar empty={true} list={[]} />
+      <EmptyNavBar />
       <ContentContainer>
         <form
           className="w-full h-full flex flex-col items-center pt-[6rem]"

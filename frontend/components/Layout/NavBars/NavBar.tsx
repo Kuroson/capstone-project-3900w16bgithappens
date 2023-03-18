@@ -1,29 +1,7 @@
-import { useState } from "react";
-import { toast } from "react-toastify";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import HomeIcon from "@mui/icons-material/Home";
-import LogoutIcon from "@mui/icons-material/Logout";
-import {
-  Avatar,
-  Button,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Modal,
-  Radio,
-  RadioGroup,
-  TextField,
-} from "@mui/material";
-import { getAuth, signOut } from "firebase/auth";
+import { Divider } from "@mui/material";
 import { RoleText } from "models/user.model";
-import { useAuthUser } from "next-firebase-auth";
 import TitleWithIcon from "components/common/TitleWithIcon";
-import { HttpException } from "util/HttpExceptions";
-import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api/api";
-import { Nullable } from "util/util";
 
 export type Routes = {
   name: string;
