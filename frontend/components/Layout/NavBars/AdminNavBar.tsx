@@ -6,10 +6,12 @@ import { getAuth, signOut } from "firebase/auth";
 import { getRoleText, UserDetails } from "models/user.model";
 import NavBar, { Routes } from "./NavBar";
 import { useUser } from "util/UserContext";
+import { UserCourseInformation } from "models/course.model";
 
 type AdminNavBar = {
   userDetails: UserDetails;
   routes: Routes[];
+  courseData?: UserCourseInformation;
 }
 
 /**
@@ -31,6 +33,26 @@ const UserDetails = ({ first_name, last_name, role, avatar }: UserDetails): JSX.
   );
 };
 
+type CourseDetailsProps ={
+  code: string
+}
+
+const CourseDetails = ({ code }: CourseDetailsProps): JSX.Element => {
+  return (
+    <div className="mt-5 flex flex-row justify-center">
+      <div className="w-[50px] h-[50px] bg-orange-500 rounded-full flex justify-center items-center">
+        <span className="text-3xl font-bold">
+          {code.charAt(0) ?? ""}
+        </span>
+      </div>
+      <div className="flex flex-col pl-2 justify-center items-center">
+        <span className="font-bold text-start w-full text-2xl">{code}</span>
+      </div>
+    </div>
+  );
+};
+
+
 
 /**
  * @param param0
@@ -38,7 +60,8 @@ const UserDetails = ({ first_name, last_name, role, avatar }: UserDetails): JSX.
  */
 export default function AdminNavBar({
   userDetails,
-  routes
+  routes,
+  courseData
 }: AdminNavBar): JSX.Element {
   const user = useUser();
 
@@ -58,7 +81,8 @@ export default function AdminNavBar({
         <div className="w-full flex flex-col justify-between h-[calc(100%_-_4rem)]">
           <div>
             {/* Top */}
-            <UserDetails {...userDetails} />
+            {courseData === undefined && <UserDetails {...userDetails} />}
+            {courseData !== undefined && <CourseDetails code={courseData?.code ?? ""} />}
             <NavBar
               routes={routes}
               role={getRoleText(userDetails.role)}

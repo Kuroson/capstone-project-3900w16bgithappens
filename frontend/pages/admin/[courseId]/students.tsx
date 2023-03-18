@@ -177,7 +177,7 @@ const AddStudentsPage = ({ courseData }: AddStudentPageProps): JSX.Element => {
         <meta name="description" content="Add students to a page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <AdminNavBar userDetails={userDetails} routes={navRoutes} />
+      <AdminNavBar userDetails={userDetails} routes={navRoutes} courseData={courseData} />
       <ContentContainer>
         <div className="flex flex-col w-full justify-center px-[5%]">
           <h1 className="text-3xl w-full text-left border-solid border-t-0 border-x-0 border-[#EEEEEE] pt-3">
