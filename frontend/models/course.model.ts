@@ -10,3 +10,5 @@ export interface CourseInterface extends MongooseDocument {
   pages: Array<MongooseId>;
   students: Array<MongooseId>;
 }
+
+export type UserCourseInfo = Omit<CourseInterface, "creator" | "pages" | "students">;

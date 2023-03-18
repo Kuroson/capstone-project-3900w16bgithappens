@@ -120,13 +120,10 @@ export const apiGet = async <T extends Record<string, string>, U extends Record<
 ): Promise<[U | null, null | Error | any]> => {
   try {
     const generateURL = () => {
+      if (Object.keys(queryParams).length === 0) return url;
       const urlParams = new URLSearchParams({ ...queryParams });
-      if (urlParams.entries.length === 0) {
-        return url;
-      }
       return `${url}?${urlParams.toString()}`;
     };
-
     const res = await fetch(generateURL(), {
       method: "GET",
       headers: {
@@ -183,13 +180,13 @@ export const apiUploadFile = async <
 };
 
 // Link used for frontend client
-export const CLIENT_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8080";
-
-// Link used for NextJS SSR
-export const SSR_BACKEND_URL =
+export const CLIENT_BACKEND_URL =
   process.env.NEXT_PUBLIC_DOCKER !== undefined
     ? "http://localhost:8080"
     : process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8080";
+
+// Link used for NextJS SSR
+export const SSR_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8080";
 
 console.log(`FE: Backend API: ${CLIENT_BACKEND_URL}`);
 console.log(`SSR: Backend API: ${SSR_BACKEND_URL}`);

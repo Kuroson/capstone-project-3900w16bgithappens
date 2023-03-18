@@ -1,4 +1,5 @@
-import { CLIENT_BACKEND_URL, apiPost } from "./api";
+import { UserDetails } from "models/user.model";
+import { CLIENT_BACKEND_URL, SSR_BACKEND_URL, apiGet, apiPost } from "./api";
 
 type RegisterUserPayloadRequest = {
   firstName: string;
@@ -8,6 +9,20 @@ type RegisterUserPayloadRequest = {
 
 type RegisterUserPayloadResponse = {
   message: string;
+};
+
+type UserDetailsRequestPayload = {
+  email: string;
+};
+
+type UserDetailsResponsePayload = {
+  userDetails: UserDetails;
+};
+
+type BackendLinkType = "client" | "ssr";
+
+export const getBackendLink = (type: BackendLinkType) => {
+  return type === "client" ? CLIENT_BACKEND_URL : SSR_BACKEND_URL;
 };
 
 /**
@@ -22,5 +37,13 @@ export const registerNewUser = (token: string, payload: RegisterUserPayloadReque
     `${CLIENT_BACKEND_URL}/user/register`,
     token,
     payload,
+  );
+};
+
+export const getUserDetails = (token: string | null, email: string, type: BackendLinkType) => {
+  return apiGet<UserDetailsRequestPayload, UserDetailsResponsePayload>(
+    `${getBackendLink(type)}/user/details`,
+    token,
+    { email: email },
   );
 };
