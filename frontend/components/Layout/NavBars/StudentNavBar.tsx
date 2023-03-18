@@ -25,6 +25,7 @@ import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api/api";
 import { Nullable } from "util/util";
 import { getRoleText, UserDetails } from "models/user.model";
 import NavBar, { Routes } from "./NavBar";
+import { useUser } from "util/UserContext";
 
 type SideNavBarProps = {
   userDetails: UserDetails;
@@ -61,8 +62,13 @@ export default function StudentNavBar({
   userDetails,
   routes
 }: SideNavBarProps): JSX.Element {
+  const user = useUser();
+
   const handleOnClick = async () => {
     signOut(getAuth());
+    if (user.setUserDetails !== null) {
+      user.setUserDetails(null);
+    }
   };
 
   return (

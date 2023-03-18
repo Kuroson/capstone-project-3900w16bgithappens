@@ -70,7 +70,7 @@ const HomePage = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading || user.userDetails === null) return <div>Loading...</div>;
   const userDetails = user.userDetails as UserDetails;
 
   // search course id

@@ -6,13 +6,16 @@ type UserContextProps = {
   setUserDetails: React.Dispatch<React.SetStateAction<UserDetails | null>>;
 };
 
-const UserContext = React.createContext<Partial<UserContextProps>>({});
+const UserContext = React.createContext<UserContextProps>({
+  userDetails: null,
+  setUserDetails: () => null,
+});
 
 type UserProviderProps = {
   children: React.ReactNode;
 };
 
-export const useUser = (): Partial<UserContextProps> => {
+export const useUser = (): UserContextProps => {
   return React.useContext(UserContext);
 };
 
