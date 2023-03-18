@@ -27,5 +27,10 @@ export type UserCourseInformation = Omit<CourseInterface, "students" | "pages" |
           resources: ResourceInterface[];
         }[];
       resources: ResourceInterface[];
+      // Idk why the type isn't inferred here
+      title: string;
+      _id: MongooseId;
     }[];
 };
+
+let r: Omit<PageInterface, "section" | "resources">;

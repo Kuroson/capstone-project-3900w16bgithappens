@@ -3,7 +3,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import HomeIcon from "@mui/icons-material/Home";
-import { BasicCourseInfo } from "models/course.model";
+import { BasicCourseInfo, UserCourseInformation } from "models/course.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
@@ -17,13 +17,17 @@ import initAuth from "util/firebase";
 initAuth();
 
 type StudentCoursePageProps = {
-  courseData: BasicCourseInfo;
+  courseData: UserCourseInformation;
 };
 
+/**
+ * Base page for a course for a student
+ * Course data is SSR
+ */
 const StudentCoursePage = ({ courseData }: StudentCoursePageProps): JSX.Element => {
   const [loading, setLoading] = React.useState(true);
   const authUser = useAuthUser();
-  console.log(authUser);
+  console.log(courseData);
   const user = useUser();
 
   React.useEffect(() => {
@@ -61,10 +65,15 @@ const StudentCoursePage = ({ courseData }: StudentCoursePageProps): JSX.Element 
   const userDetails = user.userDetails as UserDetails;
 
   const studentRoutes: Routes[] = [
-    { name: "Dashboard", route: "/", icon: <HomeIcon fontSize="large" color="primary" /> },
-    ...userDetails.enrolments.map((x) => {
+    {
+      name: "Dashboard",
+      route: "/",
+      icon: <HomeIcon fontSize="large" color="primary" />,
+      hasLine: true,
+    },
+    ...courseData.pages.map((x) => {
       return {
-        name: x.code,
+        name: x.title,
         route: `/course/${x._id}`,
       };
     }),
@@ -122,9 +131,15 @@ export const getServerSideProps: GetServerSideProps<StudentCoursePageProps> = wi
     "ssr",
   );
 
-  console.log(courseDetails, courseDetailsErr);
+  if (courseDetailsErr !== null) {
+    console.error(courseDetailsErr);
+    // handle error
+    return { notFound: true };
+  }
 
-  return { props: { courseData: course } };
+  if (courseDetails === null) throw new Error("This shouldn't have happened");
+
+  return { props: { courseData: courseDetails } };
 });
 
 export default withAuthUser<StudentCoursePageProps>({

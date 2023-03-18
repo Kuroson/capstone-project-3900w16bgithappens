@@ -1,4 +1,5 @@
 import { CourseInterface } from "models";
+import { UserCourseInformation } from "models/course.model";
 import { BackendLinkType, apiGet } from "./api";
 import { getBackendLink } from "./userApi";
 
@@ -6,16 +7,7 @@ type UserCourseDetailsPayloadRequest = {
   courseId: string;
 };
 
-type UserCourseDetailsPayloadResponse = Omit<CourseInterface, "students" | "pages" | "creator"> & {
-  pages: Omit<PageInterface, "section" | "resources"> &
-    {
-      section: Omit<SectionInterface, "resources"> &
-        {
-          resources: ResourceInterface[];
-        }[];
-      resources: ResourceInterface[];
-    }[];
-};
+type UserCourseDetailsPayloadResponse = UserCourseInformation;
 
 export const getUserCourseDetails = (
   token: string | null,
