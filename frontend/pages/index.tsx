@@ -81,9 +81,9 @@ const HomePage = (): JSX.Element => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       if (userDetails.enrolments !== undefined) {
-        setShowedCourses(
-          userDetails.enrolments.filter((course) => course.code.includes(searchCode)),
-        );
+        setShowedCourses([
+          ...userDetails.enrolments.filter((course) => course.code.includes(searchCode)),
+        ]);
       }
     }
   };
