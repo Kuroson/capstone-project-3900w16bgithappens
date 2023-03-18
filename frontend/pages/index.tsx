@@ -33,11 +33,13 @@ type HomePageProps = {
 
 const HomePage = (): JSX.Element => {
   const user = useUser();
-  const [loading, setLoading] = React.useState(user.userDetails === null);
+  const [loading, setLoading] = React.useState(true);
   const [searchCode, setSearchCode] = useState("");
-  const [showedCourses, setShowedCourses] = useState<BasicCourseInfo[]>([]);
-
+  const [showedCourses, setShowedCourses] = useState<BasicCourseInfo[]>(
+    user.userDetails?.enrolments ?? [],
+  );
   const authUser = useAuthUser();
+  console.log(authUser);
 
   React.useEffect(() => {
     // Build user data for user context
