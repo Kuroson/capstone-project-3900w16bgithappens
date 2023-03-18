@@ -104,6 +104,10 @@ export const getServerSideProps: GetServerSideProps<StudentCoursePageProps> = wi
 })(async ({ AuthUser, query }): Promise<{ props: StudentCoursePageProps } | { notFound: true }> => {
   const { courseID } = query;
 
+  if (courseID === undefined || typeof courseID !== "string") {
+    return { notFound: true };
+  }
+
   // Fetch User Specific Information
   const [resUserData, errUserData] = await getUserDetails(
     await AuthUser.getIdToken(),
