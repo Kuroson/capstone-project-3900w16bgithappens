@@ -8,7 +8,7 @@ import { Button, IconButton, TextField } from "@mui/material";
 import { useAuthUser } from "next-firebase-auth";
 import { PageType, ResourcesType } from "pages/admin/[courseId]/[pageId]";
 import { Feature } from "components/SectionPage/ShowOrEditPage";
-import { PROCESS_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api";
 
 const ShowOrEditResource: React.FC<{
   resource: ResourcesType;
@@ -36,7 +36,7 @@ const ShowOrEditResource: React.FC<{
   const updateFileInfo = async (resourceId: string) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [data, err] = await apiGet<any, FileDetailsPayload>(
-      `${PROCESS_BACKEND_URL}/file/download/${resourceId}`,
+      `${CLIENT_BACKEND_URL}/file/download/${resourceId}`,
       await authUser.getIdToken(),
       {},
     );
@@ -75,7 +75,7 @@ const ShowOrEditResource: React.FC<{
       // Upload file if uploaded/changed
       if (file !== null && resource.resourceId !== undefined) {
         await apiUploadFile(
-          `${PROCESS_BACKEND_URL}/file/upload`,
+          `${CLIENT_BACKEND_URL}/file/upload`,
           await authUser.getIdToken(),
           file,
           {

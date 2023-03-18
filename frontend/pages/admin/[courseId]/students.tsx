@@ -13,7 +13,7 @@ import { UserDetailsPayload } from "pages";
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import { HttpException } from "util/HttpExceptions";
-import { PROCESS_BACKEND_URL, apiGet, apiPut } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPut } from "util/api";
 import initAuth from "util/firebase";
 import { CourseInformationFull, Nullable, getRoleName } from "util/util";
 
@@ -56,7 +56,7 @@ const AddStudentsPage = ({
     setLoading(true);
     // TODO Fix this import, should be a prop
     const [res, err] = await apiPut<AddStudentPayload, AddStudentResponse>(
-      `${PROCESS_BACKEND_URL}/course/students/add`,
+      `${CLIENT_BACKEND_URL}/course/students/add`,
       await authUser.getIdToken(),
       {
         courseId: courseID,
@@ -141,14 +141,14 @@ export const getServerSideProps: GetServerSideProps<AddStudentPageProps> = withA
   const { courseId } = query;
 
   const [resUserData, errUserData] = await apiGet<any, UserDetailsPayload>(
-    `${PROCESS_BACKEND_URL}/user/details`,
+    `${CLIENT_BACKEND_URL}/user/details`,
     await AuthUser.getIdToken(),
     {},
   );
 
   // Fetch Course Specific Information
   const [resCourseInformation, errCourseInformation] = await apiGet<any, CourseInformationFull>(
-    `${PROCESS_BACKEND_URL}/course/${courseId}`,
+    `${CLIENT_BACKEND_URL}/course/${courseId}`,
     await AuthUser.getIdToken(),
     {},
   );

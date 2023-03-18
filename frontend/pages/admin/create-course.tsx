@@ -9,7 +9,7 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { ContentContainer, SideNavbar } from "components";
 import CourseCard from "components/common/CourseCard";
 import { HttpException } from "util/HttpExceptions";
-import { PROCESS_BACKEND_URL, apiGet, apiPost } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 import { adminRoutes } from "./index";
@@ -60,7 +60,7 @@ const CreateCourse = ({ firstName, lastName, email, role, avatar }: HomePageProp
     e.preventDefault();
 
     const [res, err] = await apiPost<CreateCoursePayload, any>(
-      `${PROCESS_BACKEND_URL}/course`,
+      `${CLIENT_BACKEND_URL}/course`,
       await authUser.getIdToken(),
       {
         code,
@@ -157,7 +157,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = withAuthUse
 })(async ({ AuthUser }): Promise<{ props: HomePageProps }> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, err] = await apiGet<any, UserDetailsPayload>(
-    `${PROCESS_BACKEND_URL}/user/details`,
+    `${CLIENT_BACKEND_URL}/user/details`,
     await AuthUser.getIdToken(),
     {},
   );

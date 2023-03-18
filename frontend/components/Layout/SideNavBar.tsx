@@ -21,7 +21,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { useAuthUser } from "next-firebase-auth";
 import TitleWithIcon from "components/common/TitleWithIcon";
 import { HttpException } from "util/HttpExceptions";
-import { PROCESS_BACKEND_URL, apiGet, apiPost } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api";
 import { Nullable } from "util/util";
 
 type SideNavBarProps = UserDetailsProps & {
@@ -115,7 +115,7 @@ const NavBar = ({
     }
 
     const [res, err] = await apiPost<CreatePagePayload, NewPagePayload>(
-      `${PROCESS_BACKEND_URL}/page/${courseId}`,
+      `${CLIENT_BACKEND_URL}/page/${courseId}`,
       await authUser.getIdToken(),
       {
         courseId,

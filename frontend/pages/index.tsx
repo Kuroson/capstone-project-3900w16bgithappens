@@ -8,7 +8,7 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import CourseCard from "components/common/CourseCard";
-import { PROCESS_BACKEND_URL, apiGet } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet } from "util/api";
 import initAuth from "util/firebase";
 import { CourseGETResponse, Nullable, getCourseURL, getRoleName } from "util/util";
 
@@ -108,14 +108,14 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = withAuthUse
 })(async ({ AuthUser }): Promise<{ props: HomePageProps }> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [resUserData, errUserData] = await apiGet<any, UserDetailsPayload>(
-    `${PROCESS_BACKEND_URL}/user/details`,
+    `${CLIENT_BACKEND_URL}/user/details`,
     await AuthUser.getIdToken(),
     {},
   );
 
   // Fetch User's course data
   const [resCourseData, errCourseData] = await apiGet<any, CourseGETResponse>(
-    `${PROCESS_BACKEND_URL}/course`,
+    `${CLIENT_BACKEND_URL}/course`,
     await AuthUser.getIdToken(),
     {},
   );

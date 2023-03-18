@@ -9,7 +9,7 @@ import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
-import { PROCESS_BACKEND_URL, apiGet, apiUploadFile } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiUploadFile } from "util/api";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 
@@ -151,7 +151,7 @@ const SectionPage = ({
   useEffect(() => {
     const fetchCourseInfo = async () => {
       const [data, err] = await apiGet<any, coursesInfoPayload>(
-        `${PROCESS_BACKEND_URL}/course/${courseId}`,
+        `${CLIENT_BACKEND_URL}/course/${courseId}`,
         await authUser.getIdToken(),
         {},
       );
@@ -167,7 +167,7 @@ const SectionPage = ({
 
     const fetchPageInfo = async () => {
       const [data, err] = await apiGet<any, pageInfoPayload>(
-        `${PROCESS_BACKEND_URL}/page/${courseId}/${pageId}`,
+        `${CLIENT_BACKEND_URL}/page/${courseId}/${pageId}`,
         await authUser.getIdToken(),
         {},
       );
@@ -244,7 +244,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = withAuthUserTok
 })(async ({ AuthUser, query }): Promise<{ props: PageProps }> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, err] = await apiGet<any, UserDetailsPayload>(
-    `${PROCESS_BACKEND_URL}/user/details`,
+    `${CLIENT_BACKEND_URL}/user/details`,
     await AuthUser.getIdToken(),
     {},
   );

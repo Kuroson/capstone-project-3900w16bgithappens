@@ -6,7 +6,7 @@ import { AuthAction, withAuthUser, withAuthUserTokenSSR } from "next-firebase-au
 import { UserDetailsPayload } from "pages";
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
-import { PROCESS_BACKEND_URL, apiGet } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet } from "util/api";
 import initAuth from "util/firebase";
 import {
   CourseGETResponse,
@@ -61,14 +61,14 @@ export const getServerSideProps: GetServerSideProps<StudentCoursePageProps> = wi
   const { courseID } = query;
 
   const [resUserData, errUserData] = await apiGet<any, UserDetailsPayload>(
-    `${PROCESS_BACKEND_URL}/user/details`,
+    `${CLIENT_BACKEND_URL}/user/details`,
     await AuthUser.getIdToken(),
     {},
   );
 
   // Fetch Course Specific Information
   const [resCourseInformation, errCourseInformation] = await apiGet<any, CourseInformationFull>(
-    `${PROCESS_BACKEND_URL}/course/${courseID}`,
+    `${CLIENT_BACKEND_URL}/course/${courseID}`,
     await AuthUser.getIdToken(),
     {},
   );

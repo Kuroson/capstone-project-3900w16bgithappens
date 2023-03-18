@@ -5,7 +5,7 @@ import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import { Button, TextField } from "@mui/material";
 import { useAuthUser } from "next-firebase-auth";
 import { ResourcesType, SectionsType } from "pages/admin/[courseId]/[pageId]";
-import { PROCESS_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api";
+import { CLIENT_BACKEND_URL, apiGet, apiPost, apiUploadFile } from "util/api";
 import ShowFile from "./ShowFile";
 import { Feature } from "./ShowOrEditPage";
 
@@ -40,7 +40,7 @@ const AddResource: React.FC<{
   const updateFileInfo = async (resourceId: string) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [data, err] = await apiGet<any, FileDetailsPayload>(
-      `${PROCESS_BACKEND_URL}/file/download/${resourceId}`,
+      `${CLIENT_BACKEND_URL}/file/download/${resourceId}`,
       await authUser.getIdToken(),
       {},
     );
@@ -75,7 +75,7 @@ const AddResource: React.FC<{
 
     // Upload file if added
     if (file !== null && newResource.resourceId) {
-      await apiUploadFile(`${PROCESS_BACKEND_URL}/file/upload`, await authUser.getIdToken(), file, {
+      await apiUploadFile(`${CLIENT_BACKEND_URL}/file/upload`, await authUser.getIdToken(), file, {
         resourceId: newResource.resourceId,
       });
 

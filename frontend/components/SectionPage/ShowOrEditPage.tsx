@@ -3,7 +3,7 @@ import { Button, Divider } from "@mui/material";
 import { AuthUserContext } from "next-firebase-auth";
 import { PageType, ResourcesType, SectionsType } from "pages/admin/[courseId]/[pageId]";
 import ShowOrEditResource from "components/common/ShowOrEditResource";
-import { PROCESS_BACKEND_URL, apiDelete, apiPost, apiPut } from "util/api";
+import { CLIENT_BACKEND_URL, apiDelete, apiPost, apiPut } from "util/api";
 import AddResource from "./AddResource";
 import AddSection from "./AddSection";
 import ShowOrEditSectionT from "./ShowOrEditSectionT";
@@ -26,8 +26,8 @@ const ShowOrEditPage: React.FC<{
   authUser: AuthUserContext;
 }> = ({ pageInfo, courseId, authUser }) => {
   const [newMaterials, setNewMaterials] = useState<PageType>(pageInfo);
-  const RESOURCE_URL = `${PROCESS_BACKEND_URL}/page/${courseId}/${pageInfo.pageId}/resource`;
-  const SECTION_URL = `${PROCESS_BACKEND_URL}/page/${courseId}/${pageInfo.pageId}/section`;
+  const RESOURCE_URL = `${CLIENT_BACKEND_URL}/page/${courseId}/${pageInfo.pageId}/resource`;
+  const SECTION_URL = `${CLIENT_BACKEND_URL}/page/${courseId}/${pageInfo.pageId}/section`;
 
   useEffect(() => {
     setNewMaterials(pageInfo);

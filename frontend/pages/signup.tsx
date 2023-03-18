@@ -8,7 +8,7 @@ import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
 import { HttpException } from "util/HttpExceptions";
-import { FE_BACKEND_URL, apiPost } from "util/api";
+import { CLIENT_BACKEND_URL, apiPost } from "util/api";
 import { isValidEmail, isValidPassword } from "util/authVerficiation";
 
 type PasswordRequirementsProps = {
@@ -278,7 +278,7 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
 
 export const getStaticProps: GetStaticProps<SignUpPageProps> = async () => {
   return {
-    props: { CLIENT_BACKEND_URL: FE_BACKEND_URL },
+    props: { CLIENT_BACKEND_URL: CLIENT_BACKEND_URL },
   };
 };
 

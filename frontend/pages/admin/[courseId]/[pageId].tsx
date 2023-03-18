@@ -10,7 +10,7 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { ContentContainer, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import ShowOrEditPage from "components/SectionPage/ShowOrEditPage";
-import { PROCESS_BACKEND_URL, apiDelete, apiGet } from "util/api";
+import { CLIENT_BACKEND_URL, apiDelete, apiGet } from "util/api";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 
@@ -113,7 +113,7 @@ const SectionPage = ({
   useEffect(() => {
     const fetchCourseInfo = async () => {
       const [data, err] = await apiGet<any, coursesInfoPayload>(
-        `${PROCESS_BACKEND_URL}/course/${courseId}`,
+        `${CLIENT_BACKEND_URL}/course/${courseId}`,
         await authUser.getIdToken(),
         {},
       );
@@ -129,7 +129,7 @@ const SectionPage = ({
 
     const fetchPageInfo = async () => {
       const [data, err] = await apiGet<any, pageInfoPayload>(
-        `${PROCESS_BACKEND_URL}/page/${courseId}/${pageId}`,
+        `${CLIENT_BACKEND_URL}/page/${courseId}/${pageId}`,
         await authUser.getIdToken(),
         {},
       );
@@ -150,7 +150,7 @@ const SectionPage = ({
 
   const handleDeletePage = async () => {
     const [data, err] = await apiDelete<any, coursesInfoPayload>(
-      `${PROCESS_BACKEND_URL}/page/${courseId}`,
+      `${CLIENT_BACKEND_URL}/page/${courseId}`,
       await authUser.getIdToken(),
       { courseId: courseId, pageId: pageId },
     );
@@ -202,7 +202,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = withAuthUserTok
 })(async ({ AuthUser, query }): Promise<{ props: PageProps }> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, err] = await apiGet<any, UserDetailsPayload>(
-    `${PROCESS_BACKEND_URL}/user/details`,
+    `${CLIENT_BACKEND_URL}/user/details`,
     await AuthUser.getIdToken(),
     {},
   );
