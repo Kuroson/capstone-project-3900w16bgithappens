@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 import Head from "next/head";
 import HomeIcon from "@mui/icons-material/Home";
 import { TextField } from "@mui/material";
+import { UserCourseInfo } from "models/course.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
 import { Routes } from "components/Layout/SideNavBar";
 import CourseCard from "components/common/CourseCard";
-import { CLIENT_BACKEND_URL, apiGet } from "util/api/api";
+import { useUser } from "util/UserContext";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
-import { CourseGETResponse, Nullable, getCourseURL, getRoleName } from "util/util";
+import { getRoleName } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 
@@ -29,24 +31,59 @@ type HomePageProps = {
   userDetails: UserDetails;
 };
 
-const HomePage = ({ userDetails }: HomePageProps): JSX.Element => {
+const HomePage = (): JSX.Element => {
+  const [loading, setLoading] = React.useState(true);
+  const [searchCode, setSearchCode] = useState("");
+  const [showedCourses, setShowedCourses] = useState<UserCourseInfo[]>([]);
+
   const authUser = useAuthUser();
-  // console.log(authUser);
-  console.log(userDetails);
+  const user = useUser();
+
+  React.useEffect(() => {
+    // Build user data for user context
+    const fetchUserData = async () => {
+      const [resUserData, errUserData] = await getUserDetails(
+        await authUser.getIdToken(),
+        authUser.email ?? "bad",
+        "client",
+      );
+
+      if (errUserData !== null) {
+        throw errUserData;
+      }
+
+      if (resUserData === null) throw new Error("This shouldn't have happened");
+      return resUserData;
+    };
+
+    fetchUserData()
+      .then((res) => {
+        if (user.setUserDetails !== undefined) {
+          user.setUserDetails(res.userDetails);
+          setShowedCourses(res.userDetails.enrolments);
+        }
+      })
+      .then(() => setLoading(false))
+      .catch((err) => {
+        toast.error("failed to fetch shit");
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  const userDetails = user.userDetails as UserDetails;
 
   const studentRoutes: Routes[] = [
     { name: "Dashboard", route: "/", Icon: <HomeIcon fontSize="large" color="primary" /> },
   ];
 
-  const allCourses = userDetails.enrolments;
-  const [showedCourses, setShowedCourses] = useState(userDetails.enrolments);
-  const [code, setCode] = useState("");
-
   // search course id
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      if (allCourses != null) {
-        setShowedCourses(allCourses.filter((course) => course.code.includes(code)));
+      if (userDetails.enrolments !== undefined) {
+        setShowedCourses(
+          userDetails.enrolments.filter((course) => course.code.includes(searchCode)),
+        );
       }
     }
   };
@@ -80,7 +117,7 @@ const HomePage = ({ userDetails }: HomePageProps): JSX.Element => {
               variant="outlined"
               sx={{ width: "300px" }}
               onKeyDown={handleKeyDown}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchCode(e.target.value)}
             />
           </div>
           <div className="flex flex-wrap w-full mx-3">
@@ -94,35 +131,6 @@ const HomePage = ({ userDetails }: HomePageProps): JSX.Element => {
     </>
   );
 };
-
-export const getServerSideProps: GetServerSideProps<HomePageProps> = withAuthUserTokenSSR({
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async ({ AuthUser }): Promise<{ props: HomePageProps }> => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-  const [resUserData, errUserData] = await getUserDetails(
-    await AuthUser.getIdToken(),
-    AuthUser.email ?? "bad",
-    "ssr",
-  );
-
-  if (errUserData !== null) {
-    // handle error
-    return {
-      props: {
-        userDetails: {} as any,
-      },
-    };
-  }
-
-  if (resUserData === null) throw new Error("This shouldn't have happened");
-
-  return {
-    props: {
-      userDetails: resUserData.userDetails,
-    },
-  };
-});
 
 export default withAuthUser<HomePageProps>({
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
