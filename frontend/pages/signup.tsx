@@ -8,7 +8,7 @@ import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
 import { HttpException } from "util/HttpExceptions";
-import { PROCESS_BACKEND_URL, PROCESS_FRONTEND_URL, apiPost } from "util/api";
+import { FE_BACKEND_URL, apiPost } from "util/api";
 import { isValidEmail, isValidPassword } from "util/authVerficiation";
 
 type PasswordRequirementsProps = {
@@ -110,6 +110,8 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
     }
     // Everything should be valid after this
     setLoading(true);
+    let errorCreation = false;
+
     const authUser = await createUserWithEmailAndPassword(getAuth(), email, password)
       .then((res) => {
         console.log(res);
@@ -130,7 +132,13 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
           console.error(err);
           toast.error("Error Uncaught");
         }
+        errorCreation = true;
       });
+
+    if (errorCreation) {
+      setLoading(false);
+      return; // Don't continue, error
+    }
 
     const payload: APIPayload = {
       firstName,
@@ -270,7 +278,7 @@ const SignUpPage = ({ BACKEND_URL }: SignUpPageProps): JSX.Element => {
 
 export const getStaticProps: GetStaticProps<SignUpPageProps> = async () => {
   return {
-    props: { BACKEND_URL: PROCESS_FRONTEND_URL },
+    props: { BACKEND_URL: FE_BACKEND_URL },
   };
 };
 
