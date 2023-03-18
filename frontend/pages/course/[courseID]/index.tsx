@@ -108,27 +108,6 @@ export const getServerSideProps: GetServerSideProps<StudentCoursePageProps> = wi
     return { notFound: true };
   }
 
-  // Fetch User Specific Information
-  const [resUserData, errUserData] = await getUserDetails(
-    await AuthUser.getIdToken(),
-    AuthUser.email ?? "bad",
-    "ssr",
-  );
-
-  if (errUserData !== null) {
-    console.error(errUserData);
-    // handle error
-    return { notFound: true };
-  }
-
-  if (resUserData === null) throw new Error("This shouldn't have happened");
-
-  // Now check if courseID is apart of the student's enrolments
-  const course = resUserData.userDetails.enrolments.find((x) => x._id === (courseID as string));
-  if (course === undefined) {
-    return { notFound: true };
-  }
-
   const [courseDetails, courseDetailsErr] = await getUserCourseDetails(
     await AuthUser.getIdToken(),
     courseID as string,
