@@ -183,7 +183,7 @@ const CreateCourse = (): JSX.Element => {
               rows={9}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <LoadingButton variant="contained" fullWidth type="submit">
+            <LoadingButton variant="contained" fullWidth type="submit" loading={buttonLoading}>
               Create
             </LoadingButton>
           </div>
