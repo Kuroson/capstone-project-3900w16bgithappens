@@ -5,7 +5,7 @@ import { SectionInterface } from "./section.model";
 import { UserInterface } from "./user.model";
 
 export interface MongooseDocument {
-  _id?: MongooseId;
+  _id: MongooseId;
 }
 
 export type MongooseId = string;

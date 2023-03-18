@@ -49,7 +49,6 @@ const StudentCoursePage = ({ courseData }: StudentCoursePageProps): JSX.Element 
 
     fetchUserData()
       .then((res) => {
-        console.log(res);
         if (user.setUserDetails !== undefined) {
           user.setUserDetails(res.userDetails);
         }
@@ -74,7 +73,7 @@ const StudentCoursePage = ({ courseData }: StudentCoursePageProps): JSX.Element 
     ...courseData.pages.map((x) => {
       return {
         name: x.title,
-        route: `/course/${x._id}`,
+        route: `/course/${courseData._id}/${x._id}`,
       };
     }),
   ];

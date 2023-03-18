@@ -5,6 +5,7 @@ import {
   ResourceInterface,
   SectionInterface,
 } from "models";
+import { PageFull } from "./page.model";
 
 export interface CourseInterface extends MongooseDocument {
   title: string;
@@ -20,17 +21,7 @@ export interface CourseInterface extends MongooseDocument {
 export type BasicCourseInfo = Omit<CourseInterface, "creator" | "pages" | "students">;
 
 export type UserCourseInformation = Omit<CourseInterface, "students" | "pages" | "creator"> & {
-  pages: Omit<PageInterface, "section" | "resources"> &
-    {
-      section: Omit<SectionInterface, "resources"> &
-        {
-          resources: ResourceInterface[];
-        }[];
-      resources: ResourceInterface[];
-      // Idk why the type isn't inferred here
-      title: string;
-      _id: MongooseId;
-    }[];
+  pages: PageFull[];
 };
 
 let r: Omit<PageInterface, "section" | "resources">;

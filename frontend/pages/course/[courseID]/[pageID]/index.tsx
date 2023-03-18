@@ -1,114 +1,74 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import GridViewIcon from "@mui/icons-material/GridView";
+import HomeIcon from "@mui/icons-material/Home";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { Button, Typography } from "@mui/material";
+import { ResourceInterface } from "models";
+import { UserCourseInformation } from "models/course.model";
+import { PageFull } from "models/page.model";
+import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
-import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { ContentContainer, SideNavbar } from "components";
-import { Routes } from "components/Layout/SideNavBar";
+import {
+  AuthAction,
+  AuthUserContext,
+  useAuthUser,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth";
+import { ContentContainer, StudentNavBar } from "components";
+import { Routes } from "components/Layout/NavBars/NavBar";
+import { useUser } from "util/UserContext";
+import { getFileDownloadLink } from "util/api/ResourceApi";
 import { CLIENT_BACKEND_URL, apiGet, apiUploadFile } from "util/api/api";
+import { getUserCourseDetails } from "util/api/courseApi";
+import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 
-type UserDetailsPayload = Nullable<{
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: number;
-  avatar: string;
-}>;
-
-type PageProps = UserDetailsPayload & {
-  courseId?: string;
-  pageId?: string;
-};
-
-type courseInfo = {
-  code: string;
-  title: string;
-  description: string;
-  session: string;
-  icon: string;
-  pages: Array<{ title: string; pageId: string }>;
-};
-type coursesInfoPayload = courseInfo;
-
-export type Resources = {
-  resourceId: string;
-  title: string;
-  description?: string;
-  fileType: string;
-  linkToResource: string;
-};
-export type sections = {
-  sectionId: string;
-  title: string;
-  resources: Resources[];
-};
-
-export type pageInfo = {
-  title: string;
-  courseId: string;
-  pageId: string;
-  resources: Resources[];
-  sections: sections[];
-};
-type pageInfoPayload = pageInfo;
-
-const course: courseInfo = {
-  code: "",
-  title: "",
-  description: "",
-  session: "",
-  icon: "",
-  pages: [],
-};
-
-const page: pageInfo = {
-  title: "Week1",
-  courseId: "1",
-  pageId: "1",
-  resources: [],
-  sections: [],
+type CoursePageProps = {
+  courseData: UserCourseInformation;
+  pageData: PageFull;
 };
 
 const FROG_IMAGE_URL =
   "https://i.natgeofe.com/k/8fa25ea4-6409-47fb-b3cc-4af8e0dc9616/red-eyed-tree-frog-on-leaves-3-2_3x2.jpg";
 
-const ResourcesDisplay = ({ resources }: { resources: Array<Resources> }): JSX.Element => {
+type ResourceDisplayProps = {
+  resources: ResourceInterface[];
+};
+
+/**
+ * Main Resource display
+ */
+const ResourcesDisplay = ({ resources }: ResourceDisplayProps): JSX.Element => {
   return (
     <div className="flex flex-col w-full">
       {resources.map((resource) => {
         return (
-          <div key={resource.resourceId} className="w-full mb-5">
+          <div key={resource._id} className="w-full mb-5">
             <span className="w-full text-xl font-medium flex flex-col">{`Resource: ${resource.title}`}</span>
             {/* Description */}
             {resource.description ?? (
               <span className="">{`Description: ${resource.description}`}</span>
             )}
             {/* Resource */}
-            {resource.linkToResource && (
+            {resource.stored_name !== undefined && (
               <div className="my-5">
-                {resource.fileType.includes("image") ? (
+                {resource.file_type?.includes("image") ?? false ? (
                   <div>
-                    <img
-                      src={
-                        resource.linkToResource.length === 0
-                          ? FROG_IMAGE_URL
-                          : resource.linkToResource
-                      }
-                      alt={resource.description}
-                    />
+                    <img src={resource.stored_name ?? FROG_IMAGE_URL} alt={resource.description} />
                   </div>
                 ) : (
-                  <Button variant="contained" href={resource.linkToResource}>
-                    Download File
-                  </Button>
+                  <Link href={resource.stored_name} target="_blank">
+                    <Button variant="contained">Download File</Button>
+                  </Link>
                 )}
               </div>
             )}
@@ -119,76 +79,60 @@ const ResourcesDisplay = ({ resources }: { resources: Array<Resources> }): JSX.E
   );
 };
 
-const SectionPage = ({
-  firstName,
-  lastName,
-  email,
-  role,
-  avatar,
-  courseId,
-  pageId,
-}: PageProps): JSX.Element => {
-  const [courseInfo, setCourseInfo] = useState(course);
-  const [pageInfo, setPageInfo] = useState(page);
-  const [file, setFile] = useState<File | null>(null);
+/**
+ * Page for a course
+ */
+const CoursePage = ({ courseData, pageData }: CoursePageProps): JSX.Element => {
+  const [loading, setLoading] = React.useState(true);
   const authUser = useAuthUser();
-  const router = useRouter();
-  const courseRoutes: Routes[] = [
+  const user = useUser();
+
+  React.useEffect(() => {
+    // Build user data for user context
+    const fetchUserData = async () => {
+      const [resUserData, errUserData] = await getUserDetails(
+        await authUser.getIdToken(),
+        authUser.email ?? "bad",
+        "client",
+      );
+
+      if (errUserData !== null) {
+        throw errUserData;
+      }
+
+      if (resUserData === null) throw new Error("This shouldn't have happened");
+      return resUserData;
+    };
+
+    fetchUserData()
+      .then((res) => {
+        if (user.setUserDetails !== undefined) {
+          user.setUserDetails(res.userDetails);
+        }
+      })
+      .then(() => setLoading(false))
+      .catch((err) => {
+        toast.error("failed to fetch shit");
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (loading || user.userDetails === null) return <div>Loading...</div>;
+  const userDetails = user.userDetails as UserDetails;
+  const studentRoutes: Routes[] = [
     {
-      name: "Home",
-      route: `/course/${courseId}`,
-      Icon: <GridViewIcon fontSize="large" color="primary" />,
+      name: "Dashboard",
+      route: "/",
+      icon: <HomeIcon fontSize="large" color="primary" />,
       hasLine: true,
     },
+    ...courseData.pages.map((x) => {
+      return {
+        name: x.title,
+        route: `/course/${courseData._id}/${x._id}`,
+      };
+    }),
   ];
-
-  const pages = courseInfo.pages.map((page) => ({
-    name: page.title,
-    route: `/course/${courseId}/${page.pageId}`,
-  }));
-
-  // Fetch all the course information
-  useEffect(() => {
-    const fetchCourseInfo = async () => {
-      const [data, err] = await apiGet<any, coursesInfoPayload>(
-        `${CLIENT_BACKEND_URL}/course/${courseId}`,
-        await authUser.getIdToken(),
-        {},
-      );
-
-      if (err !== null) {
-        console.error(err);
-      }
-
-      if (data === null) throw new Error("This shouldn't have happened");
-
-      setCourseInfo(data);
-    };
-
-    const fetchPageInfo = async () => {
-      const [data, err] = await apiGet<any, pageInfoPayload>(
-        `${CLIENT_BACKEND_URL}/page/${courseId}/${pageId}`,
-        await authUser.getIdToken(),
-        {},
-      );
-
-      if (err !== null) {
-        console.error(err);
-      }
-
-      if (data === null) throw new Error("This shouldn't have happened");
-
-      console.log("Page Info");
-      console.log(data); // TODO: remove
-      console.log(await authUser.getIdToken());
-
-      setPageInfo(data);
-    };
-
-    fetchCourseInfo().catch(console.error);
-    fetchPageInfo().catch(console.error);
-  }, [authUser, courseId, pageId]);
-  // fetch all the section
 
   return (
     <>
@@ -197,33 +141,22 @@ const SectionPage = ({
         <meta name="description" content="Home page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <SideNavbar
-        firstName={firstName}
-        lastName={lastName}
-        role={getRoleName(1)} // TODO: change back to my Role???
-        avatarURL={avatar}
-        list={courseRoutes.concat(pages)}
-        isCoursePage={true}
-        courseId={courseId}
-        courseCode={courseInfo.code}
-        courseIcon={courseInfo.icon}
-      />
+      <StudentNavBar userDetails={userDetails} routes={studentRoutes} />
       <ContentContainer>
         <div className="flex flex-col w-full justify-center px-[5%]">
-          <h1 className="text-3xl w-full border-solid border-t-0 border-x-0 border-[#EEEEEE] flex justify-between">
-            <span className="ml-4">{pageInfo.title}</span>
+          <h1 className="text-3xl w-full border-solid border-t-0 border-x-0 border-[#EEEEEE] flex justify-between pt-5">
+            <span className="ml-4">{pageData.title}</span>
           </h1>
 
           {/* First list out all the base resources */}
-          <div className="bg-gray-300 rounded-xl px-[2.5%] py-[2.5%] mb-5">
-            {/* <h1 className="text-2xl m-0 p-0">Page Resources</h1> */}
-            <ResourcesDisplay resources={pageInfo.resources} />
+          <div className="bg-gray-400 rounded-xl px-[2.5%] py-[2.5%] mb-5">
+            <ResourcesDisplay resources={pageData.resources} />
           </div>
 
           {/* Then list out all the sections */}
-          {pageInfo.sections.map((section) => {
+          {pageData.sections.map((section) => {
             return (
-              <div key={section.sectionId}>
+              <div key={section._id}>
                 <div className="w-full flex flex-col bg-gray-300 rounded-xl px-[2.5%] py-[2.5%] mb-5">
                   <Typography variant="h5" fontWeight="600">
                     {`Section: ${section.title}`}
@@ -239,42 +172,88 @@ const SectionPage = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = withAuthUserTokenSSR({
+export const getServerSideProps: GetServerSideProps<CoursePageProps> = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async ({ AuthUser, query }): Promise<{ props: PageProps }> => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, err] = await apiGet<any, UserDetailsPayload>(
-    `${CLIENT_BACKEND_URL}/user/details`,
-    await AuthUser.getIdToken(),
-    {},
-  );
+})(async ({ AuthUser, query }): Promise<{ props: CoursePageProps } | { notFound: true }> => {
+  /**
+   * Parse the resource and fetch links if they require it
+   * @returns
+   */
+  const parseResource = async (
+    originalResources: ResourceInterface[],
+  ): Promise<ResourceInterface[]> => {
+    const parsedResources: ResourceInterface[] = [];
+    const resourcesPromises = originalResources.map(async (resource) => {
+      console.log(resource);
+      if (resource.file_type !== undefined && resource.file_type !== null) {
+        // Its a file
+        const [link, linkErr] = await getFileDownloadLink(
+          await AuthUser.getIdToken(),
+          resource._id,
+          "ssr",
+        );
 
-  if (err !== null) {
-    console.error(err);
-    // handle error
-    return {
-      props: {
-        email: null,
-        firstName: null,
-        lastName: null,
-        role: null,
-        avatar: null,
-      },
-    };
+        if (link !== null) {
+          parsedResources.push({
+            ...resource,
+            stored_name: link.linkToFile,
+            file_type: link.fileType,
+          });
+        }
+      } else {
+        parsedResources.push(resource);
+      }
+    });
+
+    await Promise.all(resourcesPromises);
+    return parsedResources;
+  };
+
+  const { courseID, pageID } = query;
+
+  if (
+    courseID === undefined ||
+    typeof courseID !== "string" ||
+    pageID === undefined ||
+    typeof pageID !== "string"
+  ) {
+    return { notFound: true };
   }
 
-  if (data === null) throw new Error("This shouldn't have happened");
+  const [courseDetails, courseDetailsErr] = await getUserCourseDetails(
+    await AuthUser.getIdToken(),
+    courseID as string,
+    "ssr",
+  );
+
+  if (courseDetailsErr !== null) {
+    console.error(courseDetailsErr);
+    // handle error
+    return { notFound: true };
+  }
+
+  if (courseDetails === null) throw new Error("This shouldn't have happened");
+  const page = courseDetails.pages.find((page) => page._id === pageID);
+  if (page === undefined) return { notFound: true };
+
+  // Fetch link for resources
+  page.resources = await parseResource(page.resources);
+
+  // Now for each section
+  for (const section of page.sections) {
+    section.resources = await parseResource(section.resources);
+  }
+
   return {
     props: {
-      ...data,
-      courseId: query?.courseID as string,
-      pageId: query?.pageID as string,
+      pageData: page,
+      courseData: courseDetails,
     },
   };
 });
 
-export default withAuthUser<PageProps>({
+export default withAuthUser<CoursePageProps>({
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
   // LoaderComponent: MyLoader,
-})(SectionPage);
+})(CoursePage);
