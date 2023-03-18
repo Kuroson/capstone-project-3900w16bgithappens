@@ -27,7 +27,6 @@ export type Course = {
 
 type HomePageProps = {
   userDetails: UserDetails;
-  courseRoutes: Routes[];
 };
 
 const HomePage = ({ userDetails }: HomePageProps): JSX.Element => {
@@ -107,66 +106,20 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = withAuthUse
     "ssr",
   );
 
-  // // Fetch User's course data
-  // const [resCourseData, errCourseData] = await apiGet<any, CourseGETResponse>(
-  //   `${CLIENT_BACKEND_URL}/course`,
-  //   await AuthUser.getIdToken(),
-  //   {},
-  // );
-
-  const errCourseData = null;
-  const resCourseData = { courses: [] };
-
-  if (errUserData !== null || errCourseData !== null) {
-    console.error(errUserData ?? errCourseData);
+  if (errUserData !== null) {
     // handle error
     return {
       props: {
-        userDetails: {
-          email: null,
-          firstName: null,
-          lastName: null,
-          role: null,
-          avatar: null,
-          coursesEnrolled: null,
-        },
-        courseRoutes: [],
+        userDetails: {} as any,
       },
     };
   }
 
-  if (errUserData !== null || errCourseData !== null) {
-    console.error(errUserData ?? errCourseData);
-    // handle error
-    return {
-      props: {
-        userDetails: {
-          email: null,
-          firstName: null,
-          lastName: null,
-          role: null,
-          avatar: null,
-          coursesEnrolled: null,
-        },
-        courseRoutes: [],
-      },
-    };
-  }
-
-  if (resUserData === null || resCourseData === null)
-    throw new Error("This shouldn't have happened");
-
-  const courseRoutes: Routes[] = resCourseData.courses.map((x: any) => {
-    return {
-      name: x.code,
-      route: `/course/${x.courseId}`,
-    };
-  });
+  if (resUserData === null) throw new Error("This shouldn't have happened");
 
   return {
     props: {
-      userDetails: resUserData,
-      courseRoutes: courseRoutes,
+      userDetails: resUserData.userDetails,
     },
   };
 });
