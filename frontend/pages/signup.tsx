@@ -9,6 +9,7 @@ import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, Footer, LeftSideBar, SideNavbar } from "components";
 import { HttpException } from "util/HttpExceptions";
 import { CLIENT_BACKEND_URL, apiPost } from "util/api/api";
+import { registerNewUser } from "util/api/userApi";
 import { isValidEmail, isValidPassword } from "util/authVerficiation";
 
 type PasswordRequirementsProps = {
@@ -53,16 +54,6 @@ const PasswordRequirements = ({
 
 type SignUpPageProps = {
   CLIENT_BACKEND_URL: string;
-};
-
-type APIPayload = {
-  firstName: string;
-  lastName: string;
-  email: string;
-};
-
-type APIResponse = {
-  message: string;
 };
 
 const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
@@ -135,23 +126,19 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
         errorCreation = true;
       });
 
-    if (errorCreation) {
+    if (errorCreation || authUser) {
       setLoading(false);
       return; // Don't continue, error
     }
 
-    const payload: APIPayload = {
+    const payload = {
       firstName,
       lastName,
       email,
     };
 
-    const [res, err] = await apiPost<APIPayload, APIResponse>(
-      `${CLIENT_BACKEND_URL}/auth/register`,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (authUser as any).user?.accessToken,
-      payload,
-    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [res, err] = await registerNewUser((authUser as any).user?.accessToken, payload);
 
     if (err !== null) {
       if (err instanceof HttpException) {
