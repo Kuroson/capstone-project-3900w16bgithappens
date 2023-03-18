@@ -73,10 +73,6 @@ const HomePage = (): JSX.Element => {
   if (loading) return <div>Loading...</div>;
   const userDetails = user.userDetails as UserDetails;
 
-  const studentRoutes: Routes[] = [
-    { name: "Dashboard", route: "/", Icon: <HomeIcon fontSize="large" color="primary" /> },
-  ];
-
   // search course id
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -87,6 +83,17 @@ const HomePage = (): JSX.Element => {
       }
     }
   };
+
+  const studentRoutes: Routes[] = [
+    { name: "Dashboard", route: "/", Icon: <HomeIcon fontSize="large" color="primary" /> },
+    ...userDetails.enrolments.map((x) => {
+      return {
+        name: x.code,
+        route: `/course/${x._id}`,
+        // Icon: <HomeIcon fontSize="large" color="primary" />,
+      };
+    }),
+  ];
 
   return (
     <>
@@ -127,7 +134,6 @@ const HomePage = (): JSX.Element => {
           </div>
         </div>
       </ContentContainer>
-      {/* <Footer /> */}
     </>
   );
 };
