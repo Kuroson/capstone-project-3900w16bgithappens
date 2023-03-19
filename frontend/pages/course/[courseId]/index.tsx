@@ -105,15 +105,15 @@ const StudentCoursePage = ({ courseData }: StudentCoursePageProps): JSX.Element 
 export const getServerSideProps: GetServerSideProps<StudentCoursePageProps> = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
 })(async ({ AuthUser, query }): Promise<{ props: StudentCoursePageProps } | { notFound: true }> => {
-  const { courseID } = query;
+  const { courseId } = query;
 
-  if (courseID === undefined || typeof courseID !== "string") {
+  if (courseId === undefined || typeof courseId !== "string") {
     return { notFound: true };
   }
 
   const [courseDetails, courseDetailsErr] = await getUserCourseDetails(
     await AuthUser.getIdToken(),
-    courseID as string,
+    courseId as string,
     "ssr",
   );
 

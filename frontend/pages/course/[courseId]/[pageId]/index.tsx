@@ -201,20 +201,20 @@ export const getServerSideProps: GetServerSideProps<CoursePageProps> = withAuthU
     return parsedResources;
   };
 
-  const { courseID, pageID } = query;
+  const { courseId, pageId } = query;
 
   if (
-    courseID === undefined ||
-    typeof courseID !== "string" ||
-    pageID === undefined ||
-    typeof pageID !== "string"
+    courseId === undefined ||
+    typeof courseId !== "string" ||
+    pageId === undefined ||
+    typeof pageId !== "string"
   ) {
     return { notFound: true };
   }
 
   const [courseDetails, courseDetailsErr] = await getUserCourseDetails(
     await AuthUser.getIdToken(),
-    courseID as string,
+    courseId as string,
     "ssr",
   );
 
@@ -225,7 +225,7 @@ export const getServerSideProps: GetServerSideProps<CoursePageProps> = withAuthU
   }
 
   if (courseDetails === null) throw new Error("This shouldn't have happened");
-  const page = courseDetails.pages.find((page) => page._id === pageID);
+  const page = courseDetails.pages.find((page) => page._id === pageId);
   if (page === undefined) return { notFound: true };
 
   // Fetch link for resources
