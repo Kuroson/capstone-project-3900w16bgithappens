@@ -22,7 +22,7 @@ import {
 } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
 import { useUser } from "util/UserContext";
-import { getFileDownloadLink } from "util/api/ResourceApi";
+import { getFileDownloadLink } from "util/api/resourceApi";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { deletePage } from "util/api/pageApi";
 import { getUserDetails } from "util/api/userApi";

@@ -14,8 +14,8 @@ import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "nex
 import { ContentContainer, StudentNavBar } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
 import { useUser } from "util/UserContext";
-import { getFileDownloadLink } from "util/api/ResourceApi";
 import { getUserCourseDetails } from "util/api/courseApi";
+import { getFileDownloadLink } from "util/api/resourceApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 
