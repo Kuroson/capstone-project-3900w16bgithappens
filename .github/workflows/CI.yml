@@ -160,7 +160,11 @@ jobs:
       - name: Install cypress
         working-directory: "./frontend"
         run: yarn add cypress
+      - name: Docker-compose up
+        run: docker-compose up
       - name: Cypress e2e
         run: |
-          docker-compose up --abort-on-container-exit &
-          sleep 20 && cd "./frontend" && yarn cypress:headless
+          cd "./frontend" && yarn cypress:headless
+      - name: Stop docker-compose
+        if: always()
+        run: docker-compose down
