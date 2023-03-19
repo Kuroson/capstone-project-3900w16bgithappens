@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -25,7 +25,12 @@ import { useUser } from "util/UserContext";
 import { getFileDownloadLink } from "util/api/ResourceApi";
 import { CLIENT_BACKEND_URL, apiDelete, apiGet } from "util/api/api";
 import { getUserCourseDetails } from "util/api/courseApi";
-import { UpdatePagePayloadRequest, deletePage, updatePageResource } from "util/api/pageApi";
+import {
+  UpdatePagePayloadRequest,
+  deletePage,
+  updatePageResource,
+  uploadResourceFile,
+} from "util/api/pageApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
@@ -99,8 +104,32 @@ const SingleResource = ({
         return;
       }
       if (res === null) throw new Error("Shouldn't happen");
-      toast.info("Changes saved");
-      // Save files now
+      toast.success("Text changes saved");
+
+      if (file !== null) {
+        // Save files now
+        toast.warning("File upload detected");
+        const [fileRes, fileErr] = await uploadResourceFile(
+          await authUser.getIdToken(),
+          file,
+          { resourceId: resource._id },
+          "client",
+        );
+
+        if (fileErr !== null) {
+          console.error(fileErr);
+          if (fileErr instanceof HttpException) {
+            toast.error(fileErr.message);
+          } else {
+            toast.error("Failed to upload file");
+          }
+          return;
+        }
+
+        if (fileRes === null) throw new Error("Shouldn't happen");
+        toast.success("File uploaded");
+        setFile(null);
+      }
     }
     setEditMode(!editMode);
   };
