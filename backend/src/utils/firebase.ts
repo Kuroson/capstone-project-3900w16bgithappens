@@ -7,9 +7,19 @@ import { getStorage } from "firebase-admin/storage";
 import multer from "multer";
 import FirebaseStorage from "multer-firebase-storage";
 
+const FIREBASE_KEY = (): string => {
+    try {
+        return validateEnv.FIREBASE_PRIVATE_KEY !== undefined
+            ? JSON.parse(validateEnv.FIREBASE_PRIVATE_KEY)
+            : undefined;
+    } catch (err) {
+        return validateEnv.FIREBASE_PRIVATE_KEY ?? "";
+    }
+};
+
 const credentials = {
     projectId: validateEnv.FIREBASE_PROJECT_ID,
-    privateKey: JSON.parse(validateEnv.FIREBASE_PRIVATE_KEY),
+    privateKey: FIREBASE_KEY(),
     clientEmail: validateEnv.FIREBASE_CLIENT_EMAIL,
 };
 
