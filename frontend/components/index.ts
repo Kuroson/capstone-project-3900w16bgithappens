@@ -8,6 +8,9 @@ import {
   SideNavbar,
   StudentNavBar,
 } from "./Layout";
+import AddNewResourceSection from "./admin/resource/AddNewResourceSection";
+import ResourcesSection from "./admin/resource/ResourcesSection";
+import SingleEditableResource from "./admin/resource/SingleEditableResource";
 
 export {
   ContentContainer,
@@ -18,4 +21,7 @@ export {
   StudentNavBar,
   EmptyNavBar,
   AdminNavBar,
+  SingleEditableResource,
+  AddNewResourceSection,
+  ResourcesSection,
 };
