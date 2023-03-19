@@ -129,13 +129,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-      - name: Install dependencies for backend
-        working-directory: "./backend"
-        run: yarn
-      - name: Install dependencies for frontend
-        working-directory: "./frontend"
-        run: yarn
-      - name: Start backend
+        # - name: Install dependencies for backend
+        #   working-directory: "./backend"
+        #   run: yarn
+        # - name: Install dependencies for frontend
+        #   working-directory: "./frontend"
+        #   run: yarn
+      - name: Dump backend env
         working-directory: "./backend"
         env:
           FIREBASE_PRIVATE_KEY: ${{ secrets.BACKEND_FIREBASE_PRIVATE_KEY }}
@@ -143,8 +143,8 @@ jobs:
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
           MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-        run: yarn dev &
-      - name: Run frontend e2e tests
+        run: env >> .env
+      - name: Dump frontend env
         working-directory: "./frontend"
         env:
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
@@ -154,4 +154,8 @@ jobs:
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
           NEXT_PUBLIC_FIREBASE_DATABASE_URL: ${{ secrets.NEXT_PUBLIC_FIREBASE_DATABASE_URL }}
           NEXT_PUBLIC_COOKIE_SECURE: false
-        run: yarn e2e:headless
+        run: env >> .env.local
+      - name: Docker compose build
+        run: docker-compose build
+      - name: Docker compose up
+        run: docker-compose up
