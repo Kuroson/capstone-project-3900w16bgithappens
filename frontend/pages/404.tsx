@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { ContentContainer, EmptyNavBar, LeftSideBar } from "components";
+import { ContentContainer, EmptyNavBar } from "components";
 
 export default function Custom404() {
   return (
@@ -16,7 +16,6 @@ export default function Custom404() {
           <p className="text-base">The page you were looking for could not be found.</p>
         </div>
       </ContentContainer>
-      <LeftSideBar />
     </>
   );
 }
