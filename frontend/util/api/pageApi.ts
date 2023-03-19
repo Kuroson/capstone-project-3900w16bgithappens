@@ -1,4 +1,4 @@
-import { BackendLinkType, apiDelete, apiPost } from "./api";
+import { BackendLinkType, apiDelete, apiPost, apiPut } from "./api";
 import { getBackendLink } from "./userApi";
 
 type CreateNewPagePayloadRequest = {
@@ -42,5 +42,30 @@ export const deletePage = (
     `${getBackendLink(type)}/page`,
     token,
     { courseId: courseId, pageId: pageId },
+  );
+};
+
+export type UpdatePagePayloadRequest = {
+  courseId: string;
+  pageId: string;
+  title: string;
+  sectionId: string | null;
+  resourceId: string | null; // This value will exist if we are updating a resource
+  description: string;
+};
+
+type UpdatePagePayloadResponse = {
+  courseId: string;
+};
+
+export const updatePageResource = (
+  token: string | null,
+  payload: UpdatePagePayloadRequest,
+  type: BackendLinkType,
+) => {
+  return apiPut<UpdatePagePayloadRequest, UpdatePagePayloadResponse>(
+    `${getBackendLink(type)}/page/add/resource`,
+    token,
+    payload,
   );
 };
