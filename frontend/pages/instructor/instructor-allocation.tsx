@@ -11,7 +11,7 @@ import initAuth from "util/firebase";
 
 initAuth(); // SSR maybe, i think...
 
-const Admin = (): JSX.Element => {
+const InstructorAllocationPage = (): JSX.Element => {
   const user = useUser();
   const [loading, setLoading] = React.useState(user.userDetails === null);
 
@@ -80,4 +80,4 @@ export default withAuthUser({
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
   // LoaderComponent: MyLoader,
-})(Admin);
+})(InstructorAllocationPage);
