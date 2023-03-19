@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
-import HomeIcon from "@mui/icons-material/Home";
+import { useRouter } from "next/router";
+import AddIcon from "@mui/icons-material/Add";
 import { TextField } from "@mui/material";
 import { BasicCourseInfo } from "models/course.model";
 import { UserDetails } from "models/user.model";
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
-import { ContentContainer, StudentNavBar } from "components";
-import { Routes } from "components/Layout/NavBars/NavBar";
+import { AdminNavBar, ContentContainer } from "components";
+import { defaultAdminRoutes } from "components/Layout/NavBars/NavBar";
 import CourseCard from "components/common/CourseCard";
 import { useUser } from "util/UserContext";
 import { getUserDetails } from "util/api/userApi";
@@ -16,29 +16,17 @@ import initAuth from "util/firebase";
 
 initAuth(); // SSR maybe, i think...
 
-export type Course = {
-  courseId: string;
-  code: string;
-  title: string;
-  description: string;
-  session: string;
-  icon: string;
-};
-
-type HomePageProps = {
-  userDetails: UserDetails;
-};
-
-const HomePage = (): JSX.Element => {
+const Admin = (): JSX.Element => {
   const user = useUser();
-  const [loading, setLoading] = React.useState(user.userDetails !== null);
-  const [searchCode, setSearchCode] = useState("");
+  const [loading, setLoading] = React.useState(user.userDetails === null);
   const [showedCourses, setShowedCourses] = useState<BasicCourseInfo[]>(
-    user.userDetails?.enrolments ?? [],
+    user.userDetails?.created_courses ?? [],
   );
-  const authUser = useAuthUser();
-  console.log(authUser);
+  const [searchCode, setSearchCode] = useState("");
 
+  // const allCourses = courses;
+  const authUser = useAuthUser();
+  const router = useRouter();
   React.useEffect(() => {
     // Build user data for user context
     const fetchUserData = async () => {
@@ -61,8 +49,8 @@ const HomePage = (): JSX.Element => {
         .then((res) => {
           if (user.setUserDetails !== undefined) {
             user.setUserDetails(res.userDetails);
-            setShowedCourses(res.userDetails.enrolments);
           }
+          setShowedCourses(res.userDetails.created_courses);
         })
         .then(() => setLoading(false))
         .catch((err) => {
@@ -88,49 +76,43 @@ const HomePage = (): JSX.Element => {
     }
   };
 
-  const studentRoutes: Routes[] = [
-    { name: "Dashboard", route: "/", icon: <HomeIcon fontSize="large" color="primary" /> },
-    ...userDetails.enrolments.map((x) => {
-      return {
-        name: x.code,
-        route: `/course/${x._id}`,
-        // Icon: <HomeIcon fontSize="large" color="primary" />,
-      };
-    }),
-  ];
-
   return (
     <>
       <Head>
-        <title>Home page</title>
+        <title>Admin page</title>
         <meta name="description" content="Home page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <StudentNavBar userDetails={userDetails} routes={studentRoutes} />
+      <AdminNavBar userDetails={userDetails} routes={defaultAdminRoutes} />
       <ContentContainer>
         <div className="flex flex-col w-full justify-center px-[5%]">
-          <h1 className="text-3xl w-full text-left border-solid border-t-0 border-x-0 border-[#EEEEEE] mt-5">
+          <h1 className="text-3xl w-full text-left border-solid border-t-0 border-x-0 border-[#EEEEEE] pt-4">
             <span className="ml-4">
               Welcome, {`${userDetails.first_name} ${userDetails.last_name}`}
             </span>
           </h1>
-          <div className="flex justify-between mx-6 mt-2">
+          {/* admin dashboard */}
+          <div className="flex justify-between mx-6 pt-2">
             <h2>Course Overview</h2>
-            <div className="">
-              <TextField
-                id="search course"
-                label="Search Course Code"
-                variant="outlined"
-                sx={{ width: "300px" }}
-                onKeyDown={handleKeyDown}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchCode(e.target.value)}
-              />
-            </div>
+            <TextField
+              id="search course"
+              label="Search Course Code"
+              variant="outlined"
+              sx={{ width: "300px" }}
+              onKeyDown={handleKeyDown}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchCode(e.target.value)}
+            />
           </div>
           <div className="flex flex-wrap w-full mx-3">
-            {showedCourses?.map((x, index) => {
-              return <CourseCard key={index} course={x} href={`/course/${x._id}`} />;
-            })}
+            {showedCourses?.map((course, index) => (
+              <CourseCard key={index} course={course} href={`/instructor/${course._id}`} />
+            ))}
+            <div
+              className="flex flex-col rounded-lg shadow-md p-5 my-2 mx-5 w-[370px] h-[264px] cursor-pointer hover:shadow-lg items-center justify-center"
+              onClick={() => router.push("/instructor/create-course")}
+            >
+              <AddIcon fontSize="large" color="primary" />
+            </div>
           </div>
         </div>
       </ContentContainer>
@@ -138,8 +120,8 @@ const HomePage = (): JSX.Element => {
   );
 };
 
-export default withAuthUser<HomePageProps>({
+export default withAuthUser({
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
   // LoaderComponent: MyLoader,
-})(HomePage);
+})(Admin);

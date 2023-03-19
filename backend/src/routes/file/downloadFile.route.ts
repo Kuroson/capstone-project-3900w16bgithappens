@@ -2,13 +2,12 @@ import { HttpException } from "@/exceptions/HttpException";
 import Resource from "@/models/resource.model";
 import { checkAuth, recallFileUrl } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
-import { getMissingBodyIDs, isValidBody } from "@/utils/util";
+import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 
 type ResponsePayload = {
-    linkToFile?: string;
-    fileType?: string;
-    message?: string;
+    linkToFile: string;
+    fileType: string;
 };
 
 type QueryPayload = {
@@ -18,13 +17,14 @@ type QueryPayload = {
 /**
  * GET /file
  * Attempt to get the details of a file based on resourceId
+ * NOTE Anyone can use this with a valid JWT token
  * @param req
  * @param res
  * @returns
  */
 export const downloadFileController = async (
     req: Request<QueryPayload>,
-    res: Response<ResponsePayload>,
+    res: Response<ResponsePayload | ErrorResponsePayload>,
 ) => {
     try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,11 +40,11 @@ export const downloadFileController = async (
                 throw new HttpException(400, `Failed to retrieve resource of ${resourceId}`);
 
             if (myFile.stored_name === undefined || myFile.stored_name === "") {
-                return res.status(200).json({ linkToFile: "", fileType: "" });
+                return res.status(400).json({ message: "File does not have a link" });
             }
 
             const fileUrl = await recallFileUrl(myFile.stored_name);
-            return res.status(200).json({ linkToFile: fileUrl, fileType: myFile.file_type });
+            return res.status(200).json({ linkToFile: fileUrl, fileType: myFile.file_type ?? "" });
         } else {
             throw new HttpException(
                 400,

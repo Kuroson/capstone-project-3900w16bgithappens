@@ -1,11 +1,14 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Resource from "@/models/resource.model";
+import { recallFileUrl } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 
 type ResponsePayload = {
     success: boolean;
+    file_type: string;
+    download_link: string; // i.e., download link
 };
 
 type QueryPayload = {
@@ -43,7 +46,14 @@ export const uploadFileController = async (
                 throw new HttpException(500, "Failed to save updated resource", err);
             });
 
-            return res.status(200).json({ success: true });
+            // Get download link and type
+            const fileLink = await recallFileUrl(resource.stored_name ?? "");
+
+            return res.status(200).json({
+                success: true,
+                download_link: fileLink,
+                file_type: resource.file_type ?? "",
+            });
         } else {
             throw new HttpException(
                 400,

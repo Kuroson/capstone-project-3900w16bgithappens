@@ -10,7 +10,7 @@ import { Request, Response } from "express";
 import { checkAdmin } from "../admin/admin.route";
 
 type ResponsePayload = {
-    resourceId?: string;
+    resourceId: string;
 };
 
 type QueryPayload = {

@@ -52,7 +52,7 @@ indexRouter.get("/page", getPagesController);
 indexRouter.delete("/page", deletePageController);
 indexRouter.put("/page/update", updatePageController);
 indexRouter.post("/page/create", createPageController);
-indexRouter.put("/page/add/resource", addResourceController);
+indexRouter.put("/page/add/resource", addResourceController); // This updates and create, should split up
 indexRouter.put("/page/add/section", addSectionController);
 indexRouter.delete("/page/remove/resource", deleteResourceController);
 indexRouter.delete("/page/removes/section", deleteSectionController);
