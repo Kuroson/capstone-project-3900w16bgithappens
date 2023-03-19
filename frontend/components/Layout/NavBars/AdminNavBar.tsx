@@ -1,3 +1,5 @@
+import React from "react";
+import { toast } from "react-toastify";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Button,
@@ -10,27 +12,25 @@ import {
   TextField,
 } from "@mui/material";
 import { getAuth, signOut } from "firebase/auth";
-import { getRoleText, UserDetails } from "models/user.model";
-import NavBar, { Routes } from "./NavBar";
-import { useUser } from "util/UserContext";
 import { UserCourseInformation } from "models/course.model";
-import React from "react";
-import { createNewPage } from "util/api/pageApi";
+import { UserDetails, getRoleText } from "models/user.model";
 import { useAuthUser } from "next-firebase-auth";
 import { HttpException } from "util/HttpExceptions";
-import { toast } from "react-toastify";
+import { useUser } from "util/UserContext";
+import { createNewPage } from "util/api/pageApi";
+import NavBar, { Routes } from "./NavBar";
 
 type AdminNavBar = {
   userDetails: UserDetails;
   routes: Routes[];
   courseData?: UserCourseInformation;
-  showAddPage?: boolean
-}
+  showAddPage?: boolean;
+};
 
 /**
  * User avatar
  */
-const UserDetails = ({ first_name, last_name, role, avatar }: UserDetails): JSX.Element => {
+const UserDetailSection = ({ first_name, last_name, role, avatar }: UserDetails): JSX.Element => {
   return (
     <div className="mt-5 flex flex-row justify-center">
       <div className="w-[50px] h-[50px] bg-orange-500 rounded-full flex justify-center items-center">
@@ -47,16 +47,14 @@ const UserDetails = ({ first_name, last_name, role, avatar }: UserDetails): JSX.
 };
 
 type CourseDetailsProps = {
-  code: string
-}
+  code: string;
+};
 
 const CourseDetails = ({ code }: CourseDetailsProps): JSX.Element => {
   return (
     <div className="mt-5 flex flex-row justify-center">
       <div className="w-[50px] h-[50px] bg-orange-500 rounded-full flex justify-center items-center">
-        <span className="text-3xl font-bold">
-          {code.charAt(0) ?? ""}
-        </span>
+        <span className="text-3xl font-bold">{code.charAt(0) ?? ""}</span>
       </div>
       <div className="flex flex-col pl-2 justify-center items-center">
         <span className="font-bold text-start w-full text-2xl">{code}</span>
@@ -80,7 +78,7 @@ export default function AdminNavBar({
   userDetails,
   routes,
   courseData,
-  showAddPage
+  showAddPage,
 }: AdminNavBar): JSX.Element {
   const user = useUser();
   const authUser = useAuthUser();
@@ -90,16 +88,12 @@ export default function AdminNavBar({
   const [pageName, setPageName] = React.useState("");
   const [dynamicRoutes, setDynamicRoutes] = React.useState(routes);
 
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRadio((event.target as HTMLInputElement).value);
   };
-
 
   const handleOnClick = async () => {
     signOut(getAuth());
@@ -111,7 +105,12 @@ export default function AdminNavBar({
   const sendRequest = async (name: string) => {
     // Send to backend
 
-    const [res, err] = await createNewPage(await authUser.getIdToken(), courseData?._id ?? "", pageName, "client");
+    const [res, err] = await createNewPage(
+      await authUser.getIdToken(),
+      courseData?._id ?? "",
+      pageName,
+      "client",
+    );
     if (err !== null) {
       console.error(err);
       if (err instanceof HttpException) {
@@ -132,14 +131,16 @@ export default function AdminNavBar({
     // TODO do the rest later
     if (radio === "Other Page") {
       const res = await sendRequest(pageName);
-      setDynamicRoutes([...dynamicRoutes, {
-        name: pageName,
-        route: `/instructor/${courseData?._id ?? "123"}/${res.pageId}`,
-      }]);
+      setDynamicRoutes([
+        ...dynamicRoutes,
+        {
+          name: pageName,
+          route: `/instructor/${courseData?._id ?? "123"}/${res.pageId}`,
+        },
+      ]);
     } else {
       // TODO
       // sendRequest(radio);
-
       // routes.push({
       //   name: pageName,
       //   route: `/instructor/${courseId}`,
@@ -157,23 +158,25 @@ export default function AdminNavBar({
     <div className="w-full">
       <div
         className="h-full fixed top-[0] left-[0] z-10 w-[13rem]"
-      // 13rem matches Layout.module.scss
+        // 13rem matches Layout.module.scss
       >
         <div className="w-full flex flex-col justify-between h-[calc(100%_-_4rem)]">
           <div>
             {/* Top */}
-            {courseData === undefined && <UserDetails {...userDetails} />}
+            {courseData === undefined && <UserDetailSection {...userDetails} />}
             {courseData !== undefined && <CourseDetails code={courseData?.code ?? ""} />}
             <NavBar
               routes={dynamicRoutes}
               role={getRoleText(userDetails.role)}
               isCoursePage={false}
             />
-            {showAddPage === true && <div className="flex justify-center items-center w-full">
-              <Button variant="outlined" onClick={handleOpen}>
-                Add New Page
-              </Button>
-            </div>}
+            {showAddPage === true && (
+              <div className="flex justify-center items-center w-full">
+                <Button variant="outlined" onClick={handleOpen}>
+                  Add New Page
+                </Button>
+              </div>
+            )}
             <Modal
               open={open}
               onClose={handleClose}
@@ -181,7 +184,7 @@ export default function AdminNavBar({
               aria-describedby="modal-modal-description"
             >
               <form onSubmit={handleOnSubmit}>
-                <FormControl sx={style} >
+                <FormControl sx={style}>
                   <FormLabel id="add new page">Add new Page</FormLabel>
                   <RadioGroup
                     aria-labelledby="select new page"
@@ -227,8 +230,6 @@ export default function AdminNavBar({
                 </FormControl>
               </form>
             </Modal>
-
-
           </div>
           <div className="flex justify-center items-center mb-5">
             {/* Bottom */}
