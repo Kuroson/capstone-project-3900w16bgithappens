@@ -163,4 +163,4 @@ jobs:
       - name: Cypress e2e
         run: |
           docker-compose up --abort-on-container-exit &
-          cd "./frontend" && yarn cypress:headless
+          sleep 20 && cd "./frontend" && yarn cypress:headless
