@@ -76,7 +76,7 @@ interface UploadFilePayloadRequest extends Record<string, string> {
   resourceId: string;
 }
 
-type UploadFilePayloadResponse = {
+export type UploadFilePayloadResponse = {
   success: boolean;
   file_type: string;
   download_link: string; // i.e., download link
@@ -113,4 +113,27 @@ export const uploadResourceFile = async (
     console.error("Error with posting to example");
     return [null, err];
   }
+};
+
+type AddNewResourcePayloadRequest = {
+  courseId: string;
+  pageId: string;
+  title: string;
+  description: string;
+};
+
+type AddNewResourcePayloadResponse = {
+  resourceId: string;
+};
+
+export const addNewResource = (
+  token: string | null,
+  payload: AddNewResourcePayloadRequest,
+  type: BackendLinkType,
+) => {
+  return apiPut<UpdatePagePayloadRequest, AddNewResourcePayloadResponse>(
+    `${getBackendLink(type)}/page/add/resource`,
+    token,
+    { ...payload, resourceId: null, sectionId: null },
+  );
 };
