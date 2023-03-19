@@ -127,6 +127,8 @@ const SingleResource = ({
         }
 
         if (fileRes === null) throw new Error("Shouldn't happen");
+        setStoredName(fileRes.download_link);
+        setFileType(fileRes.file_type);
         toast.success("File uploaded");
         setFile(null);
       }
@@ -139,7 +141,7 @@ const SingleResource = ({
    */
   const EditPanel = (): JSX.Element => {
     return (
-      <div className="outline">
+      <div className="">
         <IconButton
           color="primary"
           aria-label="edit"

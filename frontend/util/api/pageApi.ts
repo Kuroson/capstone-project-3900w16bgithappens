@@ -77,7 +77,9 @@ interface UploadFilePayloadRequest extends Record<string, string> {
 }
 
 type UploadFilePayloadResponse = {
-  message: string;
+  success: boolean;
+  file_type: string;
+  download_link: string; // i.e., download link
 };
 
 export const uploadResourceFile = async (
