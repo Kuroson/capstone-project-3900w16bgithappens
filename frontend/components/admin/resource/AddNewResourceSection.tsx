@@ -44,6 +44,7 @@ type AddNewResourceSectionProps = {
   pageId: string;
   setResources: React.Dispatch<React.SetStateAction<ResourceInterface[]>>;
   resources: ResourceInterface[];
+  sectionId: string | null;
 };
 
 const AddNewResourceSection = ({
@@ -51,6 +52,7 @@ const AddNewResourceSection = ({
   pageId,
   setResources,
   resources,
+  sectionId,
 }: AddNewResourceSectionProps): JSX.Element => {
   const authUser = useAuthUser();
 
@@ -67,6 +69,10 @@ const AddNewResourceSection = ({
     setFile(null);
   };
 
+  React.useEffect(() => {
+    setOpen(false);
+  }, [pageId, courseId]);
+
   const handleNewResource = async () => {
     // Create the new resource
     const newResource = {
@@ -74,6 +80,7 @@ const AddNewResourceSection = ({
       description: description,
       courseId: courseId,
       pageId: pageId,
+      sectionId: sectionId,
     };
 
     const [res, err] = await addNewResource(await authUser.getIdToken(), newResource, "client");

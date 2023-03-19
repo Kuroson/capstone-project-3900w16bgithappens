@@ -120,6 +120,7 @@ type AddNewResourcePayloadRequest = {
   pageId: string;
   title: string;
   description: string;
+  sectionId: string | null;
 };
 
 type AddNewResourcePayloadResponse = {
@@ -134,7 +135,7 @@ export const addNewResource = (
   return apiPut<UpdatePagePayloadRequest, AddNewResourcePayloadResponse>(
     `${getBackendLink(type)}/page/add/resource`,
     token,
-    { ...payload, resourceId: null, sectionId: null },
+    { ...payload, resourceId: null },
   );
 };
 
@@ -156,6 +157,66 @@ export const removeResource = (
 ) => {
   return apiDelete<RemoveResourcePayloadRequest, RemoveResourcePayloadResponse>(
     `${getBackendLink(type)}/page/remove/resource`,
+    token,
+    payload,
+  );
+};
+
+export type UpdateSectionPayloadRequest = {
+  courseId: string;
+  pageId: string;
+  sectionId: string | null;
+  title: string;
+};
+
+type UpdateSectionPayloadResponse = {
+  sectionId: string;
+};
+
+export const updateSection = (
+  token: string | null,
+  payload: UpdateSectionPayloadRequest,
+  type: BackendLinkType,
+) => {
+  return apiPut<UpdateSectionPayloadRequest, UpdateSectionPayloadResponse>(
+    `${getBackendLink(type)}/page/add/section`,
+    token,
+    payload,
+  );
+};
+
+export type AddSectionPayloadRequest = UpdateSectionPayloadRequest;
+type AddSectionPayloadResponse = UpdateSectionPayloadResponse;
+
+export const createSection = (
+  token: string | null,
+  payload: UpdateSectionPayloadRequest,
+  type: BackendLinkType,
+) => {
+  return apiPut<AddSectionPayloadRequest, AddSectionPayloadResponse>(
+    `${getBackendLink(type)}/page/add/section`,
+    token,
+    payload,
+  );
+};
+
+export type DeleteSectionPayloadRequest = {
+  courseId: string;
+  pageId: string;
+  sectionId: string;
+};
+
+type DeleteSectionPayloadResponse = {
+  message: string;
+};
+
+export const deleteSection = (
+  token: string | null,
+  payload: DeleteSectionPayloadRequest,
+  type: BackendLinkType,
+) => {
+  return apiDelete<DeleteSectionPayloadRequest, DeleteSectionPayloadResponse>(
+    `${getBackendLink(type)}/page/removes/section`,
     token,
     payload,
   );

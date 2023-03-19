@@ -34,6 +34,7 @@ import {
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 import { Nullable, getRoleName } from "util/util";
+import EditPanelButtons from "../EditPanelButtons";
 
 type SingleEditableResourceProps = {
   resource: ResourceInterface;
@@ -41,6 +42,7 @@ type SingleEditableResourceProps = {
   courseId: string;
   pageId: string;
   resources: ResourceInterface[];
+  sectionId: string | null;
 };
 
 /**
@@ -53,6 +55,7 @@ const SingleEditableResource = ({
   courseId,
   pageId,
   resources,
+  sectionId,
 }: SingleEditableResourceProps): JSX.Element => {
   const authUser = useAuthUser();
 
@@ -103,7 +106,7 @@ const SingleEditableResource = ({
         resourceId: resource._id,
         title: title,
         description: description ?? "",
-        sectionId: null, // not a section
+        sectionId: sectionId,
       };
 
       const [res, err] = await updatePageResource(
@@ -153,28 +156,6 @@ const SingleEditableResource = ({
       }
     }
     setEditMode(!editMode);
-  };
-
-  /**
-   * Edit and delete buttons
-   */
-  const EditPanel = (): JSX.Element => {
-    return (
-      <div className="">
-        <IconButton
-          color="primary"
-          aria-label="edit"
-          component="label"
-          onClick={handleEditClick}
-          // disabled={editResource && title === ""}
-        >
-          {editMode ? <DoneIcon /> : <EditIcon />}
-        </IconButton>
-        <IconButton color="error" aria-label="delete" component="label" onClick={handleRemoveClick}>
-          <DeleteIcon />
-        </IconButton>
-      </div>
-    );
   };
 
   // Show edit interface
@@ -234,7 +215,11 @@ const SingleEditableResource = ({
           )}
         </div>
         <div>
-          <EditPanel />
+          <EditPanelButtons
+            editMode={editMode}
+            handleEditClick={handleEditClick}
+            handleRemoveClick={handleRemoveClick}
+          />
         </div>
       </div>
     );
@@ -261,7 +246,11 @@ const SingleEditableResource = ({
         </div>
       )}
       <div>
-        <EditPanel />
+        <EditPanelButtons
+          editMode={editMode}
+          handleEditClick={handleEditClick}
+          handleRemoveClick={handleRemoveClick}
+        />
       </div>
     </div>
   );

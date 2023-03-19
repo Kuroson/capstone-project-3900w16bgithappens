@@ -7,6 +7,7 @@ type ResourcesSectionProps = {
   setResources: React.Dispatch<React.SetStateAction<ResourceInterface[]>>;
   courseId: string;
   pageId: string;
+  sectionId: string | null;
 };
 
 const ResourcesSection = ({
@@ -14,6 +15,7 @@ const ResourcesSection = ({
   setResources,
   courseId,
   pageId,
+  sectionId,
 }: ResourcesSectionProps): JSX.Element => {
   return (
     <div className="flex flex-col w-full mb-8">
@@ -26,6 +28,7 @@ const ResourcesSection = ({
             pageId={pageId}
             courseId={courseId}
             resources={resources}
+            sectionId={sectionId}
           />
         );
       })}
@@ -34,6 +37,7 @@ const ResourcesSection = ({
         pageId={pageId}
         setResources={setResources}
         resources={resources}
+        sectionId={sectionId}
       />
     </div>
   );
