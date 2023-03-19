@@ -188,7 +188,4 @@ export const CLIENT_BACKEND_URL =
 // Link used for NextJS SSR
 export const SSR_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8080";
 
-console.log(`FE: Backend API: ${CLIENT_BACKEND_URL}`);
-console.log(`SSR: Backend API: ${SSR_BACKEND_URL}`);
-
 export type BackendLinkType = "client" | "ssr";
