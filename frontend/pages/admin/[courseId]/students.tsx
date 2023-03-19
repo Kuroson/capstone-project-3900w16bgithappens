@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import GridViewIcon from "@mui/icons-material/GridView";
-// import GridViewIcon from "@mui/icons-material/GridView";
 import HomeIcon from "@mui/icons-material/Home";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { LoadingButton } from "@mui/lab";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { UserCourseInformation } from "models/course.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
@@ -17,7 +15,6 @@ import { AdminNavBar, ContentContainer } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
-import { CLIENT_BACKEND_URL, apiGet, apiPut } from "util/api/api";
 import {
   addStudentToCourse,
   getUserCourseDetails,
@@ -25,11 +22,6 @@ import {
 } from "util/api/courseApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
-import { CourseInformationFull, Nullable, getRoleName } from "util/util";
-
-// import GridViewIcon from "@mui/icons-material/GridView";
-
-// import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 initAuth(); // SSR maybe, i think...
 
