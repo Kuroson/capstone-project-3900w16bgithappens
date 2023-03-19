@@ -23,7 +23,7 @@ const FIREBASE_KEY = (): string => {
 
 const initAuth = () => {
   init({
-    debug: process.env.NODE_ENV === "production" ? false : true,
+    debug: false,
     authPageURL: "/login",
     appPageURL: "/",
     loginAPIEndpoint: "/api/login", // required
