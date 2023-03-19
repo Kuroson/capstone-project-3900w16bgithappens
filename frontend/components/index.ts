@@ -11,6 +11,8 @@ import {
 import AddNewResourceSection from "./admin/resource/AddNewResourceSection";
 import ResourcesSection from "./admin/resource/ResourcesSection";
 import SingleEditableResource from "./admin/resource/SingleEditableResource";
+import AddNewSection from "./admin/section/AddNewSection";
+import PageSections from "./admin/section/PageSections";
 
 export {
   ContentContainer,
@@ -24,4 +26,6 @@ export {
   SingleEditableResource,
   AddNewResourceSection,
   ResourcesSection,
+  AddNewSection,
+  PageSections,
 };
