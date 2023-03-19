@@ -259,7 +259,6 @@ const ResourcesSection = ({
   courseId,
   pageId,
 }: ResourcesSectionProps): JSX.Element => {
-  console.log(resources);
   return (
     <div className="flex flex-col w-full">
       {resources.map((resource) => {
@@ -285,6 +284,12 @@ const AdminCoursePage = ({ courseData, pageData }: AdminCoursePageProps): JSX.El
   // const [dynamicPageData, setDynamicPageData] = React.useState(pageData);
   const [dynamicResources, setDynamicResources] = React.useState(pageData.resources);
   const [dynamicSections, setDynamicSections] = React.useState(pageData.sections);
+
+  React.useEffect(() => {
+    // Trigger a re-render when pageData props change from server
+    setDynamicResources(pageData.resources);
+    setDynamicSections(pageData.sections);
+  }, [pageData]);
 
   React.useEffect(() => {
     // Build user data for user context
@@ -433,7 +438,6 @@ export const getServerSideProps: GetServerSideProps<AdminCoursePageProps> = with
   };
 
   const { courseId, pageId } = query;
-
   if (
     courseId === undefined ||
     typeof courseId !== "string" ||
@@ -466,7 +470,6 @@ export const getServerSideProps: GetServerSideProps<AdminCoursePageProps> = with
   for (const section of page.sections) {
     section.resources = await parseResource(section.resources);
   }
-
   return {
     props: {
       pageData: page,
