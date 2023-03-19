@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import AddIcon from "@mui/icons-material/Add";
 import { LoadingButton } from "@mui/lab";
 import { Avatar, Button, TextField } from "@mui/material";
 import { UserDetails } from "models/user.model";
-import { GetServerSideProps } from "next";
-import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { AdminNavBar, ContentContainer, SideNavbar } from "components";
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
+import { AdminNavBar, ContentContainer } from "components";
 import { defaultAdminRoutes } from "components/Layout/NavBars/NavBar";
-import CourseCard from "components/common/CourseCard";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
-import { CLIENT_BACKEND_URL, apiGet, apiPost } from "util/api/api";
 import { createNewCourse } from "util/api/courseApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
-import { Nullable, getRoleName } from "util/util";
+import { Nullable } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 

@@ -1,8 +1,6 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
-  Avatar,
   Button,
-  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,

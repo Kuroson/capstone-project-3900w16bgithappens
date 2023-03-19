@@ -1,34 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import GridViewIcon from "@mui/icons-material/GridView";
 import HomeIcon from "@mui/icons-material/Home";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { Button, Typography } from "@mui/material";
 import { ResourceInterface } from "models";
 import { UserCourseInformation } from "models/course.model";
 import { PageFull } from "models/page.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
-import {
-  AuthAction,
-  AuthUserContext,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth";
+import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, StudentNavBar } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
 import { useUser } from "util/UserContext";
 import { getFileDownloadLink } from "util/api/ResourceApi";
-import { CLIENT_BACKEND_URL, apiGet, apiUploadFile } from "util/api/api";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
-import { Nullable, getRoleName } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 

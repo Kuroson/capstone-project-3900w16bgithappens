@@ -3,7 +3,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import HomeIcon from "@mui/icons-material/Home";
-import { BasicCourseInfo, UserCourseInformation } from "models/course.model";
+import { UserCourseInformation } from "models/course.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
