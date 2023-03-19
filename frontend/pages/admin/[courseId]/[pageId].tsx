@@ -26,10 +26,12 @@ import { getFileDownloadLink } from "util/api/ResourceApi";
 import { CLIENT_BACKEND_URL, apiDelete, apiGet } from "util/api/api";
 import { getUserCourseDetails } from "util/api/courseApi";
 import {
+  RemoveResourcePayloadRequest,
   UpdatePagePayloadRequest,
   UploadFilePayloadResponse,
   addNewResource,
   deletePage,
+  removeResource,
   updatePageResource,
   uploadResourceFile,
 } from "util/api/pageApi";
@@ -49,6 +51,7 @@ type SingleResourceProps = {
   setResources: React.Dispatch<React.SetStateAction<ResourceInterface[]>>;
   courseId: string;
   pageId: string;
+  resources: ResourceInterface[];
 };
 
 /**
@@ -60,6 +63,7 @@ const SingleResource = ({
   setResources,
   courseId,
   pageId,
+  resources,
 }: SingleResourceProps): JSX.Element => {
   const authUser = useAuthUser();
 
@@ -74,7 +78,31 @@ const SingleResource = ({
   const FROG_IMAGE_URL =
     "https://i.natgeofe.com/k/8fa25ea4-6409-47fb-b3cc-4af8e0dc9616/red-eyed-tree-frog-on-leaves-3-2_3x2.jpg";
 
-  const handleRemoveClick = () => {};
+  const handleRemoveClick = async () => {
+    // Remove
+    const payload: RemoveResourcePayloadRequest = {
+      courseId: courseId,
+      pageId: pageId,
+      resourceId: resource._id,
+      sectionId: null,
+    };
+
+    const [res, err] = await removeResource(await authUser.getIdToken(), payload, "client");
+    if (err !== null) {
+      console.error(err);
+      if (err instanceof HttpException) {
+        toast.error(err.message);
+      } else {
+        toast.error("Could not remove resource. Please try again later.");
+      }
+      return;
+    }
+    if (res === null) throw new Error("Shouldn't happen");
+    toast.success("Resource removed");
+
+    // Update UI
+    setResources([...resources.filter((r) => r._id !== resource._id)]);
+  };
 
   const handleEditClick = async () => {
     if (editMode) {
@@ -438,6 +466,7 @@ const ResourcesSection = ({
             setResources={setResources}
             pageId={pageId}
             courseId={courseId}
+            resources={resources}
           />
         );
       })}

@@ -137,3 +137,26 @@ export const addNewResource = (
     { ...payload, resourceId: null, sectionId: null },
   );
 };
+
+export type RemoveResourcePayloadRequest = {
+  courseId: string;
+  pageId: string;
+  sectionId: string | null;
+  resourceId: string;
+};
+
+type RemoveResourcePayloadResponse = {
+  message: string;
+};
+
+export const removeResource = (
+  token: string | null,
+  payload: RemoveResourcePayloadRequest,
+  type: BackendLinkType,
+) => {
+  return apiDelete<RemoveResourcePayloadRequest, RemoveResourcePayloadResponse>(
+    `${getBackendLink(type)}/page/remove/resource`,
+    token,
+    payload,
+  );
+};
