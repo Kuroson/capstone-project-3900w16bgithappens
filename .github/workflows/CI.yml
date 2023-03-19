@@ -161,7 +161,7 @@ jobs:
         working-directory: "./frontend"
         run: yarn add cypress
       - name: Docker-compose up
-        run: docker-compose up
+        run: docker-compose -f "docker-compose.yml" up -d
       - name: Cypress e2e
         run: |
           cd "./frontend" && yarn cypress:headless
