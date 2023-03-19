@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import { Avatar, Card, CardContent, Typography } from "@mui/material";
 import { BasicCourseInfo } from "models/course.model";
-import { CourseInfo } from "pages/admin";
 
 type CourseCardProps = {
   course: BasicCourseInfo;

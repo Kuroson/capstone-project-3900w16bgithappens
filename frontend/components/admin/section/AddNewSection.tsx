@@ -30,7 +30,6 @@ import {
   SingleEditableResource,
 } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
-import ShowOrEditPage from "components/SectionPage/ShowOrEditPage";
 import EditPanelButtons from "components/admin/EditPanelButtons";
 import TitleWithIcon from "components/common/TitleWithIcon";
 import { HttpException } from "util/HttpExceptions";

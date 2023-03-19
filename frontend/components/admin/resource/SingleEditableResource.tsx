@@ -15,7 +15,6 @@ import { ResourceInterface } from "models";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
-import ShowOrEditPage from "components/SectionPage/ShowOrEditPage";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { getFileDownloadLink } from "util/api/ResourceApi";
