@@ -5,8 +5,7 @@ import { TextField } from "@mui/material";
 import { ResourceInterface } from "models";
 import { SectionFull } from "models/section.model";
 import { useAuthUser } from "next-firebase-auth";
-import { ResourcesSection } from "components";
-import EditPanelButtons from "components/admin/EditPanelButtons";
+import { EditPanelButtons, ResourcesSection } from "components";
 import TitleWithIcon from "components/common/TitleWithIcon";
 import { HttpException } from "util/HttpExceptions";
 import {

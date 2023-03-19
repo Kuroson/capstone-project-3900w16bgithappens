@@ -105,11 +105,11 @@ const Admin = (): JSX.Element => {
           </div>
           <div className="flex flex-wrap w-full mx-3">
             {showedCourses?.map((course, index) => (
-              <CourseCard key={index} course={course} href={`/admin/${course._id}`} />
+              <CourseCard key={index} course={course} href={`/instructor/${course._id}`} />
             ))}
             <div
               className="flex flex-col rounded-lg shadow-md p-5 my-2 mx-5 w-[370px] h-[264px] cursor-pointer hover:shadow-lg items-center justify-center"
-              onClick={() => router.push("/admin/create-course")}
+              onClick={() => router.push("/instructor/create-course")}
             >
               <AddIcon fontSize="large" color="primary" />
             </div>

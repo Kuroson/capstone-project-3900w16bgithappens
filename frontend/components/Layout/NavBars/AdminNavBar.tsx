@@ -134,7 +134,7 @@ export default function AdminNavBar({
       const res = await sendRequest(pageName);
       setDynamicRoutes([...dynamicRoutes, {
         name: pageName,
-        route: `/admin/${courseData?._id ?? "123"}/${res.pageId}`,
+        route: `/instructor/${courseData?._id ?? "123"}/${res.pageId}`,
       }]);
     } else {
       // TODO
@@ -142,7 +142,7 @@ export default function AdminNavBar({
 
       // routes.push({
       //   name: pageName,
-      //   route: `/admin/${courseId}`,
+      //   route: `/instructor/${courseId}`,
       // });
     }
 

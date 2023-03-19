@@ -22,9 +22,9 @@ import {
 } from "components";
 import { Routes } from "components/Layout/NavBars/NavBar";
 import { useUser } from "util/UserContext";
-import { getFileDownloadLink } from "util/api/resourceApi";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { deletePage } from "util/api/pageApi";
+import { getFileDownloadLink } from "util/api/resourceApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 
@@ -88,21 +88,25 @@ const AdminCoursePage = ({ courseData, pageData }: AdminCoursePageProps): JSX.El
   const userDetails = user.userDetails as UserDetails;
 
   const navRoutes: Routes[] = [
-    { name: "Dashboard", route: "/admin", icon: <HomeIcon fontSize="large" color="primary" /> },
+    {
+      name: "Dashboard",
+      route: "/instructor",
+      icon: <HomeIcon fontSize="large" color="primary" />,
+    },
     {
       name: "Home",
-      route: `/admin/${courseData._id}`,
+      route: `/instructor/${courseData._id}`,
       icon: <GridViewIcon fontSize="large" color="primary" />,
     },
     {
       name: "Students",
-      route: `/admin/${courseData._id}/students`,
+      route: `/instructor/${courseData._id}/students`,
       icon: <PeopleAltIcon fontSize="large" color="primary" />,
       hasLine: true,
     },
     ...courseData.pages.map((page) => ({
       name: page.title,
-      route: `/admin/${courseData._id}/${page._id}`,
+      route: `/instructor/${courseData._id}/${page._id}`,
     })),
   ];
 
@@ -116,7 +120,7 @@ const AdminCoursePage = ({ courseData, pageData }: AdminCoursePageProps): JSX.El
     if (err !== null) {
       console.error(err);
     }
-    router.push(`/admin/${courseData._id}`);
+    router.push(`/instructor/${courseData._id}`);
   };
 
   return (

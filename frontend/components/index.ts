@@ -1,4 +1,5 @@
 import { AdminNavBar, ContentContainer, EmptyNavBar, Layout, StudentNavBar } from "./Layout";
+import EditPanelButtons from "./admin/EditPanelButtons";
 import AddNewResourceSection from "./admin/resource/AddNewResourceSection";
 import ResourcesSection from "./admin/resource/ResourcesSection";
 import SingleEditableResource from "./admin/resource/SingleEditableResource";
@@ -16,4 +17,5 @@ export {
   ResourcesSection,
   AddNewSection,
   PageSections,
+  EditPanelButtons,
 };

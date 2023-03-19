@@ -66,21 +66,25 @@ const AdminCoursePage = ({ courseData }: AdminCoursePageProps): JSX.Element => {
   const userDetails = user.userDetails as UserDetails;
 
   const navRoutes: Routes[] = [
-    { name: "Dashboard", route: "/admin", icon: <HomeIcon fontSize="large" color="primary" /> },
+    {
+      name: "Dashboard",
+      route: "/instructor",
+      icon: <HomeIcon fontSize="large" color="primary" />,
+    },
     {
       name: "Home",
-      route: `/admin/${courseData._id}`,
+      route: `/instructor/${courseData._id}`,
       icon: <GridViewIcon fontSize="large" color="primary" />,
     },
     {
       name: "Students",
-      route: `/admin/${courseData._id}/students`,
+      route: `/instructor/${courseData._id}/students`,
       icon: <PeopleAltIcon fontSize="large" color="primary" />,
       hasLine: true,
     },
     ...courseData.pages.map((page) => ({
       name: page.title,
-      route: `/admin/${courseData._id}/${page._id}`,
+      route: `/instructor/${courseData._id}/${page._id}`,
     })),
   ];
 

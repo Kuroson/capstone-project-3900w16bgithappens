@@ -21,15 +21,15 @@ type NavBarProps = {
 
 // NOTE This is different atm for student vs admin
 export const defaultAdminRoutes: Routes[] = [
-  { name: "Dashboard", route: "/admin", icon: <HomeIcon fontSize="large" color="primary" /> },
+  { name: "Dashboard", route: "/instructor", icon: <HomeIcon fontSize="large" color="primary" /> },
   {
     name: "Admin allocation",
-    route: "/admin/admin-allocation",
+    route: "/instructor/instructor-allocation",
     icon: <SupervisorAccountIcon fontSize="large" color="primary" />,
   },
   {
     name: "Create Course",
-    route: "/admin/create-course",
+    route: "/instructor/create-course",
     icon: <AddIcon fontSize="large" color="primary" />,
   },
 ];

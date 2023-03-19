@@ -124,7 +124,7 @@ const CreateCourse = (): JSX.Element => {
     }
     if (res === null) throw new Error("Response and error are null"); // Actual error that should never happen
     setButtonLoading(false);
-    router.push(`/admin/${res.courseId}`);
+    router.push(`/instructor/${res.courseId}`);
   };
 
   return (
