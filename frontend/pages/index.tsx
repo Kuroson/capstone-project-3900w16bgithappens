@@ -31,7 +31,7 @@ type HomePageProps = {
 
 const HomePage = (): JSX.Element => {
   const user = useUser();
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(user.userDetails !== null);
   const [searchCode, setSearchCode] = useState("");
   const [showedCourses, setShowedCourses] = useState<BasicCourseInfo[]>(
     user.userDetails?.enrolments ?? [],
