@@ -45,21 +45,3 @@ export const getUserDetails = (token: string | null, email: string, type: Backen
     { email: email },
   );
 };
-
-// type UserCoursesRequestPayload = {};
-
-// type UserCourseResponsePayload = {};
-
-// /**
-//  * Get all of the courses associated with a user via the JWT token identifier
-//  * @param token
-//  * @param type
-//  * @returns
-//  */
-// export const getUserCourses = (token: string | null, type: BackendLinkType) => {
-//   return apiGet<UserCoursesRequestPayload, UserCourseResponsePayload>(
-//     `${getBackendLink(type)}/user/courses`,
-//     null,
-//     {},
-//   );
-// };
