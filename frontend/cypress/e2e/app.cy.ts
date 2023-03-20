@@ -18,12 +18,13 @@ describe("Login tests", () => {
   // Should remove this
   it("Login", () => {
     cy.location("pathname").should("eq", "/login");
-    cy.get("#email-input").focus().type("CypressTesting@newemail.com");
-    cy.get("#outlined-password-input").focus().type("Cypress123!"); // TODO: convert to env variable maybe
+    cy.get("#email-input").focus().type("cypressloginaccount@cypress.com");
+    cy.get("#outlined-password-input").focus().type("Password123!"); // TODO: convert to env variable maybe
     cy.get("#submit-form-button").click();
     cy.wait(250);
     cy.get(".Toastify > div").should("not.exist"); // Error
     cy.location("pathname").should("eq", "/");
+    cy.get("h1").contains("Welcome, Cypress Account");
   });
 });
 
