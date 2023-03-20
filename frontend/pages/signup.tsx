@@ -102,14 +102,40 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
     }
     // Everything should be valid after this
     setLoading(true);
-    // let errorCreation = false;
 
-    const authUser = await createUserWithEmailAndPassword(getAuth(), email, password)
+    await createUserWithEmailAndPassword(getAuth(), email, password)
       .then((res) => {
         console.log(res);
         return res;
       })
+      .then(async (authUser) => {
+        const payload = {
+          firstName,
+          lastName,
+          email,
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const [res, err] = await registerNewUser((authUser as any).user?.accessToken, payload);
+
+        if (err !== null) {
+          if (err instanceof HttpException) {
+            toast.error(err.message);
+          } else {
+            toast.error(err);
+          }
+
+          return;
+        }
+
+        if (res === null) throw new Error("Should not happen"); // Actual error that should never happen
+        toast.info(res.message);
+      })
       .catch((err) => {
+        if (err instanceof HttpException) {
+          toast.error(err.message);
+          return;
+        }
         // Error codes:
         // https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#createuserwithemailandpassword
         if (err?.code === "auth/email-already-in-use") {
@@ -125,27 +151,7 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
           toast.error("Error Uncaught");
         }
       })
-      .then(async (aUser) => {
-        const payload = {
-          firstName,
-          lastName,
-          email,
-        };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const [res, err] = await registerNewUser((aUser as any).user?.accessToken, payload);
-
-        if (err !== null) {
-          if (err instanceof HttpException) {
-            toast.error(err.message);
-          } else {
-            toast.error(err);
-          }
-          setLoading(false);
-          return;
-        }
-
-        if (res === null) throw new Error("Response and error are null"); // Actual error that should never happen
-        toast.info(res.message);
+      .finally(() => {
         setLoading(false);
       });
   };
