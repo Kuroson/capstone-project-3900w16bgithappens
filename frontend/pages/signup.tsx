@@ -8,6 +8,7 @@ import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, EmptyNavBar } from "components";
 import { HttpException } from "util/HttpExceptions";
+import { useUser } from "util/UserContext";
 import { CLIENT_BACKEND_URL, apiPost } from "util/api/api";
 import { registerNewUser } from "util/api/userApi";
 import { isValidEmail, isValidPassword } from "util/authVerficiation";
@@ -57,6 +58,8 @@ type SignUpPageProps = {
 };
 
 const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
+  const user = useUser();
+
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
 
@@ -101,8 +104,8 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
     }
     // Everything should be valid after this
     setLoading(true);
-    let errorCreation = false;
-
+    // let errorCreation = false;
+    user.setUserCreationMode(true);
     const authUser = await createUserWithEmailAndPassword(getAuth(), email, password)
       .then((res) => {
         console.log(res);
@@ -123,36 +126,31 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
           console.error(err);
           toast.error("Error Uncaught");
         }
-        errorCreation = true;
+      })
+      .then(async (aUser) => {
+        const payload = {
+          firstName,
+          lastName,
+          email,
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const [res, err] = await registerNewUser((aUser as any).user?.accessToken, payload);
+
+        if (err !== null) {
+          if (err instanceof HttpException) {
+            toast.error(err.message);
+          } else {
+            toast.error(err);
+          }
+          setLoading(false);
+          return;
+        }
+
+        if (res === null) throw new Error("Response and error are null"); // Actual error that should never happen
+        user.setUserCreationMode(false);
+        toast.info(res.message);
+        setLoading(false);
       });
-
-    if (errorCreation || authUser) {
-      setLoading(false);
-      return; // Don't continue, error
-    }
-
-    const payload = {
-      firstName,
-      lastName,
-      email,
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [res, err] = await registerNewUser((authUser as any).user?.accessToken, payload);
-
-    if (err !== null) {
-      if (err instanceof HttpException) {
-        toast.error(err.message);
-      } else {
-        toast.error(err);
-      }
-      setLoading(false);
-      return;
-    }
-
-    if (res === null) throw new Error("Response and error are null"); // Actual error that should never happen
-    toast.info(res.message);
-    setLoading(false);
   };
 
   return (

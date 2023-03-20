@@ -8,7 +8,7 @@ import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 import * as forgetPasswordSSR from "pages/forgetPassword";
 import * as loginAuthSSR from "pages/login";
 import * as signupAuthSSR from "pages/signup";
-import { Layout } from "components";
+import { Layout, NoUserLayout } from "components";
 import styles from "components/Layout/Layout.module.scss";
 import { UserProvider, useUser } from "util/UserContext";
 import { getUserDetails } from "util/api/userApi";
@@ -26,9 +26,9 @@ const theme = createTheme({
   },
 });
 
-const App = ({ Component, pageProps }: AppProps): JSX.Element => {
-  initAuth();
+initAuth();
 
+const App = ({ Component, pageProps }: AppProps): JSX.Element => {
   // Add the page components that don't need the sidebars here
   const specialComponents = [
     Custom404,
