@@ -44,9 +44,15 @@ const App = ({ Component, pageProps }: AppProps): JSX.Element => {
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <UserProvider>
-            <Layout className={renderWithoutBars ? styles.loginLayout : styles.mainContent}>
-              <Component {...pageProps} />
-            </Layout>
+            {renderWithoutBars ? (
+              <NoUserLayout className={renderWithoutBars ? styles.loginLayout : styles.mainContent}>
+                <Component {...pageProps} />
+              </NoUserLayout>
+            ) : (
+              <Layout className={renderWithoutBars ? styles.loginLayout : styles.mainContent}>
+                <Component {...pageProps} />
+              </Layout>
+            )}
           </UserProvider>
         </ThemeProvider>
       </StyledEngineProvider>

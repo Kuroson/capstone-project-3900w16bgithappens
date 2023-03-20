@@ -14,10 +14,12 @@ describe("Login tests", () => {
     cy.get(".Toastify > div").should("exist"); // Error
   });
 
+  // NOTE: This test is kinda bad, assumes that this account already exists.
+  // Should remove this
   it("Login", () => {
     cy.location("pathname").should("eq", "/login");
-    cy.get("#email-input").focus().type("cypress@test.com");
-    cy.get("#outlined-password-input").focus().type("cypress1234"); // TODO: convert to env variable maybe
+    cy.get("#email-input").focus().type("CypressTesting@newemail.com");
+    cy.get("#outlined-password-input").focus().type("Cypress123!"); // TODO: convert to env variable maybe
     cy.get("#submit-form-button").click();
     cy.wait(250);
     cy.get(".Toastify > div").should("not.exist"); // Error

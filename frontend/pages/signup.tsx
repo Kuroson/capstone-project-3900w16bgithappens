@@ -58,8 +58,6 @@ type SignUpPageProps = {
 };
 
 const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
-  const user = useUser();
-
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
 
@@ -105,7 +103,7 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
     // Everything should be valid after this
     setLoading(true);
     // let errorCreation = false;
-    user.setUserCreationMode(true);
+
     const authUser = await createUserWithEmailAndPassword(getAuth(), email, password)
       .then((res) => {
         console.log(res);
@@ -147,7 +145,6 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
         }
 
         if (res === null) throw new Error("Response and error are null"); // Actual error that should never happen
-        user.setUserCreationMode(false);
         toast.info(res.message);
         setLoading(false);
       });

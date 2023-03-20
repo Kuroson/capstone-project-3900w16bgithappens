@@ -1,4 +1,5 @@
 import { AdminNavBar, ContentContainer, EmptyNavBar, Layout, StudentNavBar } from "./Layout";
+import NoUserLayout from "./Layout/NoUserLayout";
 import EditPanelButtons from "./admin/EditPanelButtons";
 import AddNewResourceSection from "./admin/resource/AddNewResourceSection";
 import ResourcesSection from "./admin/resource/ResourcesSection";
@@ -20,4 +21,5 @@ export {
   PageSections,
   EditPanelButtons,
   Loading,
+  NoUserLayout,
 };

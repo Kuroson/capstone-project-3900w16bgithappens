@@ -70,8 +70,9 @@ export const registerController = async (
 ) => {
     try {
         if (req.method !== "POST") throw new HttpException(405, "Method not allowed");
-
+        logger.info(JSON.stringify(req.body));
         const authUser = await checkAuth(req);
+        logger.info("done");
         const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["firstName", "lastName", "email"];
 
         // User has been verified
@@ -99,7 +100,7 @@ export const registerController = async (
             logger.error(error.originalError);
             return res.status(error.getStatusCode()).json({ message: error.getMessage() });
         } else {
-            logger.error(error);
+            logger.error(JSON.stringify(error));
             return res.status(500).json({ message: "Internal server error. Error was not caught" });
         }
     }
