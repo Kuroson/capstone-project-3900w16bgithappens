@@ -16,6 +16,7 @@ describe("Admin Workflow", () => {
 
   const pageWeek1 = "Week 1";
   const pageWeek2 = "Week 2";
+  const pageWeek3 = "Week 3"; // To be deleted
 
   const description = `OOPs\n${dateNow}`;
   const courseCode = "COMP2511";
@@ -25,6 +26,14 @@ describe("Admin Workflow", () => {
   const resource1Title = "Resource 1";
   const resource1Description = "Resource 1 Description";
   const resource1FileName = "cs251123t1-SetupTroubleshooting.pdf";
+
+  const resource2Title = "Resource 2";
+  const resource2Description = "Resource 2 Description";
+  const resource2TitleEdited = "Resource 2 Edited";
+  const resource2DescriptionEdited = "Resource 2 Description Edited";
+
+  const resource3Title = "Resource 3"; // eventually deleted
+  const resource3Description = "Resource 3 Description"; // eventually deleted
 
   // it("Sign up for a student account", () => {
   //   indexedDB.deleteDatabase("firebaseLocalStorageDb"); // Reset firebase localstorage login
@@ -100,7 +109,7 @@ describe("Admin Workflow", () => {
       cy.get(`[href="${location}"]`).click();
       cy.location("pathname").should("eq", location);
 
-      // Add student to course
+      // // Add student to course
       // cy.get("#navbar").contains("Students").click();
       // cy.location("pathname").should("eq", `${location}/students`);
       // cy.get("#student-email").focus().type(email);
@@ -125,10 +134,17 @@ describe("Admin Workflow", () => {
       cy.get("button").contains("Add new page").click(); // Create
       cy.get("#navbar").contains(pageWeek2);
 
+      // Create week2
+      cy.get("#addNewPage").click();
+      cy.get("#RadioOtherPage").click(); // Select other page
+      cy.get("#OtherPageName").focus().type(pageWeek3);
+      cy.get("button").contains("Add new page").click(); // Create
+      cy.get("#navbar").contains(pageWeek3);
+
       // Click on week1
       cy.get("#navbar").contains(pageWeek1).click();
 
-      // Create Resource for Week 1
+      // Create Resource1 for Week 1
       cy.get("button").contains("Add New Resource").click();
       cy.get("#ResourceTitle").focus().type(resource1Title);
       cy.get("#ResourceDescription").focus().type(resource1Description);
@@ -139,8 +155,57 @@ describe("Admin Workflow", () => {
       cy.get("span").contains(resource1Title);
       cy.get("p").contains(resource1Description);
       // check if file download exists
-      cy.get('[data-cy="section"] > div > a > button').contains("Download File");
-      cy.get('[data-cy="section"] > div > a').should("have.attr", "href");
+      cy.get(`[data-cy="section-${resource1Title}"] > div > a > button`).contains("Download File");
+      cy.get(`[data-cy="section-${resource1Title}"] > div > a`).should("have.attr", "href");
+
+      // Create Resource2 for Week 1
+      cy.get("button").contains("Add New Resource").click();
+      cy.get("#ResourceTitle").focus().type(resource2Title);
+      cy.get("#ResourceDescription").focus().type(resource2Description);
+      cy.get("#createResourceButton").click();
+
+      // Check Resource2 Created
+      cy.get("span").contains(resource2Title);
+      cy.get("p").contains(resource2Description);
+
+      // Create Resource3 for Week 1
+      cy.get("button").contains("Add New Resource").click();
+      cy.get("#ResourceTitle").focus().type(resource3Title);
+      cy.get("#ResourceDescription").focus().type(resource3Description);
+      cy.get("#createResourceButton").click();
+
+      // Check Resource3 Created
+      cy.get("span").contains(resource3Title);
+      cy.get("p").contains(resource3Description);
+
+      // Edit Resource 2
+      cy.get(
+        `[data-cy="section-${resource2Title}"] > [data-cy="edit-button-section"] > div > [data-cy="edit-button"]`,
+      ).click();
+      cy.get("#ResourceTitle").focus().clear().type(resource2TitleEdited);
+      cy.get("#ResourceDescription").focus().clear().type(resource2DescriptionEdited);
+      cy.get('[data-cy="current-edit"] > div > div > [data-cy="edit-button"]').click();
+
+      // Check Resource2 Edited
+      cy.get("span").contains(resource2TitleEdited);
+      cy.get("p").contains(resource2DescriptionEdited);
+
+      // Delete resource3
+      cy.get(
+        `[data-cy="section-${resource3Title}"] > [data-cy="edit-button-section"] > div > [data-cy="delete-button"]`,
+      ).click();
+      cy.get("span").contains(resource3Title).should("not.exist");
+      cy.get("p").contains(resource3Description).should("not.exist");
+
+      // Delete a page (pageWeek3)
+      cy.get("#navbar").contains(pageWeek3).click();
+      cy.wait(1000);
+      cy.location("pathname").should("not.eq", `${location}`);
+      cy.get("#deletePageButton").click();
+
+      // Check deleted and redirected
+      cy.get("#navbar").contains(pageWeek3).should("not.exist");
+      cy.location("pathname").should("eq", `${location}`);
     });
   });
 });

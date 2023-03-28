@@ -140,7 +140,7 @@ const SingleEditableResource = ({
   // Show edit interface
   if (editMode) {
     return (
-      <div className="w-full pt-5">
+      <div className="w-full pt-5" data-cy="current-edit">
         <div className="flex flex-col w-full">
           <div className="w-full pb-5">
             <TextField
@@ -206,7 +206,7 @@ const SingleEditableResource = ({
 
   // Show normal interface
   return (
-    <div className="w-full pt-5" data-cy="section">
+    <div className="w-full pt-5" data-cy={`section-${title}`}>
       <span className="w-full text-xl font-medium flex flex-col">{title}</span>
       {/* Description */}
       {description !== undefined && <p>{description}</p>}
@@ -224,7 +224,7 @@ const SingleEditableResource = ({
           )}
         </div>
       )}
-      <div>
+      <div data-cy="edit-button-section">
         <EditPanelButtons
           editMode={editMode}
           handleEditClick={handleEditClick}
