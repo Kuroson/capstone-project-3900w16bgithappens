@@ -102,6 +102,8 @@ describe("Admin Workflow", () => {
     // Check page has details
     cy.get("h1").contains(title);
 
+    new Promise((resolve, reject) => {});
+
     cy.location("pathname").then((location) => {
       // Verify creation on dashboard
       cy.get("#navbar").contains("Dashboard").click();
@@ -207,6 +209,17 @@ describe("Admin Workflow", () => {
       cy.get("#navbar").contains(pageWeek3).should("not.exist");
       cy.location("pathname").should("eq", `${location}`);
     });
+  });
+
+  it("Login to student and check if course details exist", () => {
+    indexedDB.deleteDatabase("firebaseLocalStorageDb"); // Reset firebase localstorage login
+    cy.visit("http://localhost:3000/login");
+    cy.get("#email-input").focus().type(email);
+    cy.get("#outlined-password-input").focus().type(password);
+    cy.get("#submit-form-button").click();
+    cy.wait(250);
+    cy.get(".Toastify > div").should("not.exist"); // Error
+    cy.location("pathname").should("eq", "/");
   });
 });
 
