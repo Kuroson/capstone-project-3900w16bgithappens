@@ -35,54 +35,54 @@ describe("Admin Workflow", () => {
   const resource3Title = "Resource 3"; // eventually deleted
   const resource3Description = "Resource 3 Description"; // eventually deleted
 
-  // it("Sign up for a student account", () => {
-  //   indexedDB.deleteDatabase("firebaseLocalStorageDb"); // Reset firebase localstorage login
-  //   cy.visit("http://localhost:3000/signup");
-  //   cy.get("#first-name-input").focus().type(firstName);
-  //   cy.get("#last-name-input").focus().type(lastName);
-  //   cy.get("#email-input").focus().type(email);
-  //   cy.get("#outlined-password-input").focus().type(password);
-  //   cy.get("#outlined-confirm-password-input").focus().type(password);
-  //   cy.get("#submit-form-button").click();
-  //   cy.wait(2000);
-  //   cy.location("pathname").should("eq", "/");
-  //   cy.get("h1").contains(`Welcome, ${firstName} ${lastName}`);
-  //   cy.get("#userRole").contains("Student");
-  //   cy.wait(1000);
-  // });
+  it("Sign up for a student account", () => {
+    indexedDB.deleteDatabase("firebaseLocalStorageDb"); // Reset firebase localstorage login
+    cy.visit("http://localhost:3000/signup");
+    cy.get("#first-name-input").focus().type(firstName);
+    cy.get("#last-name-input").focus().type(lastName);
+    cy.get("#email-input").focus().type(email);
+    cy.get("#outlined-password-input").focus().type(password);
+    cy.get("#outlined-confirm-password-input").focus().type(password);
+    cy.get("#submit-form-button").click();
+    cy.wait(2000);
+    cy.location("pathname").should("eq", "/");
+    cy.get("h1").contains(`Welcome, ${firstName} ${lastName}`);
+    cy.get("#userRole").contains("Student");
+    cy.wait(1000);
+  });
 
-  // it("Sign up for an instructor account", () => {
-  //   indexedDB.deleteDatabase("firebaseLocalStorageDb"); // Reset firebase localstorage login
-  //   cy.visit("http://localhost:3000/signup");
-  //   cy.get("#first-name-input").focus().type(firstName);
-  //   cy.get("#last-name-input").focus().type(lastName);
-  //   cy.get("#email-input").focus().type(adminEmail);
-  //   cy.get("#outlined-password-input").focus().type(password);
-  //   cy.get("#outlined-confirm-password-input").focus().type(password);
-  //   cy.get("#submit-form-button").click();
-  //   cy.wait(2000);
-  //   cy.location("pathname").should("eq", "/instructor");
-  //   cy.get("h1").contains(`Welcome, ${firstName} ${lastName}`);
-  //   cy.get("#userRole").contains("Instructor");
-  //   cy.wait(1000);
-  // });
+  it("Sign up for an instructor account", () => {
+    indexedDB.deleteDatabase("firebaseLocalStorageDb"); // Reset firebase localstorage login
+    cy.visit("http://localhost:3000/signup");
+    cy.get("#first-name-input").focus().type(firstName);
+    cy.get("#last-name-input").focus().type(lastName);
+    cy.get("#email-input").focus().type(adminEmail);
+    cy.get("#outlined-password-input").focus().type(password);
+    cy.get("#outlined-confirm-password-input").focus().type(password);
+    cy.get("#submit-form-button").click();
+    cy.wait(2000);
+    cy.location("pathname").should("eq", "/instructor");
+    cy.get("h1").contains(`Welcome, ${firstName} ${lastName}`);
+    cy.get("#userRole").contains("Instructor");
+    cy.wait(1000);
+  });
 
-  // it("Test dashboard nav buttons after signup", () => {
-  //   cy.visit("http://localhost:3000");
-  //   cy.location("pathname").should("eq", "/instructor");
-  //   // Click Dashboard
-  //   cy.get("#navbar").contains("Dashboard").click();
-  //   cy.location("pathname").should("eq", "/instructor");
-  //   // Click Instructor Allocation
-  //   cy.get("#navbar").contains("Instructor allocation").click();
-  //   cy.location("pathname").should("eq", "/instructor/instructor-allocation");
-  //   // Click Create Course
-  //   cy.get("#navbar").contains("Create Course").click();
-  //   cy.location("pathname").should("eq", "/instructor/create-course");
-  //   // Go back to dashboard
-  //   cy.get("#navbar").contains("Dashboard").click();
-  //   cy.location("pathname").should("eq", "/instructor");
-  // });
+  it("Test dashboard nav buttons after signup", () => {
+    cy.visit("http://localhost:3000");
+    cy.location("pathname").should("eq", "/instructor");
+    // Click Dashboard
+    cy.get("#navbar").contains("Dashboard").click();
+    cy.location("pathname").should("eq", "/instructor");
+    // Click Instructor Allocation
+    cy.get("#navbar").contains("Instructor allocation").click();
+    cy.location("pathname").should("eq", "/instructor/instructor-allocation");
+    // Click Create Course
+    cy.get("#navbar").contains("Create Course").click();
+    cy.location("pathname").should("eq", "/instructor/create-course");
+    // Go back to dashboard
+    cy.get("#navbar").contains("Dashboard").click();
+    cy.location("pathname").should("eq", "/instructor");
+  });
 
   it("Create a course and add details", async () => {
     cy.visit("http://localhost:3000/instructor");
@@ -109,12 +109,12 @@ describe("Admin Workflow", () => {
       cy.get(`[href="${location}"]`).click();
       cy.location("pathname").should("eq", location);
 
-      // // Add student to course
-      // cy.get("#navbar").contains("Students").click();
-      // cy.location("pathname").should("eq", `${location}/students`);
-      // cy.get("#student-email").focus().type(email);
-      // cy.get("button").contains("Add Student").click();
-      // cy.get(".Toastify__toast-body").contains("Student added successfully");
+      // Add student to course
+      cy.get("#navbar").contains("Students").click();
+      cy.location("pathname").should("eq", `${location}/students`);
+      cy.get("#student-email").focus().type(email);
+      cy.get("button").contains("Add Student").click();
+      cy.get(".Toastify__toast-body").contains("Student added successfully");
 
       // Go back to course home page
       cy.get("#navbar").contains("Home").click();
