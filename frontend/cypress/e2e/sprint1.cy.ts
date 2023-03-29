@@ -209,7 +209,7 @@ describe("Admin Workflow", () => {
     cy.wait(2000);
   });
 
-  it("Login to student and check if course details exist", () => {
+  it("Login as student", () => {
     indexedDB.deleteDatabase("firebaseLocalStorageDb"); // Reset firebase localstorage login
     cy.visit("http://localhost:3000/login");
     cy.get("#email-input").focus().type(email);
@@ -218,6 +218,59 @@ describe("Admin Workflow", () => {
     cy.wait(250);
     cy.get(".Toastify > div").should("not.exist"); // Error
     cy.location("pathname").should("eq", "/");
+  });
+
+  it("Check course details match students perspective", () => {
+    cy.visit("http://localhost:3000");
+    cy.location("pathname").should("eq", "/");
+    cy.get("h3").contains(courseCode).click();
+    cy.location("pathname").should("not.eq", "/");
+    cy.visit("http://localhost:3000");
+    cy.get("#navbar").contains(courseCode).click();
+    cy.location("pathname").should("not.eq", "/");
+
+    // Check navbar has week1 and week2
+    cy.get("#navbar").contains(pageWeek1).should("exist");
+    cy.get("#navbar").contains(pageWeek2).should("exist");
+    cy.get("#navbar").contains(pageWeek3).should("not.exist");
+
+    // Go to week 2
+    cy.get("h1").contains(pageWeek2).should("not.exist");
+    cy.get("#navbar").contains(pageWeek2).click();
+    cy.get("h1").contains(pageWeek2).should("exist");
+
+    // Go back to home page to test route
+    cy.get("#navbar").contains("Dashboard").click();
+    cy.get("h1").contains(pageWeek2).should("not.exist");
+    cy.location("pathname").should("eq", "/");
+
+    // Go back to course page
+    cy.get("h3").contains(courseCode).click();
+
+    // Go to week 1
+    cy.get("#navbar").contains(pageWeek1).click();
+    cy.get("h1").contains(pageWeek1).should("exist");
+
+    // Check resource 1 exists
+    cy.get(`[data-cy="${resource1Title}"] > [data-cy="resource-title"]`)
+      .contains(resource1Title)
+      .should("exist");
+    cy.get(`[data-cy="${resource1Title}"] > [data-cy="resource-description"]`)
+      .contains(resource1Description)
+      .should("exist");
+    cy.get(`[data-cy="${resource1Title}"]`).contains("Download File").should("exist");
+
+    // Check resource 2 exists
+    cy.get(`[data-cy="${resource2TitleEdited}"] > [data-cy="resource-title"]`)
+      .contains(resource2TitleEdited)
+      .should("exist");
+    cy.get(`[data-cy="${resource2TitleEdited}"] > [data-cy="resource-description"]`)
+      .contains(resource2DescriptionEdited)
+      .should("exist");
+
+    // Check old version of resource 2 doesn't exist
+    cy.get('[data-cy="resource-description"]').contains(resource2Description).should("not.eq");
+    cy.get('[data-cy="resource-title"]').contains(resource2Title).should("not.equal");
   });
 });
 
