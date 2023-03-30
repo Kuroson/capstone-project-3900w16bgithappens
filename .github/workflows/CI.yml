@@ -123,12 +123,16 @@ jobs:
           NEXT_PUBLIC_FIREBASE_DATABASE_URL: ${{ secrets.NEXT_PUBLIC_FIREBASE_DATABASE_URL }}
           NEXT_PUBLIC_COOKIE_SECURE: false
         run: env >> .env.local
-      - name: Docker compose build
-        run: docker-compose build
+      - name: Build frontend docker image
+        working-directory: "./frontend"
+        run: docker build -t frontend .
+      - name: Build backend docker image
+        working-directory: "./backend"
+        run: docker build -t backend .
       - name: Cypress e2e
         working-directory: "./frontend"
         run: |
-          yarn start-server-and-test "docker-compose -f \"../docker-compose.yml\" up" http://localhost:3000 cypress:headless
+          yarn start-server-and-test "docker-compose -f \"../docker-compose.yml\" up --build" http://localhost:3000 cypress:headless
       - name: Stop docker-compose
         if: always()
         run: docker-compose down
