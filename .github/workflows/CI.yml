@@ -59,6 +59,9 @@ jobs:
           USE_LOCAL_MONGO: true
           USE_DOCKER_INTERNAL_MONGO: false
         run: yarn test -t
+      - name: Stop docker-compose
+        if: always()
+        run: docker-compose -f "../docker-compose.local.yml" down
   frontend:
     runs-on: ubuntu-latest
     defaults:
