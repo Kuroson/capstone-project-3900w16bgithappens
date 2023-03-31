@@ -133,11 +133,12 @@ jobs:
           NEXT_PUBLIC_COOKIE_SECURE: false
         run: env >> .env.local
       - name: Docker compose build
-        run: docker-compose build
+        run: docker-compose -f "docker-compose.local.yml" build
       - name: Cypress e2e
         working-directory: "./frontend"
         run: |
-          yarn start-server-and-test "docker-compose -f \"../docker-compose.yml\" up" http://localhost:3000 cypress:headless
+          yarn start-server-and-test "docker-compose -f \"../docker-compose.local.yml\" up" http://localhost:3000 cypress:headless
       - name: Stop docker-compose
+        working-directory: "./frontend"
         if: always()
-        run: docker-compose down
+        run: docker-compose -f "docker-compose.local.yml" down
