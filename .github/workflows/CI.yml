@@ -46,7 +46,7 @@ jobs:
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
         run: yarn build
       - name: Start local MongoDB
-        run: docker-compose docker-compose -f "docker-compose.local.yml" up -d mongodb --build
+        run: docker-compose -f "docker-compose.local.yml" up -d mongodb --build
       - name: Wait 10 seconds for it to be healthy
         run: sleep 10
       - name: Start test
