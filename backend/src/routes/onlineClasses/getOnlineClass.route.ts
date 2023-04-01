@@ -55,9 +55,15 @@ export const getOnlineClassController = async (
 /**
  * Gets all class information stored in MongoDB
  * @param classId id to query
+ * @throws { HttpException } if classId is not found
  * @returns
  */
 export const getClassFromId = async (classId: string): Promise<FullOnlineClassInterface> => {
-    const onlineClass = OnlineClass.findById(classId).populate("chatMessages");
+    const onlineClass = OnlineClass.findById(classId)
+        .populate("chatMessages")
+        .catch(() => null);
+    if (onlineClass === null) {
+        throw new HttpException(400, `Could not find class of id ${classId}`);
+    }
     return onlineClass as unknown as FullOnlineClassInterface;
 };
