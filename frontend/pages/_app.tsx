@@ -44,7 +44,7 @@ const App = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <LocalizationProvider dataAdapter={AdapterMoment}>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
           <ThemeProvider theme={theme}>
             <UserProvider>
               {renderWithoutBars ? (
