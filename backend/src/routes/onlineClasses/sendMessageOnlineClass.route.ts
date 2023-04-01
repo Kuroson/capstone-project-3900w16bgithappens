@@ -2,6 +2,7 @@ import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course/course.model";
 import Message from "@/models/course/onlineClass/message.model";
 import OnlineClass from "@/models/course/onlineClass/onlineClass.model";
+import User from "@/models/user.model";
 import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
@@ -70,7 +71,7 @@ export const addNewChatMessage = async (
     if (onlineClass === null) throw new HttpException(400, `Class with id ${classId} not found`);
 
     // Find the sender
-    const sender = await Course.findById(senderId).catch(() => null);
+    const sender = await User.findById(senderId).catch(() => null);
     if (sender === null) throw new HttpException(400, `User with id ${senderId} not found`);
 
     // Create message and save message

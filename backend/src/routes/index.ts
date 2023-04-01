@@ -123,4 +123,4 @@ indexRouter.post("/class/schedule", createOnlineClassController);
 indexRouter.put("/class/update", updateOnlineClassController);
 indexRouter.put("/class/start", startOnlineClassController);
 indexRouter.put("/class/end", endOnlineClassController);
-indexRouter.post("/class/chat/send", sendChatMessageController); // TODO testing
+indexRouter.post("/class/chat/send", sendChatMessageController);
