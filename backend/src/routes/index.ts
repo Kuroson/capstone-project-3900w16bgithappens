@@ -117,10 +117,10 @@ indexRouter.get("/analytics/tags/summary", getTagSummaryController);
 indexRouter.get("/analytics/questions", getQuestionAnalyticsController);
 
 // Online Classes Routes
-indexRouter.get("/class", getOnlineClassController); // TODO testing
-indexRouter.get("/class/list", getListOnlineClassController); // TODO testing
-indexRouter.post("/class/schedule", createOnlineClassController); // TODO: Testing
-indexRouter.put("/class/update", updateOnlineClassController); // TODO testing
-indexRouter.put("/class/start", startOnlineClassController); // TODO testing
-indexRouter.put("/class/end", endOnlineClassController); // TODO testing
+indexRouter.get("/class", getOnlineClassController);
+indexRouter.get("/class/list", getListOnlineClassController);
+indexRouter.post("/class/schedule", createOnlineClassController);
+indexRouter.put("/class/update", updateOnlineClassController);
+indexRouter.put("/class/start", startOnlineClassController);
+indexRouter.put("/class/end", endOnlineClassController);
 indexRouter.post("/class/chat/send", sendChatMessageController); // TODO testing

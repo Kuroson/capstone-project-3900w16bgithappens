@@ -1,5 +1,6 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course/course.model";
+import Message from "@/models/course/onlineClass/message.model";
 import OnlineClass, {
     FullOnlineClassInterface,
     OnlineClassInterface,
@@ -59,11 +60,13 @@ export const getOnlineClassController = async (
  * @returns
  */
 export const getClassFromId = async (classId: string): Promise<FullOnlineClassInterface> => {
-    const onlineClass = OnlineClass.findById(classId)
+    Message; // Load Mongoose message
+
+    const onlineClass = await OnlineClass.findById(classId)
         .populate("chatMessages")
+        .exec()
         .catch(() => null);
-    if (onlineClass === null) {
-        throw new HttpException(400, `Could not find class of id ${classId}`);
-    }
-    return onlineClass as unknown as FullOnlineClassInterface;
+    if (onlineClass === null) throw new HttpException(400, `Could not find class of id ${classId}`);
+
+    return onlineClass;
 };

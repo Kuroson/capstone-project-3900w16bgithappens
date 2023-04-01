@@ -65,7 +65,7 @@ export const getListOnlineClassController = async (
 export const getClassList = async (courseId: string): Promise<BasicOnlineClassInformation[]> => {
     // Find course
     const course = await Course.findById(courseId, "_id onlineClasses")
-        .populate("onlineClasses", "_id title description running startTime")
+        .populate("onlineClasses", "_id title description running startTime linkToClass")
         .exec()
         .catch(() => null);
 
