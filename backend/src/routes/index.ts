@@ -24,6 +24,7 @@ import { downloadFileController } from "./file/downloadFile.route";
 import { uploadFileController } from "./file/uploadFile.route";
 import { indexController } from "./index.route";
 import { createOnlineClassController } from "./onlineClasses/createOnlineClass.route";
+import { getListOnlineClassController } from "./onlineClasses/getListOnlineClass.route";
 import { getOnlineClassController } from "./onlineClasses/getOnlineClass.route";
 import { addResourceController } from "./page/addResource.route";
 import { addSectionController } from "./page/addSection.route";
@@ -113,4 +114,5 @@ indexRouter.get("/analytics/questions", getQuestionAnalyticsController);
 
 // Online Classes Routes
 indexRouter.get("/class", getOnlineClassController); // TODO testing
+indexRouter.get("/class/list", getListOnlineClassController); // TODO testing
 indexRouter.post("/class/schedule", createOnlineClassController); // TODO: Testing
