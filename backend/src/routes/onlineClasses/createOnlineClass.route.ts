@@ -101,6 +101,7 @@ export const createOnlineClass = async (
         description: description,
         startTime: startTime,
         linkToClass: linkToClass,
+        running: false,
     });
 
     const newLectureId = await newLecture
