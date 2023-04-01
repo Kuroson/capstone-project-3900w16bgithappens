@@ -42,7 +42,7 @@ const SchedulePage = ({ courseData }: SchedulePageProps): JSX.Element => {
         <div className="flex flex-col w-full justify-center px-[5%] items-center">
           <div className="py-5 flex flex-col w-full items-center">
             <h1 className="text-4xl font-bold">Schedule New Lecture</h1>
-            <div></div>
+            <div className="outline py-5">123</div>
           </div>
         </div>
       </ContentContainer>
