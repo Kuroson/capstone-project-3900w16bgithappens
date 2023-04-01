@@ -96,12 +96,12 @@ export const createOnlineClass = async (
 
     // Create new OnlineClass and Save
     const newLecture = new OnlineClass({
-        courseId: courseId,
         title: title,
         description: description,
         startTime: startTime,
         linkToClass: linkToClass,
         running: false,
+        chatMessages: [],
     });
 
     const newLectureId = await newLecture
