@@ -33,3 +33,7 @@ const onlineClassSchema: Schema = new Schema<OnlineClassInterface>({
 const OnlineClass = model<OnlineClassInterface & Document>("OnlineClass", onlineClassSchema);
 
 export default OnlineClass;
+
+export type FullOnlineClassInterface = Omit<OnlineClassInterface, "chatMessages"> & {
+    chatMessages: MessageInterface[];
+};
