@@ -12,7 +12,7 @@ export interface OnlineClassInterface extends Document {
     /**
      * Unix time stamp of when the class starts
      */
-    startTime: string;
+    startTime: number;
     /**
      * YouTube URL
      */
@@ -24,7 +24,7 @@ export interface OnlineClassInterface extends Document {
 const onlineClassSchema: Schema = new Schema<OnlineClassInterface>({
     title: { type: String, required: true },
     description: { type: String },
-    startTime: { type: String, required: true },
+    startTime: { type: Number, required: true },
     linkToClass: { type: String, required: true },
     running: { type: Boolean, required: true },
     chatMessages: [{ type: Schema.Types.ObjectId, ref: "Message", required: true }],
