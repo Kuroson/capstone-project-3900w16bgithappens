@@ -1,5 +1,4 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Course from "@/models/course/course.model";
 import Message from "@/models/course/onlineClass/message.model";
 import OnlineClass from "@/models/course/onlineClass/onlineClass.model";
 import User from "@/models/user.model";

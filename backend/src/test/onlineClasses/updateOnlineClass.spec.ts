@@ -5,7 +5,6 @@ import User from "@/models/user.model";
 import { createCourse } from "@/routes/course/createCourse.route";
 import { createOnlineClass } from "@/routes/onlineClasses/createOnlineClass.route";
 import { getClassFromId } from "@/routes/onlineClasses/getOnlineClass.route";
-import { updateOnlineClassController } from "@/routes/onlineClasses/updateOnlineClass.route";
 import { registerUser } from "@/routes/user/register.route";
 import { disconnect } from "mongoose";
 import { v4 as uuidv4 } from "uuid";

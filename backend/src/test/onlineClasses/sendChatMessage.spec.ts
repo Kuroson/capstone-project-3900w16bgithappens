@@ -1,18 +1,14 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course/course.model";
-import Message from "@/models/course/onlineClass/message.model";
 import OnlineClass from "@/models/course/onlineClass/onlineClass.model";
 import User from "@/models/user.model";
 import { createCourse } from "@/routes/course/createCourse.route";
 import { createOnlineClass } from "@/routes/onlineClasses/createOnlineClass.route";
 import { getClassFromId } from "@/routes/onlineClasses/getOnlineClass.route";
 import { addNewChatMessage } from "@/routes/onlineClasses/sendMessageOnlineClass.route";
-import { triggerOnlineClass } from "@/routes/onlineClasses/startOnlineClass.route";
-import { updateOnlineClassController } from "@/routes/onlineClasses/updateOnlineClass.route";
 import { registerUser } from "@/routes/user/register.route";
 import { disconnect } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import { updateOnlineClassDetails } from "../../routes/onlineClasses/updateOnlineClass.route";
 import initialiseMongoose from "../testUtil";
 
 describe("Test start online class", () => {

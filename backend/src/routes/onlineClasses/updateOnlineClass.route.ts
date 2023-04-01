@@ -1,5 +1,4 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Course from "@/models/course/course.model";
 import OnlineClass from "@/models/course/onlineClass/onlineClass.model";
 import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
