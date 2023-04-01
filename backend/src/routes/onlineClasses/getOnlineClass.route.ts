@@ -52,6 +52,11 @@ export const getOnlineClassController = async (
     }
 };
 
+/**
+ * Gets all class information stored in MongoDB
+ * @param classId id to query
+ * @returns
+ */
 export const getClassFromId = async (classId: string): Promise<FullOnlineClassInterface> => {
     const onlineClass = OnlineClass.findById(classId).populate("chatMessages");
     return onlineClass as unknown as FullOnlineClassInterface;
