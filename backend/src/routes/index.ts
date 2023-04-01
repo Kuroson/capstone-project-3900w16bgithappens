@@ -27,6 +27,7 @@ import { createOnlineClassController } from "./onlineClasses/createOnlineClass.r
 import { endOnlineClassController } from "./onlineClasses/endOnlineClass.route";
 import { getListOnlineClassController } from "./onlineClasses/getListOnlineClass.route";
 import { getOnlineClassController } from "./onlineClasses/getOnlineClass.route";
+import { sendChatMessageController } from "./onlineClasses/sendMessageOnlineClass.route";
 import { startOnlineClassController } from "./onlineClasses/startOnlineClass.route";
 import { updateOnlineClassController } from "./onlineClasses/updateOnlineClass.route";
 import { addResourceController } from "./page/addResource.route";
@@ -122,3 +123,4 @@ indexRouter.post("/class/schedule", createOnlineClassController); // TODO: Testi
 indexRouter.put("/class/update", updateOnlineClassController); // TODO testing
 indexRouter.put("/class/start", startOnlineClassController); // TODO testing
 indexRouter.put("/class/end", endOnlineClassController); // TODO testing
+indexRouter.post("/class/chat/send", sendChatMessageController); // TODO testing
