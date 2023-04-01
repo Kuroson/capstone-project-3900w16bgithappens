@@ -8,8 +8,14 @@ import { MessageInterface } from "./message.model";
  */
 export interface OnlineClassInterface extends Document {
     title: string;
-    description?: string;
+    description: string | null;
+    /**
+     * Unix time stamp of when the class starts
+     */
     startTime: string;
+    /**
+     * YouTube URL
+     */
     linkToClass: string;
     running: boolean;
     chatMessages: Types.DocumentArray<MessageInterface["_id"]>;

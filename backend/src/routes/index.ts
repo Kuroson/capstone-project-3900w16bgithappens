@@ -23,6 +23,7 @@ import { updateCourseController } from "./course/updateCourse.route";
 import { downloadFileController } from "./file/downloadFile.route";
 import { uploadFileController } from "./file/uploadFile.route";
 import { indexController } from "./index.route";
+import { createOnlineClassController } from "./onlineClasses/createOnlineClass.route";
 import { addResourceController } from "./page/addResource.route";
 import { addSectionController } from "./page/addSection.route";
 import { createPageController } from "./page/createPage.route";
@@ -108,3 +109,6 @@ indexRouter.post("/assignment/grade", gradeAssignmentController);
 indexRouter.get("/analytics/grades", getGradesController);
 indexRouter.get("/analytics/tags/summary", getTagSummaryController);
 indexRouter.get("/analytics/questions", getQuestionAnalyticsController);
+
+// Online Classes Routes
+indexRouter.post("/class/schedule", createOnlineClassController); // TODO: Testing
