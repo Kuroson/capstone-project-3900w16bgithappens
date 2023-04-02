@@ -1,12 +1,12 @@
 branch-defaults:
   default:
-    environment: Cs3900-githappens-be-env
+    environment: githappens-backend
 environment-defaults:
-  Cs3900-githappens-be-env:
+  githappens-backend:
     branch: null
     repository: null
 global:
-  application_name: cs3900-githappens-be
+  application_name: alvin-webserver
   default_ec2_keyname: null
   default_platform: Node.js 16 running on 64bit Amazon Linux 2
   default_region: ap-southeast-2
