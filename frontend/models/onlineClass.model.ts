@@ -3,7 +3,7 @@ import { MessageInterface } from "./message.model";
 
 export interface OnlineClassInterface extends MongooseDocument {
   title: string;
-  description: string | null;
+  description: string;
   /**
    * Unix time stamp of when the class starts
    */
