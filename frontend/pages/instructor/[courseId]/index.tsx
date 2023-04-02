@@ -37,8 +37,6 @@ const AdminCoursePage = ({ courseData }: AdminCoursePageProps): JSX.Element => {
   const authUser = useAuthUser();
   const [loading, setLoading] = React.useState(user.userDetails === null);
 
-  console.log(courseData);
-
   React.useEffect(() => {
     // Build user data for user context
     if (user.userDetails !== null) {

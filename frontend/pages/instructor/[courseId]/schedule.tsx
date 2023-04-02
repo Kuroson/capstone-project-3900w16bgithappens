@@ -77,7 +77,7 @@ const SchedulePage = ({ courseData }: SchedulePageProps): JSX.Element => {
       setButtonLoading(false);
       return;
     }
-    if (res === null) throw new Error("This shouldn't have happened");
+    if (res === null) throw new Error("Res should not have been null");
     setButtonLoading(false);
     toast.success("Successfully created online class");
     router.push(`/instructor/${courseData._id}`);
