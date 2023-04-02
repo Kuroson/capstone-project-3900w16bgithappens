@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Avatar } from "@mui/material";
 import { OnlineClassUserInformation } from "models/onlineClass.model";
 import moment from "moment";
+import { youtubeURLParser } from "util/util";
 
 type OnlineClassCardProps = {
   onlineClass: OnlineClassUserInformation;
@@ -21,11 +22,9 @@ const OnlineClassCard: React.FC<OnlineClassCardProps> = ({ onlineClass, href }):
   const opts = {
     height: "100%",
     width: "100%",
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
-    },
   };
+
+  const videoId = youtubeURLParser(onlineClass.linkToClass);
 
   return (
     <Link
@@ -39,7 +38,7 @@ const OnlineClassCard: React.FC<OnlineClassCardProps> = ({ onlineClass, href }):
         </div>
       </div>
       <p className="h-[150px] overflow-hidden">{onlineClass.description ?? ""}</p>
-      <YouTube videoId="2g811Eo7K8U" opts={opts} />
+      <YouTube videoId={videoId !== false ? videoId : ""} opts={opts} />
     </Link>
   );
 };
