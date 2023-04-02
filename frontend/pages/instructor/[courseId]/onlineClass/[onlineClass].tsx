@@ -1,14 +1,11 @@
 import React from "react";
 import { toast } from "react-toastify";
 import YouTube from "react-youtube";
-import dynamic from "next/dynamic";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { LoadingButton } from "@mui/lab";
 import { Button, TextField } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { UserCourseInformation } from "models/course.model";
-import { OnlineClassInterface } from "models/onlineClass.model";
 import { OnlineClassFull } from "models/onlineClass.model";
 import { UserDetails } from "models/user.model";
 import moment from "moment";
@@ -194,6 +191,7 @@ const LeftColumn = ({
     setDynamicOnlineClass({ ...dynamicOnlineClass, running: true });
     toast.success(res.message);
   };
+
   const handleEndClass = async () => {
     setRunningLoading(true);
     const [res, err] = await endOnlineClass(
@@ -270,7 +268,6 @@ const LeftColumn = ({
 const OnlineClassPage = ({ courseData, onlineClassData }: OnlineClassPageProps): JSX.Element => {
   const user = useUser();
   const authUser = useAuthUser();
-  const router = useRouter();
   const [loading, setLoading] = React.useState(user.userDetails === null);
   // Still need to fetch the chat messages for the online class data
   const [dynamicOnlineClass, setDynamicOnlineClass] = React.useState(onlineClassData);
