@@ -5,7 +5,9 @@ import Head from "next/head";
 import { LoadingButton } from "@mui/lab";
 import { Button, TextField } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
+import { set } from "cypress/types/lodash";
 import { UserCourseInformation } from "models/course.model";
+import { MessageInterface } from "models/message.model";
 import { OnlineClassFull } from "models/onlineClass.model";
 import { UserDetails } from "models/user.model";
 import moment from "moment";
@@ -18,9 +20,11 @@ import { getUserCourseDetails } from "util/api/courseApi";
 import {
   UpdateOnlineClassPayloadRequest,
   endOnlineClass,
+  sendOnlineClassMessage,
   startOnlineClass,
 } from "util/api/onlineClassApi";
 import { updateOnlineClass } from "util/api/onlineClassApi";
+import { getOnlineClassDetails } from "util/api/onlineClassApi";
 import initAuth from "util/firebase";
 import { youtubeURLParser } from "util/util";
 
@@ -272,6 +276,97 @@ const LeftColumn = ({
   );
 };
 
+type RightColumnProps = {
+  dynamicOnlineClass: OnlineClassFull;
+};
+
+const RightColumn = ({ dynamicOnlineClass }: RightColumnProps): JSX.Element => {
+  const authUser = useAuthUser();
+
+  const [newMessage, setNewMessage] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [messages, setMessages] = React.useState<MessageInterface[]>([]);
+
+  React.useEffect(() => {
+    const getData = async () => {
+      const [res, err] = await getOnlineClassDetails(
+        await authUser.getIdToken(),
+        dynamicOnlineClass._id,
+        "client",
+      );
+      if (err !== null) {
+        console.error(err);
+        if (err instanceof HttpException) {
+          toast.error(err.message);
+        } else {
+          toast.error(err);
+        }
+        return;
+      }
+      if (res === null) throw new Error("Res should not have been null");
+      setMessages(res.chatMessages);
+    };
+    getData();
+  }, [authUser, dynamicOnlineClass._id]);
+
+  /**
+   * @pre newMessage.length > 0
+   */
+  const handleSend = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const [res, err] = await sendOnlineClassMessage(
+      await authUser.getIdToken(),
+      dynamicOnlineClass._id,
+      newMessage,
+      "client",
+    );
+
+    if (err !== null) {
+      console.error(err);
+      if (err instanceof HttpException) {
+        toast.error(err.message);
+      } else {
+        toast.error(err);
+      }
+      setLoading(false);
+      return;
+    }
+    if (res === null) throw new Error("Res should not have been null");
+    toast.success("Sent message");
+    setMessages([...res.chatMessages]);
+    setLoading(false);
+    setNewMessage("");
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col justify-between">
+      {/* Top */}
+      <div>top</div>
+      {/* bottom */}
+      <form className="flex flex-row" onSubmit={handleSend}>
+        <TextField
+          id="Message"
+          label="Message"
+          variant="outlined"
+          onChange={(e) => setNewMessage(e.target.value)}
+          className="w-full"
+          value={newMessage}
+        />
+        <LoadingButton
+          variant="contained"
+          loading={loading}
+          disabled={newMessage.length === 0}
+          type="submit"
+        >
+          Send
+        </LoadingButton>
+      </form>
+    </div>
+  );
+};
+
 const OnlineClassPage = ({ courseData, onlineClassData }: OnlineClassPageProps): JSX.Element => {
   const user = useUser();
   const authUser = useAuthUser();
@@ -308,7 +403,9 @@ const OnlineClassPage = ({ courseData, onlineClassData }: OnlineClassPageProps):
               />
             </div>
             {/* Right col */}
-            <div className="w-full bg-orange-500 h-full">Chat here</div>
+            <div className="w-full h-full border-solid border-2 border-black">
+              <RightColumn dynamicOnlineClass={dynamicOnlineClass} />
+            </div>
           </div>
         </div>
       </ContentContainer>

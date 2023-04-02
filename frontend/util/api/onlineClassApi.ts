@@ -1,4 +1,6 @@
-import { BackendLinkType, apiPost, apiPut } from "./api";
+import { MessageInterface } from "models/message.model";
+import { OnlineClassFull } from "models/onlineClass.model";
+import { BackendLinkType, apiGet, apiPost, apiPut } from "./api";
 import { getBackendLink } from "./userApi";
 
 type CreateOnlineClassPayloadResponse = {
@@ -87,5 +89,46 @@ export const updateOnlineClass = (
     `${getBackendLink(type)}/class/update`,
     token,
     data,
+  );
+};
+
+type GetOnlineClassDetailsPayloadResponse = OnlineClassFull;
+
+type GetOnlineClassDetailsPayloadRequest = {
+  classId: string;
+};
+
+export const getOnlineClassDetails = (
+  token: string | null,
+  classId: string,
+  type: BackendLinkType,
+) => {
+  return apiGet<GetOnlineClassDetailsPayloadRequest, GetOnlineClassDetailsPayloadResponse>(
+    `${getBackendLink(type)}/class`,
+    token,
+    { classId },
+  );
+};
+
+type SendOnlineClassMessagePayloadResponse = {
+  messageId: string;
+  chatMessages: MessageInterface[];
+};
+
+type SendOnlineClassMessagePayloadRequest = {
+  classId: string;
+  message: string;
+};
+
+export const sendOnlineClassMessage = (
+  token: string | null,
+  classId: string,
+  message: string,
+  type: BackendLinkType,
+) => {
+  return apiPost<SendOnlineClassMessagePayloadRequest, SendOnlineClassMessagePayloadResponse>(
+    `${getBackendLink(type)}/class/chat/send`,
+    token,
+    { classId, message },
   );
 };

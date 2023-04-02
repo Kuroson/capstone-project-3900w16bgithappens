@@ -7,4 +7,5 @@ export interface MessageInterface extends MongooseDocument {
    * UNIX timestamp
    */
   timestamp: number;
+  senderName: string;
 }
