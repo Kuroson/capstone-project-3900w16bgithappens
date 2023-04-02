@@ -309,6 +309,34 @@ const RightColumn = ({ dynamicOnlineClass }: RightColumnProps): JSX.Element => {
     getData();
   }, [authUser, dynamicOnlineClass._id]);
 
+  // Polling
+  React.useEffect(() => {
+    const getData = async () => {
+      const [res, err] = await getOnlineClassDetails(
+        await authUser.getIdToken(),
+        dynamicOnlineClass._id,
+        "client",
+      );
+      if (err !== null) {
+        console.error(err);
+        if (err instanceof HttpException) {
+          toast.error(err.message);
+        } else {
+          toast.error(err);
+        }
+        return;
+      }
+      if (res === null) throw new Error("Res should not have been null");
+      setMessages(res.chatMessages);
+    };
+    const intervalId = setInterval(() => {
+      console.log("Polling!!!");
+      getData();
+    }, 2000);
+
+    return () => clearInterval(intervalId);
+  }, [authUser, dynamicOnlineClass._id]);
+
   /**
    * @pre newMessage.length > 0
    */
