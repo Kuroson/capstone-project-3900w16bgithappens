@@ -37,7 +37,7 @@ const OnlineClassCard: React.FC<OnlineClassCardProps> = ({ onlineClass, href }):
           <LiveSpan />
         </div>
       </div>
-      <p className="h-[150px] overflow-hidden">{onlineClass.description ?? ""}</p>
+      <p className="h-[150px] truncate">{onlineClass.description ?? ""}</p>
       <YouTube videoId={videoId !== false ? videoId : ""} opts={opts} />
     </Link>
   );
