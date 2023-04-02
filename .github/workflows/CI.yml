@@ -106,6 +106,8 @@ jobs:
           MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
         run: env >> .env
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
       - name: Get timestamp
         uses: gerred/actions/current-time@master
         id: current-time
