@@ -13,7 +13,7 @@ type OnlineClassCardProps = {
 
 const OnlineClassCard: React.FC<OnlineClassCardProps> = ({ onlineClass, href }): JSX.Element => {
   const LiveSpan = (): JSX.Element => {
-    if (!onlineClass.running) {
+    if (onlineClass.running) {
       return <span className="bg-[#b0e3de] p-1 rounded-md font-bold text-red-500">{"LIVE"}</span>;
     }
     return <></>;
