@@ -7,11 +7,16 @@ import { Document, Schema, Types, model } from "mongoose";
 export interface MessageInterface extends Document {
     message: string;
     sender: UserInterface["_id"];
+    /**
+     * UNIX timestamp
+     */
+    timestamp: number;
 }
 
 const messageSchema: Schema = new Schema<MessageInterface>({
     message: { type: String, required: true },
     sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    timestamp: { type: Number, required: true },
 });
 
 const Message = model<MessageInterface & Document>("Message", messageSchema);

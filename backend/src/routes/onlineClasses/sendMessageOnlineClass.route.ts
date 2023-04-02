@@ -79,7 +79,11 @@ export const addNewChatMessage = async (
         throw new HttpException(400, `User with firebase_uid ${senderFirebaseUID} not found`);
 
     // Create message and save message
-    const newMessage = new Message({ message: message, sender: sender._id.toString() });
+    const newMessage = new Message({
+        message: message,
+        sender: sender._id.toString(),
+        timestamp: Date.now(),
+    });
     const messageId = await newMessage
         .save()
         .then((res) => res._id.toString() as string)
