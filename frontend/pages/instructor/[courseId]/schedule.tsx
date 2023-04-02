@@ -1,6 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { LoadingButton } from "@mui/lab";
 import { TextField } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -14,6 +15,7 @@ import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { CreateOnlineClassPayloadRequest, createOnlineClass } from "util/api/onlineClassApi";
 import initAuth from "util/firebase";
+import { youtubeURLParser } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 
@@ -24,6 +26,7 @@ type SchedulePageProps = {
 const SchedulePage = ({ courseData }: SchedulePageProps): JSX.Element => {
   const user = useUser();
   const authUser = useAuthUser();
+  const router = useRouter();
   const [loading, setLoading] = React.useState(user.userDetails === null);
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -51,8 +54,8 @@ const SchedulePage = ({ courseData }: SchedulePageProps): JSX.Element => {
       toast.warning("Please enter a start time");
       return;
     }
-    if (url === "") {
-      toast.warning("Please enter a URL");
+    if (url === "" || youtubeURLParser(url) === false) {
+      toast.warning("Please enter a valid YouTube URL link");
       return;
     }
     const payload: CreateOnlineClassPayloadRequest = {
@@ -77,6 +80,7 @@ const SchedulePage = ({ courseData }: SchedulePageProps): JSX.Element => {
     if (res === null) throw new Error("This shouldn't have happened");
     setButtonLoading(false);
     toast.success("Successfully created online class");
+    router.push(`/instructor/${courseData._id}`);
   };
 
   return (
@@ -92,7 +96,7 @@ const SchedulePage = ({ courseData }: SchedulePageProps): JSX.Element => {
           <div className="py-5 flex flex-col items-center w-[1000px]">
             <h1 className="text-4xl font-bold">Schedule New Lecture</h1>
             <form
-              className="outline py-5 w-full flex flex-col justify-center items-center"
+              className="py-5 w-full flex flex-col justify-center items-center"
               onSubmit={handleOnSubmit}
             >
               <div>

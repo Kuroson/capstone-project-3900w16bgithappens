@@ -29,7 +29,7 @@ const OnlineClassCard: React.FC<OnlineClassCardProps> = ({ onlineClass, href }):
   return (
     <Link
       href={href}
-      className="flex flex-col rounded-lg shadow-md p-5 my-2 mx-5 w-[370px] h-[264px] cursor-pointer hover:shadow-lg"
+      className="flex flex-col rounded-lg shadow-md p-5 my-2 mx-5 w-[370px] h-[264px] cursor-pointer hover:shadow-lg hover:scale-[1.01]"
     >
       <div className="w-full flex flex-row justify-between items-center">
         <h1 className="my-1.5 text-xl">{onlineClass.title}</h1>
