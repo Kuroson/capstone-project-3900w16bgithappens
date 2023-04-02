@@ -60,7 +60,7 @@ export const sendChatMessageController = async (
 /**
  * Creates and adds a new message to a class
  * @param classId
- * @param senderId
+ * @param senderFirebaseUID
  * @param message
  * @returns
  */
