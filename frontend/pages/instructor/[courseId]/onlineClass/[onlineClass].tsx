@@ -101,7 +101,7 @@ const EditOnlineClass = ({
   };
 
   return (
-    <form className="outline w-full" onSubmit={handleOnSubmit}>
+    <form className="w-full" onSubmit={handleOnSubmit}>
       <div>
         <TextField
           id="Title"
@@ -334,7 +334,6 @@ const RightColumn = ({ dynamicOnlineClass }: RightColumnProps): JSX.Element => {
       return;
     }
     if (res === null) throw new Error("Res should not have been null");
-    toast.success("Sent message");
     setMessages([...res.chatMessages]);
     setLoading(false);
     setNewMessage("");
@@ -343,7 +342,18 @@ const RightColumn = ({ dynamicOnlineClass }: RightColumnProps): JSX.Element => {
   return (
     <div className="w-full h-full flex flex-col justify-between">
       {/* Top */}
-      <div>top</div>
+      <div>
+        <h1 className="text-4xl font-bold w-full text-center">Chat messages</h1>
+        {messages.map((x) => {
+          return (
+            <div key={x._id} className="w-full flex flex-row">
+              <span>{`${moment.unix(x.timestamp).format("DD/MM/YY-hh:mm:ss A")} ${x.senderName}: ${
+                x.message
+              }`}</span>
+            </div>
+          );
+        })}
+      </div>
       {/* bottom */}
       <form className="flex flex-row" onSubmit={handleSend}>
         <TextField
@@ -403,7 +413,7 @@ const OnlineClassPage = ({ courseData, onlineClassData }: OnlineClassPageProps):
               />
             </div>
             {/* Right col */}
-            <div className="w-full h-full border-solid border-2 border-black">
+            <div className="w-full h-full">
               <RightColumn dynamicOnlineClass={dynamicOnlineClass} />
             </div>
           </div>

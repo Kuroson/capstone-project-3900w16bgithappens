@@ -91,7 +91,7 @@ export const addNewChatMessage = async (
     const newMessage = new Message({
         message: message,
         sender: sender._id.toString(),
-        timestamp: Date.now(),
+        timestamp: Date.now() / 1000,
         senderName: `${sender.first_name} ${sender.last_name}`,
     });
     const messageId = await newMessage
