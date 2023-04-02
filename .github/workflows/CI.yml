@@ -68,7 +68,7 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
-    if: github.ref == 'refs/heads/master'
+    # if: github.ref == 'refs/heads/master'
     strategy:
       matrix:
         node-version: [18.x]
@@ -125,7 +125,7 @@ jobs:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }} # Add this to secret
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Add this to secret
           application_name: alvin-webserver # Look for in .ebextensions/config.yml
-          environment_name: Cs3900-githappens-be-env # Look for in .ebextensions/config.yml
+          environment_name: githappens-backend # Look for in .ebextensions/config.yml
           version_label: "version-label-${{ steps.format-time.outputs.replaced }}"
           region: ap-southeast-2
           deployment_package: ./backend/deploy.zip
