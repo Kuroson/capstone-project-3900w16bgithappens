@@ -32,11 +32,11 @@ export const createOnlineClass = (
   );
 };
 
-export type StartOnlineClassPayloadResponse = {
+type StartOnlineClassPayloadResponse = {
   message: string;
 };
 
-export type StartOnlineClassPayloadRequest = {
+type StartOnlineClassPayloadRequest = {
   classId: string;
 };
 
@@ -55,13 +55,37 @@ export const startOnlineClass = (token: string | null, classId: string, type: Ba
   );
 };
 
-export type EndOnlineClassPayloadResponse = StartOnlineClassPayloadResponse;
-export type EndOnlineClassPayloadRequest = StartOnlineClassPayloadRequest;
+type EndOnlineClassPayloadResponse = StartOnlineClassPayloadResponse;
+type EndOnlineClassPayloadRequest = StartOnlineClassPayloadRequest;
 
 export const endOnlineClass = (token: string | null, classId: string, type: BackendLinkType) => {
   return apiPut<EndOnlineClassPayloadRequest, EndOnlineClassPayloadResponse>(
     `${getBackendLink(type)}/class/end`,
     token,
     { classId },
+  );
+};
+
+type UpdateOnlineClassPayloadResponse = {
+  classId: string;
+};
+
+export type UpdateOnlineClassPayloadRequest = {
+  classId: string;
+  title: string;
+  description: string;
+  startTime: number;
+  linkToClass: string;
+};
+
+export const updateOnlineClass = (
+  token: string | null,
+  data: UpdateOnlineClassPayloadRequest,
+  type: BackendLinkType,
+) => {
+  return apiPut<UpdateOnlineClassPayloadRequest, UpdateOnlineClassPayloadResponse>(
+    `${getBackendLink(type)}/class/update`,
+    token,
+    data,
   );
 };
