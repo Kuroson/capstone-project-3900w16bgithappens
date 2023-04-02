@@ -68,7 +68,7 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     strategy:
       matrix:
         node-version: [18.x]
