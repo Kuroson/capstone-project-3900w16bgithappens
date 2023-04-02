@@ -128,7 +128,7 @@ jobs:
           environment_name: Cs3900-githappens-be-env # Look for in .ebextensions/config.yml
           version_label: "version-label-${{ steps.format-time.outputs.replaced }}"
           region: ap-southeast-2
-          deployment_package: deploy.zip
+          deployment_package: ./backend/deploy.zip
   frontend:
     runs-on: ubuntu-latest
     defaults:
