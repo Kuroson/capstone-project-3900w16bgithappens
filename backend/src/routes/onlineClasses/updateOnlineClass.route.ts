@@ -13,7 +13,7 @@ type ResponsePayload = {
 type QueryPayload = {
     classId: string;
     title: string;
-    description: string | null;
+    description: string;
     startTime: number;
     linkToClass: string;
 };
@@ -78,7 +78,7 @@ export const updateOnlineClassController = async (
 export const updateOnlineClassDetails = async (
     classId: string,
     title: string,
-    description: string | null,
+    description: string,
     startTime: number,
     linkToClass: string,
 ): Promise<void> => {
