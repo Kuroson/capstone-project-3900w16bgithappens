@@ -161,6 +161,13 @@ const LeftColumn = ({
   const [runningLoading, setRunningLoading] = React.useState(false);
   const [editMode, setEditMode] = React.useState(true);
 
+  React.useEffect(() => {
+    if (editMode) {
+      // On page change, set the edit mode to false
+      setEditMode(false);
+    }
+  }, [dynamicOnlineClass, editMode]);
+
   const videoId = youtubeURLParser(dynamicOnlineClass.linkToClass);
 
   const opts = {
