@@ -60,7 +60,7 @@ export const getClassFromId = async (classId: string): Promise<FullOnlineClassIn
     Message; // Load Mongoose message
 
     const onlineClass = await OnlineClass.findById(classId)
-        .populate("chatMessages")
+        .populate({ path: "chatMessages", model: "Message", options: { sort: { timestamp: 1 } } })
         .exec()
         .catch(() => null);
     if (onlineClass === null) throw new HttpException(400, `Could not find class of id ${classId}`);
