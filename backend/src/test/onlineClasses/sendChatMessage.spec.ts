@@ -61,13 +61,13 @@ describe("Test start online class", () => {
     });
 
     it("Send chat message successfully", async () => {
-        await addNewChatMessage(onlineClassId, userId, chatMessage1);
+        await addNewChatMessage(onlineClassId, `acc${id}`, chatMessage1);
         let data = await getClassFromId(onlineClassId);
         expect(data.chatMessages.length).toEqual(1);
         expect(data.chatMessages[0].message).toEqual(chatMessage1);
         expect(data.chatMessages[0].sender.toString()).toEqual(userId);
 
-        await addNewChatMessage(onlineClassId, userId, chatMessage2);
+        await addNewChatMessage(onlineClassId, `acc${id}`, chatMessage2);
         data = await getClassFromId(onlineClassId);
         expect(data.chatMessages.length).toEqual(2);
         expect(data.chatMessages[0].message).toEqual(chatMessage1);

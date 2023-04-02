@@ -13,7 +13,7 @@ type ResponsePayload = {
 
 type QueryPayload = {
     classId: string;
-    senderId: string;
+    senderFirebaseUID: string;
     message: string;
 };
 
@@ -29,11 +29,15 @@ export const sendChatMessageController = async (
 ) => {
     try {
         const authUser = await checkAuth(req);
-        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["classId", "senderId", "message"];
+        const KEYS_TO_CHECK: Array<keyof QueryPayload> = [
+            "classId",
+            "senderFirebaseUID",
+            "message",
+        ];
 
         if (isValidBody<QueryPayload>(req.body, KEYS_TO_CHECK)) {
-            const { classId, senderId, message } = req.body;
-            const messageId = await addNewChatMessage(classId, senderId, message);
+            const { classId, senderFirebaseUID, message } = req.body;
+            const messageId = await addNewChatMessage(classId, senderFirebaseUID, message);
             return res.status(200).json({ messageId: messageId });
         } else {
             throw new HttpException(
@@ -62,7 +66,7 @@ export const sendChatMessageController = async (
  */
 export const addNewChatMessage = async (
     classId: string,
-    senderId: string,
+    senderFirebaseUID: string,
     message: string,
 ): Promise<string> => {
     // Find the class
@@ -70,11 +74,12 @@ export const addNewChatMessage = async (
     if (onlineClass === null) throw new HttpException(400, `Class with id ${classId} not found`);
 
     // Find the sender
-    const sender = await User.findById(senderId).catch(() => null);
-    if (sender === null) throw new HttpException(400, `User with id ${senderId} not found`);
+    const sender = await User.findOne({ firebase_uid: senderFirebaseUID }).catch(() => null);
+    if (sender === null)
+        throw new HttpException(400, `User with firebase_uid ${senderFirebaseUID} not found`);
 
     // Create message and save message
-    const newMessage = new Message({ message: message, sender: senderId });
+    const newMessage = new Message({ message: message, sender: sender._id.toString() });
     const messageId = await newMessage
         .save()
         .then((res) => res._id.toString() as string)
