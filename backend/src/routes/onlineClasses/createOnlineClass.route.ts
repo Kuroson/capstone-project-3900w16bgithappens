@@ -14,7 +14,7 @@ type ResponsePayload = {
 type QueryPayload = {
     courseId: string;
     title: string;
-    description: string | null;
+    description: string;
     startTime: number;
     linkToClass: string;
 };
