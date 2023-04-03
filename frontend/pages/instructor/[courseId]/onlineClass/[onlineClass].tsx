@@ -11,7 +11,13 @@ import { UserDetails } from "models/user.model";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { AdminNavBar, ContentContainer, EditOnlineClassSection, Loading } from "components";
+import {
+  AdminNavBar,
+  ChatSection,
+  ContentContainer,
+  EditOnlineClassSection,
+  Loading,
+} from "components";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
@@ -156,128 +162,7 @@ type RightColumnProps = {
 };
 
 const RightColumn = ({ dynamicOnlineClass }: RightColumnProps): JSX.Element => {
-  const authUser = useAuthUser();
-
-  const [newMessage, setNewMessage] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [messages, setMessages] = React.useState<MessageInterface[]>([]);
-
-  React.useEffect(() => {
-    const getData = async () => {
-      const [res, err] = await getOnlineClassDetails(
-        await authUser.getIdToken(),
-        dynamicOnlineClass._id,
-        "client",
-      );
-      if (err !== null) {
-        console.error(err);
-        if (err instanceof HttpException) {
-          toast.error(err.message);
-        } else {
-          toast.error(err);
-        }
-        return;
-      }
-      if (res === null) throw new Error("Res should not have been null");
-      setMessages(res.chatMessages);
-    };
-    getData();
-  }, [authUser, dynamicOnlineClass._id]);
-
-  // Polling
-  React.useEffect(() => {
-    const getData = async () => {
-      const [res, err] = await getOnlineClassDetails(
-        await authUser.getIdToken(),
-        dynamicOnlineClass._id,
-        "client",
-      );
-      if (err !== null) {
-        console.error(err);
-        if (err instanceof HttpException) {
-          toast.error(err.message);
-        } else {
-          toast.error(err);
-        }
-        return;
-      }
-      if (res === null) throw new Error("Res should not have been null");
-      setMessages(res.chatMessages);
-    };
-    const intervalId = setInterval(() => {
-      console.log("Polling!!!");
-      getData();
-    }, 2000);
-
-    return () => clearInterval(intervalId);
-  }, [authUser, dynamicOnlineClass._id]);
-
-  /**
-   * @pre newMessage.length > 0
-   */
-  const handleSend = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const [res, err] = await sendOnlineClassMessage(
-      await authUser.getIdToken(),
-      dynamicOnlineClass._id,
-      newMessage,
-      "client",
-    );
-
-    if (err !== null) {
-      console.error(err);
-      if (err instanceof HttpException) {
-        toast.error(err.message);
-      } else {
-        toast.error(err);
-      }
-      setLoading(false);
-      return;
-    }
-    if (res === null) throw new Error("Res should not have been null");
-    setMessages([...res.chatMessages]);
-    setLoading(false);
-    setNewMessage("");
-  };
-
-  return (
-    <div className="w-full h-full flex flex-col justify-between">
-      {/* Top */}
-      <div>
-        <h1 className="text-4xl font-bold w-full text-center">Chat messages</h1>
-        {messages.map((x) => {
-          return (
-            <div key={x._id} className="w-full flex flex-row">
-              <span>{`${moment.unix(x.timestamp).format("DD/MM/YY-hh:mm:ss A")} ${x.senderName}: ${
-                x.message
-              }`}</span>
-            </div>
-          );
-        })}
-      </div>
-      {/* bottom */}
-      <form className="flex flex-row" onSubmit={handleSend}>
-        <TextField
-          id="Message"
-          label="Message"
-          variant="outlined"
-          onChange={(e) => setNewMessage(e.target.value)}
-          className="w-full"
-          value={newMessage}
-        />
-        <LoadingButton
-          variant="contained"
-          loading={loading}
-          disabled={newMessage.length === 0}
-          type="submit"
-        >
-          Send
-        </LoadingButton>
-      </form>
-    </div>
-  );
+  return <ChatSection dynamicOnlineClass={dynamicOnlineClass} />;
 };
 
 const OnlineClassPage = ({ courseData, onlineClassData }: OnlineClassPageProps): JSX.Element => {
