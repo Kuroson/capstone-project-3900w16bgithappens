@@ -176,14 +176,14 @@ const OnlineClassPage = ({ courseData, onlineClassData }: OnlineClassPageProps):
         <div className="flex flex-col w-full justify-center px-[5%] pt-5 h-full">
           <div className="flex flex-row h-full">
             {/* Left col */}
-            <div className="w-full h-full">
+            <div className="w-full">
               <LeftColumn
                 dynamicOnlineClass={dynamicOnlineClass}
                 setDynamicOnlineClass={setDynamicOnlineClass}
               />
             </div>
             {/* Right col */}
-            <div className="w-full h-full">
+            <div className="w-full h-[90%]">
               <RightColumn dynamicOnlineClass={dynamicOnlineClass} />
             </div>
           </div>
