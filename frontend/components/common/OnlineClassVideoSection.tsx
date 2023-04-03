@@ -18,7 +18,7 @@ const OnlineClassVideoSection = ({
   const videoId = youtubeURLParser(dynamicOnlineClass.linkToClass);
 
   return (
-    <div className="flex flex-col w-full outline h-full">
+    <div className="flex flex-col w-full h-full">
       <h1 className="text-5xl text-center">{dynamicOnlineClass.title}</h1>
       <p className="w-full text-center text-xl pt-3">{dynamicOnlineClass.description}</p>
       <p className="w-full text-center text-xl pt-3">
