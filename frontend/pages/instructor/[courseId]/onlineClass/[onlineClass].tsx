@@ -17,6 +17,7 @@ import {
   ContentContainer,
   EditOnlineClassSection,
   Loading,
+  OnlineClassVideoSection,
 } from "components";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
@@ -52,13 +53,6 @@ const LeftColumn = ({
       setEditMode(false);
     }
   }, [dynamicOnlineClass, editMode]);
-
-  const videoId = youtubeURLParser(dynamicOnlineClass.linkToClass);
-
-  const opts = {
-    height: "400px",
-    width: "100%",
-  };
 
   const handleStartClass = async () => {
     setRunningLoading(true);
@@ -118,14 +112,7 @@ const LeftColumn = ({
         />
       ) : (
         <>
-          <h1 className="text-5xl text-center">{dynamicOnlineClass.title}</h1>
-          <p className="w-full text-center text-xl pt-3">{dynamicOnlineClass.description}</p>
-          <p className="w-full text-center text-xl pt-3">
-            {moment.unix(dynamicOnlineClass.startTime).format("DD/MM/YYYY hh:mm A")}
-          </p>
-          <div className="w-full h-[400px] pt-3">
-            <YouTube videoId={videoId !== false ? videoId : ""} opts={opts} />
-          </div>
+          <OnlineClassVideoSection dynamicOnlineClass={dynamicOnlineClass} />
           <div className="w-full pt-6 flex flex-row justify-center items-center">
             <LoadingButton
               variant="contained"
