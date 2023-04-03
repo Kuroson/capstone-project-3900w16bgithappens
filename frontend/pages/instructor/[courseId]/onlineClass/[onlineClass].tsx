@@ -1,14 +1,11 @@
 import React from "react";
 import { toast } from "react-toastify";
-import YouTube from "react-youtube";
 import Head from "next/head";
 import { LoadingButton } from "@mui/lab";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { UserCourseInformation } from "models/course.model";
-import { MessageInterface } from "models/message.model";
 import { OnlineClassFull } from "models/onlineClass.model";
 import { UserDetails } from "models/user.model";
-import moment from "moment";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import {
@@ -23,9 +20,7 @@ import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { endOnlineClass, sendOnlineClassMessage, startOnlineClass } from "util/api/onlineClassApi";
-import { getOnlineClassDetails } from "util/api/onlineClassApi";
 import initAuth from "util/firebase";
-import { youtubeURLParser } from "util/util";
 
 initAuth(); // SSR maybe, i think...
 
