@@ -98,7 +98,7 @@ const ChatSection = ({ dynamicOnlineClass, student }: ChatSectionProps): JSX.Ele
     setLoading(false);
     setNewMessage("");
   };
-  console.log(chatEnabled);
+
   return (
     <div className="w-full flex h-[90%] flex-col">
       {/* Top */}
