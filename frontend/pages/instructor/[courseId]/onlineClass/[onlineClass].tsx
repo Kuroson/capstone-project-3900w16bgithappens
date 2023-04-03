@@ -1,7 +1,5 @@
 import React from "react";
-import { toast } from "react-toastify";
 import Head from "next/head";
-import { LoadingButton } from "@mui/lab";
 import { Button } from "@mui/material";
 import { UserCourseInformation } from "models/course.model";
 import { OnlineClassFull } from "models/onlineClass.model";
@@ -15,11 +13,10 @@ import {
   EditOnlineClassSection,
   Loading,
   OnlineClassVideoSection,
+  StartAndEndClassButtons,
 } from "components";
-import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
-import { endOnlineClass, sendOnlineClassMessage, startOnlineClass } from "util/api/onlineClassApi";
 import initAuth from "util/firebase";
 
 initAuth(); // SSR maybe, i think...
@@ -33,13 +30,10 @@ type LeftColumnProps = {
   dynamicOnlineClass: OnlineClassFull;
   setDynamicOnlineClass: React.Dispatch<React.SetStateAction<OnlineClassFull>>;
 };
-
 const LeftColumn = ({
   dynamicOnlineClass,
   setDynamicOnlineClass,
 }: LeftColumnProps): JSX.Element => {
-  const authUser = useAuthUser();
-  const [runningLoading, setRunningLoading] = React.useState(false);
   const [editMode, setEditMode] = React.useState(true);
 
   React.useEffect(() => {
@@ -48,54 +42,6 @@ const LeftColumn = ({
       setEditMode(false);
     }
   }, [dynamicOnlineClass, editMode]);
-
-  const handleStartClass = async () => {
-    setRunningLoading(true);
-    const [res, err] = await startOnlineClass(
-      await authUser.getIdToken(),
-      dynamicOnlineClass._id,
-      "client",
-    );
-
-    if (err !== null) {
-      console.error(err);
-      if (err instanceof HttpException) {
-        toast.error(err.message);
-      } else {
-        toast.error(err);
-      }
-      setRunningLoading(false);
-      return;
-    }
-    if (res === null) throw new Error("Res should not have been null");
-    setRunningLoading(false);
-    setDynamicOnlineClass({ ...dynamicOnlineClass, running: true });
-    toast.success(res.message);
-  };
-
-  const handleEndClass = async () => {
-    setRunningLoading(true);
-    const [res, err] = await endOnlineClass(
-      await authUser.getIdToken(),
-      dynamicOnlineClass._id,
-      "client",
-    );
-
-    if (err !== null) {
-      console.error(err);
-      if (err instanceof HttpException) {
-        toast.error(err.message);
-      } else {
-        toast.error(err);
-      }
-      setRunningLoading(false);
-      return;
-    }
-    if (res === null) throw new Error("Res should not have been null");
-    setRunningLoading(false);
-    setDynamicOnlineClass({ ...dynamicOnlineClass, running: false });
-    toast.success(res.message);
-  };
 
   return (
     <div className="w-full flex flex-col justify-center items-center px-[5%]">
@@ -108,26 +54,10 @@ const LeftColumn = ({
       ) : (
         <>
           <OnlineClassVideoSection dynamicOnlineClass={dynamicOnlineClass} />
-          <div className="w-full pt-6 flex flex-row justify-center items-center">
-            <LoadingButton
-              variant="contained"
-              className="mx-5"
-              disabled={dynamicOnlineClass.running}
-              onClick={handleStartClass}
-              loading={runningLoading && !dynamicOnlineClass.running}
-            >
-              Start Class
-            </LoadingButton>
-            <LoadingButton
-              variant="contained"
-              className="mx-5"
-              disabled={!dynamicOnlineClass.running}
-              onClick={handleEndClass}
-              loading={runningLoading && dynamicOnlineClass.running}
-            >
-              End Class
-            </LoadingButton>
-          </div>
+          <StartAndEndClassButtons
+            dynamicOnlineClass={dynamicOnlineClass}
+            setDynamicOnlineClass={setDynamicOnlineClass}
+          />
           <div className="pt-5">
             <Button variant="contained" onClick={() => setEditMode(true)}>
               Edit Online Class

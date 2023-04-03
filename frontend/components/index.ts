@@ -2,6 +2,7 @@ import { AdminNavBar, ContentContainer, EmptyNavBar, Layout, StudentNavBar } fro
 import NoUserLayout from "./Layout/NoUserLayout";
 import EditPanelButtons from "./admin/EditPanelButtons";
 import EditOnlineClassSection from "./admin/onlineClass/EditOnlineClassSection";
+import StartAndEndClassButtons from "./admin/onlineClass/StartAndEndClassButtons";
 import AddNewResourceSection from "./admin/resource/AddNewResourceSection";
 import ResourcesSection from "./admin/resource/ResourcesSection";
 import SingleEditableResource from "./admin/resource/SingleEditableResource";
@@ -30,4 +31,5 @@ export {
   EditOnlineClassSection,
   ChatSection,
   OnlineClassVideoSection,
+  StartAndEndClassButtons,
 };
