@@ -15,6 +15,7 @@ import {
   EditOnlineClassSection,
   Loading,
   OnlineClassVideoSection,
+  StudentNavBar,
 } from "components";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
@@ -136,7 +137,7 @@ const OnlineClassPage = ({ courseData, onlineClassData }: OnlineClassPageProps):
         <meta name="description" content="Home page" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />
+      <StudentNavBar userDetails={userDetails} courseData={courseData} />
       <ContentContainer>
         <div className="flex flex-col w-full justify-center px-[5%] pt-5 h-full">
           <div className="flex flex-row h-full">
