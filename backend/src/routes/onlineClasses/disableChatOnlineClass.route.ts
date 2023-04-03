@@ -5,6 +5,7 @@ import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 import { checkAdmin } from "../admin/admin.route";
+import { updateChatEnabled } from "./enableChatOnlineClass.route";
 
 type ResponsePayload = {
     message: string;
@@ -52,27 +53,4 @@ export const disableChatOnlineClassController = async (
             return res.status(500).json({ message: "Internal server error. Error was not caught" });
         }
     }
-};
-
-/**
- * Updates the chatEnabled value for an class
- * @param classId id of class to update
- * @param chatEnabled
- * @throws { HttpException } if class is not found or fails to save
- * @returns
- */
-export const updateChatEnabled = async (classId: string, chatEnabled: boolean): Promise<void> => {
-    // Find the classId
-    const onlineClass = await OnlineClass.findById(classId).catch(() => null);
-
-    if (onlineClass === null)
-        throw new HttpException(400, `Online class of id ${classId} not found`);
-
-    onlineClass.chatEnabled = chatEnabled;
-
-    // Save the class
-    await onlineClass.save().catch(() => {
-        throw new HttpException(500, "Failed to save online class");
-    });
-    return;
 };
