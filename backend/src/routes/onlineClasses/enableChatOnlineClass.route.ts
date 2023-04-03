@@ -15,8 +15,8 @@ type QueryPayload = {
 };
 
 /**
- * PUT /class/start
- * Starts an online class
+ * PUT /class/chat/enable
+ * Enables chat for a class
  * @param req
  * @param res
  */
@@ -35,7 +35,7 @@ export const enableChatOnlineClassController = async (
                 throw new HttpException(403, "Must be an admin to change chat status");
             }
             await updateChatEnabled(classId, true);
-            return res.status(200).json({ message: "Chat has been disabled" });
+            return res.status(200).json({ message: "Chat has been enabled" });
         } else {
             throw new HttpException(
                 400,

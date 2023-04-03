@@ -11,6 +11,7 @@ import {
   ChatSection,
   ContentContainer,
   EditOnlineClassSection,
+  EnableAndDisableChatButtons,
   Loading,
   OnlineClassVideoSection,
   StartAndEndClassButtons,
@@ -63,6 +64,10 @@ const LeftColumn = ({
               Edit Online Class
             </Button>
           </div>
+          <EnableAndDisableChatButtons
+            dynamicOnlineClass={dynamicOnlineClass}
+            setDynamicOnlineClass={setDynamicOnlineClass}
+          />
         </>
       )}
     </div>
