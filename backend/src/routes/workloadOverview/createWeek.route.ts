@@ -1,6 +1,5 @@
 import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course/course.model";
-import Page from "@/models/course/page/page.model";
 import WorkloadOverview from "@/models/course/workloadOverview/WorkloadOverview.model";
 import Week from "@/models/course/workloadOverview/week.model";
 import { checkAuth } from "@/utils/firebase";
@@ -15,7 +14,6 @@ type ResponsePayload = {
 
 type QueryPayload = {
     courseId: string;
-    pageId: string;
     title: string;
     description: string;
 };
@@ -33,19 +31,14 @@ export const createWeekController = async (
 ) => {
     try {
         const authUser = await checkAuth(req);
-        const KEYS_TO_CHECK: Array<keyof QueryPayload> = [
-            "courseId",
-            "pageId",
-            "title",
-            "description",
-        ];
+        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseId", "title", "description"];
 
         // User has been verified
         if (isValidBody<QueryPayload>(req.body, KEYS_TO_CHECK)) {
             // Body has been verified
-            const { courseId, pageId, title, description } = req.body;
+            const { courseId, title, description } = req.body;
 
-            const weekId = await createWeek(courseId, pageId, title, description, authUser.uid);
+            const weekId = await createWeek(courseId, title, description, authUser.uid);
 
             logger.info(`weekId: ${weekId}`);
             return res.status(200).json({ weekId });
@@ -68,7 +61,6 @@ export const createWeekController = async (
 /**
  * Creates a new Week in the given workload overview
  * @param courseId
- * @param pageId
  * @param title
  * @param description
  * @param firebase_uid
@@ -76,7 +68,6 @@ export const createWeekController = async (
  */
 export const createWeek = async (
     courseId: string,
-    pageId: string,
     title: string,
     description: string,
     firebase_uid: string,
@@ -89,16 +80,6 @@ export const createWeek = async (
     const course = await Course.findById(courseId).catch(() => null);
     if (course === null) {
         throw new HttpException(400, `Course, ${courseId}, does not exist`);
-    }
-
-    // Get the Page
-    const page = await Page.findById(pageId).catch(() => null);
-    if (page === null) {
-        throw new HttpException(400, `Page, ${pageId}, does not exist`);
-    }
-
-    if (page.workload !== undefined) {
-        throw new HttpException(400, `Page, ${pageId}, already contains a workload to do list`);
     }
 
     // Get the workload Overview
@@ -132,13 +113,6 @@ export const createWeek = async (
 
     await workloadOverview.save().catch((err) => {
         throw new HttpException(500, "Failed to add week to workload overview for course", err);
-    });
-
-    // Save Week Workload Overview to the page
-    page.workload = newWeek._id;
-
-    await page.save().catch((err) => {
-        throw new HttpException(500, "Failed to save week workload to the page", err);
     });
 
     return weekId.toString();

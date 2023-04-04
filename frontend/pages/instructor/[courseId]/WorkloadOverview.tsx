@@ -33,6 +33,8 @@ const WorkloadOverviewPage = ({
     setDynamicWeeks(workloadData.weeks);
   }, [workloadData]);
 
+  console.log("THIS IS" + workloadData);
+
   React.useEffect(() => {
     // Build user data for user context
     if (user.userDetails !== null) {
@@ -46,11 +48,12 @@ const WorkloadOverviewPage = ({
   /**
    * Add a new button for Workload Overview
    */
+
   return (
     <>
       <Head>
         <title>Add Workload Overview</title>
-        <meta name="description" content="Add Workload Overview" />
+        <meta name="description" content="Schedule New Lecture" />
         <link rel="icon" href="/favicon.png" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />

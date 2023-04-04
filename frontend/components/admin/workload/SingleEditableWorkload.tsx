@@ -19,7 +19,6 @@ type SingleEditableWeekProps = {
   setWeeks: React.Dispatch<React.SetStateAction<FullWeekInterface[]>>;
   courseId: string;
   weeks: FullWeekInterface[];
-  setWeek?: React.Dispatch<React.SetStateAction<FullWeekInterface | undefined>>;
 };
 
 /**
@@ -30,8 +29,7 @@ const SingleEditableWeekSection = ({
   weeks,
   setWeeks,
   courseId,
-  week, //corresponds to the current week
-  setWeek,
+  week,
 }: SingleEditableWeekProps): JSX.Element => {
   const authUser = useAuthUser();
 
@@ -59,10 +57,6 @@ const SingleEditableWeekSection = ({
       return;
     }
     if (res === null) throw new Error("Shouldn't happen");
-
-    if (setWeek !== undefined) {
-      setWeek(undefined);
-    }
 
     // Update UI
     setWeeks(weeks.filter((w) => w._id !== week._id));

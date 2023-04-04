@@ -9,7 +9,6 @@ import { getBackendLink } from "./userApi";
 
 type CreateNewWeekPayloadRequest = {
   courseId: string;
-  pageId: string;
   title: string;
   description: string;
 };
@@ -21,7 +20,6 @@ type CreateNewWeekPayloadResponse = {
 export const createNewWeek = (
   token: string | null,
   courseId: string,
-  pageId: string,
   title: string,
   description: string,
   type: BackendLinkType,
@@ -29,7 +27,7 @@ export const createNewWeek = (
   return apiPost<CreateNewWeekPayloadRequest, CreateNewWeekPayloadResponse>(
     `${getBackendLink(type)}/workload/week/create`,
     token,
-    { courseId: courseId, pageId: pageId, title: title, description: description },
+    { courseId: courseId, title: title, description: description },
   );
 };
 
