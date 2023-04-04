@@ -63,7 +63,7 @@ const ChatSection = ({ dynamicOnlineClass, student }: ChatSectionProps): JSX.Ele
     const intervalId = setInterval(() => {
       console.log("Polling!!!");
       getData();
-    }, 2000);
+    }, 1000);
 
     return () => clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
