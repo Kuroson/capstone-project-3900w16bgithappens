@@ -8,6 +8,37 @@ import { PageInterface } from "./page/page.model";
 import { QuizInterface } from "./quiz/quiz.model";
 import { WorkloadOverviewInterface } from "./workloadOverview/WorkloadOverview.model";
 
+type KudosValues = {
+    /**
+     * Completion of quizzes
+     */
+    quizCompletion: number;
+    /**
+     * Submission of assignments
+     */
+    assignmentCompletion: number;
+    /**
+     * Completion of individual weekly assigned task gives
+     */
+    weeklyTaskCompletion: number;
+    /**
+     * Making of forum posts
+     */
+    forumPostCreation: number;
+    /**
+     * Replying to/answering other students on the forum
+     */
+    forumPostAnswer: number;
+    /**
+     * Correctly answering a question on the forum (marked by the instructor)
+     */
+    forumPostCorrectAnswer: number;
+    /**
+     * Attendance of online classes
+     */
+    attendance: number;
+};
+
 /**
  * Model to represent a course in the system
  * A course has some base information (title, code, description,
@@ -30,6 +61,7 @@ export interface CourseInterface extends Document {
     assignments: Types.DocumentArray<AssignmentInterface["_id"]>;
     workloadOverview: WorkloadOverviewInterface["_id"];
     tags: Types.Array<string>;
+    kudosValues: KudosValues;
 }
 
 const courseSchema: Schema = new Schema<CourseInterface>({
