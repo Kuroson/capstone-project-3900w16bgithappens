@@ -3,41 +3,11 @@ import { UserInterface } from "../user.model";
 import { AssignmentInterface } from "./assignment/assignment.model";
 import { EnrolmentInterface } from "./enrolment/enrolment.model";
 import { ForumInterface } from "./forum/forum.model";
+import { KudosValuesInterface } from "./kudosValues.model";
 import { OnlineClassInterface } from "./onlineClass/onlineClass.model";
 import { PageInterface } from "./page/page.model";
 import { QuizInterface } from "./quiz/quiz.model";
 import { WorkloadOverviewInterface } from "./workloadOverview/WorkloadOverview.model";
-
-type KudosValues = {
-    /**
-     * Completion of quizzes
-     */
-    quizCompletion: number;
-    /**
-     * Submission of assignments
-     */
-    assignmentCompletion: number;
-    /**
-     * Completion of individual weekly assigned task gives
-     */
-    weeklyTaskCompletion: number;
-    /**
-     * Making of forum posts
-     */
-    forumPostCreation: number;
-    /**
-     * Replying to/answering other students on the forum
-     */
-    forumPostAnswer: number;
-    /**
-     * Correctly answering a question on the forum (marked by the instructor)
-     */
-    forumPostCorrectAnswer: number;
-    /**
-     * Attendance of online classes
-     */
-    attendance: number;
-};
 
 /**
  * Model to represent a course in the system
@@ -61,7 +31,7 @@ export interface CourseInterface extends Document {
     assignments: Types.DocumentArray<AssignmentInterface["_id"]>;
     workloadOverview: WorkloadOverviewInterface["_id"];
     tags: Types.Array<string>;
-    kudosValues: KudosValues;
+    kudosValues: Types.DocumentArray<KudosValuesInterface["_id"]>;
 }
 
 const courseSchema: Schema = new Schema<CourseInterface>({
@@ -79,6 +49,7 @@ const courseSchema: Schema = new Schema<CourseInterface>({
     assignments: [{ type: Schema.Types.ObjectId, ref: "Assignment", required: true }],
     workloadOverview: { type: Schema.Types.ObjectId, ref: "WorkloadOverview", required: true },
     tags: [{ type: String, required: true }],
+    kudosValues: [{ type: Schema.Types.ObjectId, ref: "KudosValues", required: true }],
 });
 
 const Course = model<CourseInterface & Document>("Course", courseSchema);
