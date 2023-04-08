@@ -1,6 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 
-export interface KudosValuesInterface extends Document {
+export type KudosValuesType = {
     /**
      * Completion of quizzes
      */
@@ -29,7 +29,9 @@ export interface KudosValuesInterface extends Document {
      * Attendance of online classes
      */
     attendance: number;
-}
+};
+
+export interface KudosValuesInterface extends KudosValuesType, Document {}
 
 const kudosValuesSchema: Schema = new Schema<KudosValuesInterface>({
     quizCompletion: { type: Number, required: true, default: 100 },
