@@ -39,6 +39,7 @@ export type BasicCourseInfo = Omit<
   | "assignments"
   | "workloadOverview"
   | "tags"
+  | "kudosValues"
 >;
 
 export type UserCourseInformation = Omit<

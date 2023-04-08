@@ -1,6 +1,6 @@
 import { MongooseDocument } from "models";
 
-export interface KudosValuesInterface extends MongooseDocument {
+export type KudosValuesType = {
   /**
    * Completion of quizzes
    */
@@ -29,4 +29,5 @@ export interface KudosValuesInterface extends MongooseDocument {
    * Attendance of online classes
    */
   attendance: number;
-}
+};
+export interface KudosValuesInterface extends KudosValuesType, MongooseDocument {}
