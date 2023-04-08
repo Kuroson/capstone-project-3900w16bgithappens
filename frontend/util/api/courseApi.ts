@@ -55,6 +55,7 @@ export type UpdateCoursePayloadRequest = {
   description?: string;
   icon?: string;
   tags?: Array<string>;
+  kudosValues?: KudosValuesType;
 };
 
 type UpdateCoursePayloadResponse = {

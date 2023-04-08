@@ -7,6 +7,7 @@ import User from "@/models/user.model";
 import { createCourse } from "@/routes/course/createCourse.route";
 import { getCourse } from "@/routes/course/getCourse.route";
 import { getPage } from "@/routes/course/getCoursePage.route";
+import { updateCourse } from "@/routes/course/updateCourse.route";
 import { createPage } from "@/routes/page/createPage.route";
 import { deletePage } from "@/routes/page/deletePage.route";
 import { updatePage } from "@/routes/page/updatePage.route";
@@ -42,6 +43,29 @@ describe("Test getting course details", () => {
         const courseData = await getCourse(courseId, `acc${id}`);
         expect(courseData.kudosValues).toBeDefined();
         expect(courseData.kudosValues.forumPostAnswer).toEqual(100); // default value of 100
+    });
+
+    it("Update KudosValues and see if it is reflected in courseDetails", async () => {
+        Page;
+        OnlineClass;
+        Post;
+        const payload = {
+            courseId,
+            kudosValues: {
+                quizCompletion: 500,
+                assignmentCompletion: 500,
+                weeklyTaskCompletion: 500,
+                forumPostCreation: 500,
+                forumPostAnswer: 500,
+                forumPostCorrectAnswer: 500,
+                attendance: 500,
+            },
+        };
+        await updateCourse(payload, `acc${id}`);
+
+        const courseData = await getCourse(courseId, `acc${id}`);
+        expect(courseData.kudosValues).toBeDefined();
+        expect(courseData.kudosValues.forumPostAnswer).toEqual(500);
     });
 
     afterAll(async () => {
