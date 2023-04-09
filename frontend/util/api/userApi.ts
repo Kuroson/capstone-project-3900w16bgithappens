@@ -80,7 +80,7 @@ export const adminInstructorSet = (
   type: BackendLinkType,
 ) => {
   return apiPut<AdminInstructorSetPayloadRequest, AdminInstructorSetPayloadResponse>(
-    `${getBackendLink(type)}/user/details`,
+    `${getBackendLink(type)}/admin/instructor/set`,
     token,
     { userEmail: email, instructor },
   );
