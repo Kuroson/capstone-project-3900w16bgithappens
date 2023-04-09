@@ -36,7 +36,7 @@ export const registerUser = async (
 
     const role = email.toLowerCase().includes("admin") ? INSTRUCTOR_ROLE : STUDENT_ROLE;
 
-    const numOfUsers = testOnly !== true ? await User.countDocuments({ email: email }) : 1000;
+    const numOfUsers = testOnly !== true ? await User.countDocuments() : 1000;
 
     if (numOfUsers === 0) {
         logger.info("First user to register, setting role to instructor");
