@@ -56,6 +56,7 @@ export type UpdateCoursePayloadRequest = {
   icon?: string;
   tags?: Array<string>;
   kudosValues?: KudosValuesType;
+  archived: boolean;
 };
 
 type UpdateCoursePayloadResponse = {
@@ -69,6 +70,23 @@ export const updateCourse = (
 ) => {
   return apiPut<UpdateCoursePayloadRequest, UpdateCoursePayloadResponse>(
     `${getBackendLink(type)}/course/update`,
+    token,
+    payload,
+  );
+};
+
+export type ArchiveCoursePayloadRequest = {
+  courseId: string;
+  archived: boolean;
+};
+
+export const archiveCourse = (
+  token: string | null,
+  payload: ArchiveCoursePayloadRequest,
+  type: BackendLinkType,
+) => {
+  return apiPost<ArchiveCoursePayloadRequest, Record<string, never>>(
+    `${getBackendLink(type)}/course/archive`,
     token,
     payload,
   );

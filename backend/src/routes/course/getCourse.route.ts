@@ -109,7 +109,7 @@ export const getCourse = async (
     // Check if user is enrolled in course
     const myCourse = await Course.findById(courseId)
         .select(
-            "_id title code description forum session icon pages tags onlineClasses kudosValues",
+            "_id title code description forum session icon pages tags onlineClasses kudosValues archived",
         )
         .populate("kudosValues")
         .populate("pages")

@@ -1,45 +1,41 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Week from "@/models/course/workloadOverview/week.model";
+import Course from "@/models/course/course.model";
 import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 import { checkAdmin } from "../admin/admin.route";
 
-type ResponsePayload = {
-    weekId: string;
-};
+type ResponsePayload = Record<string, never>;
 
 type QueryPayload = {
-    weekId: string;
-    title?: string;
-    description?: string;
-    deadline?: string;
+    courseId: string;
+    archived: boolean;
 };
 
 /**
- * PUT /workload/week/update
+ * POST /course/archive
+ * Sets course as archived or unarchived
  * @param req
  * @param res
  * @returns
  */
-export const updateWeekController = async (
+export const archiveCourseController = async (
     req: Request<QueryPayload>,
     res: Response<ResponsePayload | ErrorResponsePayload>,
 ) => {
     try {
         const authUser = await checkAuth(req);
-        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["weekId"];
+        const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["courseId", "archived"];
 
         // User has been verified
         if (isValidBody<QueryPayload>(req.body, KEYS_TO_CHECK)) {
             // Body has been verified
             const queryBody = req.body;
 
-            const weekId = await updateWeek(queryBody, authUser.uid);
+            await archiveCourse(queryBody, authUser.uid);
 
-            logger.info(`weekId: ${weekId}`);
-            return res.status(200).json({ weekId });
+            return res.status(200).json({});
         } else {
             throw new HttpException(
                 400,
@@ -59,40 +55,28 @@ export const updateWeekController = async (
 };
 
 /**
- * Updates an existing week with the parameters given
- * @param queryBody
- * @param firebase_uid
- * @returns
+ * Sets the archived status for a given course
+ *
+ * @param queryBody Arguments containing the fields defined above in QueryPayload
+ * @param firebase_uid Unique identifier of user
+ * @throws { HttpException } Recall/save failure
  */
-export const updateWeek = async (queryBody: QueryPayload, firebase_uid: string) => {
+export const archiveCourse = async (queryBody: QueryPayload, firebase_uid: string) => {
     if (!(await checkAdmin(firebase_uid))) {
-        throw new HttpException(401, "Must be an admin to update tasks");
+        throw new HttpException(401, "Must be an admin to archive course");
     }
 
-    const { weekId, title, description, deadline } = queryBody;
+    const { courseId, archived } = queryBody;
 
-    const week = await Week.findById(weekId)
-        .exec()
-        .catch(() => null);
-
-    if (week === null) {
-        throw new HttpException(400, "Failed to fetch week");
+    const course = await Course.findById(courseId).catch((err) => null);
+    if (course === null) {
+        throw new HttpException(400, "Failed to recall course");
     }
 
-    if (title !== undefined) {
-        week.title = title;
-    }
-    if (description !== undefined) {
-        week.description = description;
-    }
-    if (deadline !== undefined) {
-        week.deadline = deadline;
-    }
+    course.archived = archived;
 
-    const myWeek = await week.save().catch((err) => {
+    await course.save().catch((err) => {
         logger.error(err);
-        throw new HttpException(500, "Failed to save updated week", err);
+        throw new HttpException(500, "Failed to save updated course");
     });
-
-    return myWeek._id;
 };
