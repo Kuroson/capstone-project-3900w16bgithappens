@@ -33,9 +33,9 @@ export const adminInstructorSetController = async (
         const KEYS_TO_CHECK: Array<keyof QueryPayload> = ["userEmail", "instructor"];
 
         // User has been verified
-        if (isValidBody<QueryPayload>(req.query, KEYS_TO_CHECK)) {
+        if (isValidBody<QueryPayload>(req.body, KEYS_TO_CHECK)) {
             // Body has been verified
-            const { userEmail, instructor } = req.query;
+            const { userEmail, instructor } = req.body;
             await updateUserInstructor(userEmail, instructor);
             return res
                 .status(200)
@@ -43,7 +43,7 @@ export const adminInstructorSetController = async (
         } else {
             throw new HttpException(
                 400,
-                `Missing body keys: ${getMissingBodyIDs<QueryPayload>(req.query, KEYS_TO_CHECK)}`,
+                `Missing body keys: ${getMissingBodyIDs<QueryPayload>(req.body, KEYS_TO_CHECK)}`,
             );
         }
     } catch (error) {
