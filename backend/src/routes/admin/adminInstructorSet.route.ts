@@ -74,7 +74,7 @@ export const updateUserInstructor = async (
         throw new HttpException(400, "User does not exist");
     }
     // Update
-    user.role = instructor ? 0 : 1;
+    user.role = instructor ? INSTRUCTOR_ROLE : STUDENT_ROLE;
     await user.save().catch((err) => {
         throw new HttpException(500, "Error saving user", err);
     });
