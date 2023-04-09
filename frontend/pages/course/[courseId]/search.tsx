@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Head from "next/head";
-import { TextField } from "@mui/material";
+import Link from "next/link";
+import FolderIcon from "@mui/icons-material/Folder";
+import ImportContactsIcon from "@mui/icons-material/ImportContacts";
+import { Button, TextField } from "@mui/material";
 import { ResourceInterface } from "models";
 import { UserCourseInformation } from "models/course.model";
 import { PageFull } from "models/page.model";
@@ -18,7 +21,56 @@ initAuth();
 
 type CourseResourceSearchPageProps = {
   courseData: UserCourseInformation;
-  pageList: PageFull[];
+  resourceItems: ResourceItem[];
+};
+
+interface ResourceItem extends ResourceInterface {
+  section: string | null;
+  page: string;
+}
+
+type ResourceItemRowProps = {
+  resourceItem: ResourceItem;
+};
+
+const ResourceItemRow = ({ resourceItem }: ResourceItemRowProps): JSX.Element => {
+  const Icon = (): JSX.Element => {
+    if (resourceItem.section !== null) {
+      return <FolderIcon />;
+    }
+    return <ImportContactsIcon />;
+  };
+
+  return (
+    <div className="w-full py-3 ">
+      <div className="text-xl flex justify-items items-center font-semibold">
+        <Icon />
+        <span className="pl-2">{resourceItem.title}</span>
+      </div>
+      <div className="w-full">
+        <span className="text-sm">{resourceItem.description}</span>
+        <div className="my-2">
+          {resourceItem.stored_name !== undefined && (
+            <div className="my-5">
+              {resourceItem.file_type?.includes("image") ?? false ? (
+                <div>
+                  <img
+                    style={{ maxWidth: "30%" }}
+                    src={resourceItem.stored_name}
+                    alt={resourceItem.description}
+                  />
+                </div>
+              ) : (
+                <Link href={resourceItem.stored_name} target="_blank">
+                  <Button variant="contained">Download File</Button>
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 /**
@@ -27,12 +79,14 @@ type CourseResourceSearchPageProps = {
  */
 const CourseResourceSearchPage = ({
   courseData,
-  pageList,
+  resourceItems,
 }: CourseResourceSearchPageProps): JSX.Element => {
-  console.warn(pageList);
+  // console.log(resourceItems);
   const user = useUser();
   const authUser = useAuthUser();
   const [loading, setLoading] = React.useState(user.userDetails === null);
+  const [dynamicResourceItems, setDynamicResourceItems] = React.useState(resourceItems);
+  const [search, setSearch] = React.useState("");
 
   React.useEffect(() => {
     // Build user data for user context
@@ -43,6 +97,15 @@ const CourseResourceSearchPage = ({
 
   if (loading || user.userDetails === null) return <Loading />;
   const userDetails = user.userDetails as UserDetails;
+
+  // search course id
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setDynamicResourceItems([
+        ...resourceItems.filter((x) => x.title.toLowerCase().includes(search.toLowerCase())),
+      ]);
+    }
+  };
 
   return (
     <>
@@ -61,14 +124,19 @@ const CourseResourceSearchPage = ({
             <div className="w-full flex justify-end">
               <TextField
                 id="search-resource"
-                label="Search For Resource"
+                label="Search For Resource Title"
                 variant="outlined"
                 sx={{ width: "300px" }}
-                // onKeyDown={handleKeyDown}
-                // onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchCode(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+                value={search}
               />
             </div>
-            <div>here</div>
+            <div className="overflow-y-auto h-[800px]">
+              {dynamicResourceItems.map((x) => {
+                return <ResourceItemRow key={x._id} resourceItem={x} />;
+              })}
+            </div>
           </div>
         </div>
       </ContentContainer>
@@ -152,7 +220,24 @@ export const getServerSideProps: GetServerSideProps<CourseResourceSearchPageProp
 
       await Promise.all(promiseList);
 
-      return { props: { courseData: courseDetails, pageList: pageList } };
+      const resourceItems: ResourceItem[] = [];
+
+      for (const page of pageList) {
+        for (const resource of page.resources) {
+          resourceItems.push({ ...resource, section: null, page: page.title });
+        }
+        for (const section of page.sections) {
+          for (const resource of section.resources) {
+            resourceItems.push({
+              ...resource,
+              section: section.title,
+              page: page.title,
+            });
+          }
+        }
+      }
+
+      return { props: { courseData: courseDetails, resourceItems } };
     },
   );
 
