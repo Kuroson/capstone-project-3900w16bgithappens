@@ -1,4 +1,5 @@
 import { UserDetails, getRoleText } from "models/user.model";
+import { CLIENT_BACKEND_URL } from "util/api/api";
 
 /**
  * User avatar
@@ -8,7 +9,9 @@ const UserDetailsSection = ({ first_name, last_name, role, avatar }: UserDetails
     <div className="mt-5 flex flex-row justify-center">
       <div className="w-[50px] h-[50px] bg-orange-500 rounded-full flex justify-center items-center">
         <img
-          src="http://localhost:8080/public/avatars/bandit.svg"
+          src={`${CLIENT_BACKEND_URL}/public/avatars/${
+            avatar?.length !== 0 ? avatar : "missy"
+          }.svg`}
           className="h-[50px] w-[50px] rounded-full"
           alt=""
         />

@@ -30,3 +30,24 @@ export const avatarMap: AvatarMap = {
     spooky: { relativeURL: `${BASE}/spooky.svg`, cost: 100 },
     willow: { relativeURL: `${BASE}/willow.svg`, cost: 100 },
 };
+
+export type AvatarMapKeys =
+    | "bandit"
+    | "cuddles"
+    | "felix"
+    | "fluffy"
+    | "milo"
+    | "missKitty"
+    | "missy"
+    | "molly"
+    | "nala"
+    | "oliver"
+    | "oscar"
+    | "patches"
+    | "precious"
+    | "sammy"
+    | "shadow"
+    | "simon"
+    | "snowball"
+    | "spooky"
+    | "willow";

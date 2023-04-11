@@ -10,6 +10,27 @@ export type AvatarMap = {
   [key: string]: Avatar;
 };
 
+export type AvatarMapKeys =
+  | "bandit"
+  | "cuddles"
+  | "felix"
+  | "fluffy"
+  | "milo"
+  | "missKitty"
+  | "missy"
+  | "molly"
+  | "nala"
+  | "oliver"
+  | "oscar"
+  | "patches"
+  | "precious"
+  | "sammy"
+  | "shadow"
+  | "simon"
+  | "snowball"
+  | "spooky"
+  | "willow";
+
 type GetAvatarPayloadRequest = Record<string, never>;
 
 type GetAvatarPayloadResponse = {
