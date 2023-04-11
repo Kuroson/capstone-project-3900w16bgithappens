@@ -22,7 +22,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorMiddleware);
-app.use(express.static("public"));
+app.use("/public", express.static("public"));
 
 const MONGO_DB_NAME = "SPRINT3";
 
