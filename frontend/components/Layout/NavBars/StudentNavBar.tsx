@@ -60,7 +60,7 @@ export default function StudentNavBar({
     },
     {
       name: "Marketplace",
-      route: "/", //TODO
+      route: "/marketplace", //TODO
       icon: <StorefrontIcon fontSize="large" color="primary" />,
       hasLine: true,
     },
