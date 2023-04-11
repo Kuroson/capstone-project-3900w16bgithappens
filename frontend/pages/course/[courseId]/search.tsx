@@ -121,7 +121,7 @@ const CourseResourceSearchPage = ({
             <span className="ml-4">Search For Resources</span>
           </h1>
           <div className="flex flex-col pt-3 px-[2%] justify-center">
-            <div className="w-full flex justify-end">
+            <div className="w-full flex justify-end pt-3 pb-4">
               <TextField
                 id="search-resource"
                 label="Search For Resource Title"
