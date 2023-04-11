@@ -15,6 +15,7 @@ import { getAssignmentsController } from "./assignment/getAssignments.route";
 import { gradeAssignmentController } from "./assignment/gradeAssignment.route";
 import { submitAssignmentController } from "./assignment/submitAssignment.route";
 import { updateAssignmentController } from "./assignment/updateAssignment.route";
+import { avatarController } from "./avatars/avatar.route";
 import { addStudentsController } from "./course/addStudents.route";
 import { archiveCourseController } from "./course/archiveCourse.route";
 import { createCourseController } from "./course/createCourse.route";
@@ -76,6 +77,9 @@ export const indexRouter = Router();
 
 // Base routes
 indexRouter.get("/", indexController);
+
+// Avatar routes
+indexRouter.get("/avatars", avatarController);
 
 // Admin routes
 indexRouter.get("/admin", adminController);

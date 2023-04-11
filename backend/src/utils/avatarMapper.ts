@@ -3,13 +3,13 @@ type Avatar = {
     cost: number;
 };
 
-type AvatarMap = {
+export type AvatarMap = {
     [key: string]: Avatar;
 };
 
 const BASE = "public/avatars";
 
-const avatarMap: AvatarMap = {
+export const avatarMap: AvatarMap = {
     bandit: { relativeURL: `/${BASE}/bandit.svg`, cost: 100 },
     cuddles: { relativeURL: `/${BASE}/cuddles.svg`, cost: 100 },
     felix: { relativeURL: `/${BASE}/felix.svg`, cost: 100 },
