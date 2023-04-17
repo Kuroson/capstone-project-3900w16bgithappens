@@ -22,7 +22,7 @@ export const getUserCourseDetails = (
   );
 };
 
-type CreateNewCoursePayloadRequest = {
+export type CreateNewCoursePayloadRequest = {
   code: string;
   title: string;
   session: string;
