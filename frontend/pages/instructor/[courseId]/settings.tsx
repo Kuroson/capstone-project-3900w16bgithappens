@@ -9,12 +9,7 @@ import { UserCourseInformation } from "models/course.model";
 import { KudosValuesType } from "models/kudosValue.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
-import {
-  AuthAction,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth";
+import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer, Loading } from "components";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";

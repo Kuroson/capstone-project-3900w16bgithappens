@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Checkbox,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { Checkbox, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { FullTaskInterface } from "models/task.model";
 
 type SingleCompleteTaskProps = {
