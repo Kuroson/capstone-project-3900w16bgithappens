@@ -81,7 +81,6 @@ const CourseResourceSearchPage = ({
   courseData,
   resourceItems,
 }: CourseResourceSearchPageProps): JSX.Element => {
-  // console.log(resourceItems);
   const user = useUser();
   const authUser = useAuthUser();
   const [loading, setLoading] = React.useState(user.userDetails === null);

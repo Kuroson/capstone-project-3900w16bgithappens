@@ -56,7 +56,7 @@ const Assignment = ({ courseData }: AssignmentProps): JSX.Element => {
       return;
     }
     if (res === null) throw new Error("Response and error are null");
-    console.log(res);
+
     const assignment: AssignmentListType = {
       assignmentId: res.assignmentId,
       title: newAssignment.title,

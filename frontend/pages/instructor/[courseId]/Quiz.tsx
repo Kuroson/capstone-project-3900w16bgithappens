@@ -50,8 +50,6 @@ const Quiz = ({ courseData }: QuizProps): JSX.Element => {
     }
     if (res === null) throw new Error("Response and error are null");
 
-    console.log(res);
-
     const quiz = {
       quizId: res.quizId,
       title: newQuiz.title,

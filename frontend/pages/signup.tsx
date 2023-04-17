@@ -106,7 +106,6 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
 
     await createUserWithEmailAndPassword(getAuth(), email, password)
       .then((res) => {
-        console.log(res);
         return res;
       })
       .then(async (authUser) => {

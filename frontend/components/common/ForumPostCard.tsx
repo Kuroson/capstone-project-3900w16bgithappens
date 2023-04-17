@@ -8,7 +8,6 @@ type ForumPostCardProps = {
 };
 
 const ForumPostCard: React.FC<ForumPostCardProps> = ({ post }): JSX.Element => {
-  console.log(post);
   return (
     <>
       <div className="flex flex-col rounded-lg px-5 pb-5 mb-2 mx-5 w-[600px]">

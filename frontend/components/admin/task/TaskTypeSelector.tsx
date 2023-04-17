@@ -65,7 +65,6 @@ const TaskTypeSelector = ({
       setOnlineClass(event.target.value as string);
     }
   };
-  console.log(taskType, quiz, assignment, onlineClass);
 
   if (taskType === "quiz") {
     return (

@@ -14,10 +14,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new HttpException(401, "No authorization header found");
 
     const token = req.headers.authorization.split(" ")[1];
-    // console.log(token);
     await verifyIdToken(token)
       .then((res) => {
-        console.log(res);
         if (res.id === null || res.email === null) {
           throw new HttpException(401, "Expired token");
         }
