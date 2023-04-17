@@ -29,6 +29,7 @@ export type CreateNewCoursePayloadRequest = {
   description: string;
   icon: string;
   kudosValues?: KudosValuesType;
+  tags?: string[];
 };
 
 type CreateNewCoursePayloadResponse = {
