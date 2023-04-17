@@ -13,7 +13,7 @@ import { createTask } from "@/routes/workloadOverview/createTask.route";
 import { createWeek } from "@/routes/workloadOverview/createWeek.route";
 import { disconnect } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import initialiseMongoose, { stringifyOutput } from "../testUtil";
+import initialiseMongoose from "../testUtil";
 
 describe("Test completing a task", () => {
     const id = uuidv4();

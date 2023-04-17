@@ -4,7 +4,6 @@ import WorkloadOverview from "@/models/course/workloadOverview/WorkloadOverview.
 import Week from "@/models/course/workloadOverview/week.model";
 import User from "@/models/user.model";
 import { createCourse } from "@/routes/course/createCourse.route";
-import { getCourse } from "@/routes/course/getCourse.route";
 import { createPage } from "@/routes/page/createPage.route";
 import { registerUser } from "@/routes/user/register.route";
 import { createWeek } from "@/routes/workloadOverview/createWeek.route";

@@ -3,7 +3,7 @@ import Course, { CourseInterface } from "@/models/course/course.model";
 import Enrolment from "@/models/course/enrolment/enrolment.model";
 import { ForumInterface } from "@/models/course/forum/forum.model";
 import Post, { FullPostInfo } from "@/models/course/forum/post.model";
-import User, { UserInterface } from "@/models/user.model";
+import User from "@/models/user.model";
 import { RecipientsType, sendEmail } from "@/utils/email";
 import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";

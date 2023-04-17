@@ -3,7 +3,7 @@ import Enrolment from "@/models/course/enrolment/enrolment.model";
 import User, { UserInterfaceFull, isRoleAdmin } from "@/models/user.model";
 import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
-import { Nullable, getMissingBodyIDs, isValidBody } from "@/utils/util";
+import { getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 
 type ErrorPayload = {

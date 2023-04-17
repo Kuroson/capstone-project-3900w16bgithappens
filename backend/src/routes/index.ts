@@ -24,7 +24,7 @@ import { createCourseController } from "./course/createCourse.route";
 import { getAllCoursesController } from "./course/getAllCourses.route";
 import { getCourseController } from "./course/getCourse.route";
 import { getCoursePageController } from "./course/getCoursePage.route";
-import { getKudos, getKudosController } from "./course/getKudosValues.route";
+import { getKudosController } from "./course/getKudosValues.route";
 import { getStudentsController } from "./course/getStudents.route";
 import { getStudentsKudosController } from "./course/getStudentsKudos.route";
 import { removeStudentsController } from "./course/removeStudents.route";

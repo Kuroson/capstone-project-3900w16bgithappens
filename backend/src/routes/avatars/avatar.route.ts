@@ -1,4 +1,3 @@
-import { startupTime } from "@/app";
 import { AvatarMap, avatarMap } from "@/utils/avatarMapper";
 import { Request, Response } from "express";
 

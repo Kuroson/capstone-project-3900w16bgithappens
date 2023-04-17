@@ -10,7 +10,6 @@ import { createPage } from "@/routes/page/createPage.route";
 import { registerUser } from "@/routes/user/register.route";
 import { createTask } from "@/routes/workloadOverview/createTask.route";
 import { createWeek } from "@/routes/workloadOverview/createWeek.route";
-import { deleteTask } from "@/routes/workloadOverview/deleteTask.route";
 import { deleteWeek } from "@/routes/workloadOverview/deleteWeek.route";
 import { disconnect } from "mongoose";
 import { v4 as uuidv4 } from "uuid";

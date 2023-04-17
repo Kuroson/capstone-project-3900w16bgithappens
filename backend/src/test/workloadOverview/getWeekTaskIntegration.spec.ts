@@ -10,7 +10,6 @@ import { addNewChatMessage } from "@/routes/onlineClasses/sendMessageOnlineClass
 import { triggerOnlineClass } from "@/routes/onlineClasses/startOnlineClass.route";
 import { createPage } from "@/routes/page/createPage.route";
 import { registerUser } from "@/routes/user/register.route";
-import { completeTask } from "@/routes/workloadOverview/completeTask.route";
 import { createTask } from "@/routes/workloadOverview/createTask.route";
 import { createWeek } from "@/routes/workloadOverview/createWeek.route";
 import { getWeek } from "@/routes/workloadOverview/getWeek.route";

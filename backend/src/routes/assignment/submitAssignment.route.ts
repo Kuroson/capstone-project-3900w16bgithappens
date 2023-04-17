@@ -7,7 +7,6 @@ import User from "@/models/user.model";
 import { checkAuth, recallFileUrl } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, getUserId, isValidBody } from "@/utils/util";
-import { time } from "console";
 import dayjs from "dayjs";
 import { Request, Response } from "express";
 import { getKudos } from "../course/getKudosValues.route";

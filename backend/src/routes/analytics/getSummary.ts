@@ -7,7 +7,7 @@ import { QuizInterface } from "@/models/course/quiz/quiz.model";
 import { UserInterface } from "@/models/user.model";
 import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
-import { ErrorResponsePayload, getMissingBodyIDs, getUserId, isValidBody } from "@/utils/util";
+import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
 import { Request, Response } from "express";
 import { getGrades } from "./getGrades.route";
 import { getQuestionAnalytics } from "./getQuestionAnalytics.route";

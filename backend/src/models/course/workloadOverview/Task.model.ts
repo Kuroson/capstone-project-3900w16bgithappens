@@ -1,4 +1,4 @@
-import { Document, Schema, Types, model } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 import { AssignmentInterface } from "../assignment/assignment.model";
 import { OnlineClassInterface } from "../onlineClass/onlineClass.model";
 import { QuizInterface } from "../quiz/quiz.model";

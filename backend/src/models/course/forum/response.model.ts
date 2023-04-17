@@ -1,5 +1,5 @@
 import { UserInterface } from "@/models/user.model";
-import { Document, Schema, Types, model } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 
 /**
  * This is a single response to a post within a forum. A response

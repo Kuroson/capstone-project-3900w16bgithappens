@@ -4,7 +4,7 @@ import AssignmentSubmission from "@/models/course/enrolment/assignmentSubmission
 import { checkAuth } from "@/utils/firebase";
 import { logger } from "@/utils/logger";
 import { ErrorResponsePayload, getMissingBodyIDs, isValidBody } from "@/utils/util";
-import { Request, Response, response } from "express";
+import { Request, Response } from "express";
 import { Types } from "mongoose";
 import { checkAdmin } from "../admin/admin.route";
 

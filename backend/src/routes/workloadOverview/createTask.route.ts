@@ -1,5 +1,4 @@
 import { HttpException } from "@/exceptions/HttpException";
-import Assignment from "@/models/course/assignment/assignment.model";
 import OnlineClass from "@/models/course/onlineClass/onlineClass.model";
 import Task, { TaskInterface } from "@/models/course/workloadOverview/Task.model";
 import Week from "@/models/course/workloadOverview/week.model";
