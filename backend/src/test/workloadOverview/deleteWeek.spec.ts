@@ -1,3 +1,5 @@
+import { disconnect } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 import { HttpException } from "@/exceptions/HttpException";
 import Course from "@/models/course/course.model";
 import Page from "@/models/course/page/page.model";
@@ -11,8 +13,6 @@ import { registerUser } from "@/routes/user/register.route";
 import { createTask } from "@/routes/workloadOverview/createTask.route";
 import { createWeek } from "@/routes/workloadOverview/createWeek.route";
 import { deleteWeek } from "@/routes/workloadOverview/deleteWeek.route";
-import { disconnect } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 import initialiseMongoose from "../testUtil";
 
 describe("Test deleting a week", () => {

@@ -1,5 +1,5 @@
-import { UserInterface } from "@/models/user.model";
 import { Document, Schema, model } from "mongoose";
+import { UserInterface } from "@/models/user.model";
 
 /**
  * This is a single chat message sent within an online class.

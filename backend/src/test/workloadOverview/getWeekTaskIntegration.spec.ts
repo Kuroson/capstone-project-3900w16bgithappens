@@ -1,3 +1,5 @@
+import { disconnect } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 import Course from "@/models/course/course.model";
 import Page from "@/models/course/page/page.model";
 import Task from "@/models/course/workloadOverview/Task.model";
@@ -13,8 +15,6 @@ import { registerUser } from "@/routes/user/register.route";
 import { createTask } from "@/routes/workloadOverview/createTask.route";
 import { createWeek } from "@/routes/workloadOverview/createWeek.route";
 import { getWeek } from "@/routes/workloadOverview/getWeek.route";
-import { disconnect } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 import initialiseMongoose from "../testUtil";
 
 describe("Test getting a week of courses", () => {

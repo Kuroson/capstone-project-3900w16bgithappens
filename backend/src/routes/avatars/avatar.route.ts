@@ -1,5 +1,5 @@
-import { AvatarMap, avatarMap } from "@/utils/avatarMapper";
 import { Request, Response } from "express";
+import { AvatarMap, avatarMap } from "@/utils/avatarMapper";
 
 type ResponsePayload = {
     avatarMap: AvatarMap;
