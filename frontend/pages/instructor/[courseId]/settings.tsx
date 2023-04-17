@@ -6,6 +6,7 @@ import { LoadingButton } from "@mui/lab";
 import { Avatar, Button, FormControlLabel, Switch, TextField } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import { BasicCourseInfo, UserCourseInformation } from "models/course.model";
+import { KudosValuesType } from "models/kudosValue.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import {
@@ -46,6 +47,24 @@ const UpdateSettingsPage = ({ courseData }: UpdateSettingsPageProps): JSX.Elemen
   const [icon, setIcon] = useState<string>(courseData.icon ?? "");
   const [buttonLoading, setButtonLoading] = React.useState(false);
 
+  const kudos = courseData.kudosValues;
+
+  const [quizCompletionKudos, setQuizCompletionKudos] = React.useState<number>(
+    kudos.quizCompletion,
+  );
+  const [assignmentCompletionKudos, setAssignmentCompletionKudos] = React.useState<number>(
+    kudos.assignmentCompletion,
+  );
+  const [weeklyTaskCompletionKudos, setWeeklyTaskCompletionKudos] = React.useState<number>(
+    kudos.weeklyTaskCompletion,
+  );
+  const [forumPostKudos, setForumPostKudos] = React.useState<number>(kudos.forumPostCreation);
+  const [forumPostAnswer, setForumPostAnswer] = React.useState<number>(kudos.forumPostAnswer);
+  const [forumPostCorrectAnswer, setForumPostCorrectAnswer] = React.useState<number>(
+    kudos.forumPostCorrectAnswer,
+  );
+  const [attendance, setAttendance] = React.useState<number>(kudos.attendance);
+
   React.useEffect(() => {
     // Build user data for user context
     if (user.userDetails !== null) {
@@ -76,9 +95,35 @@ const UpdateSettingsPage = ({ courseData }: UpdateSettingsPageProps): JSX.Elemen
       toast.error("Please update at least one field");
       return;
     }
+    const input = [
+      quizCompletionKudos,
+      assignmentCompletionKudos,
+      weeklyTaskCompletionKudos,
+      forumPostKudos,
+      forumPostAnswer,
+      forumPostCorrectAnswer,
+      attendance,
+    ];
+
+    if (input.some((x) => isNaN(x))) {
+      toast.error("Please fill out all fields");
+      return;
+    }
+
+    const kudosValues: KudosValuesType = {
+      quizCompletion: quizCompletionKudos,
+      assignmentCompletion: assignmentCompletionKudos,
+      weeklyTaskCompletion: weeklyTaskCompletionKudos,
+      forumPostCreation: forumPostKudos,
+      forumPostAnswer: forumPostAnswer,
+      forumPostCorrectAnswer: forumPostCorrectAnswer,
+      attendance: attendance,
+    };
+
     const dataPayload: UpdateCoursePayloadRequest = {
       courseId: courseData._id,
       archived,
+      kudosValues: kudosValues,
     };
 
     if (code !== "") {
@@ -197,6 +242,62 @@ const UpdateSettingsPage = ({ courseData }: UpdateSettingsPageProps): JSX.Elemen
               </LoadingButton>
             </div>
             <div className="flex flex-col gap-6 w-[600px] px-5">
+              <TextField
+                id="quizCompletionKudos"
+                label="Quiz Completion Kudos"
+                variant="outlined"
+                value={quizCompletionKudos}
+                onChange={(e) => setQuizCompletionKudos(parseInt(e.target.value))}
+                type="number"
+              />
+              <TextField
+                id="assignmentCompletionKudos"
+                label="Assignment Completion Kudos"
+                variant="outlined"
+                value={assignmentCompletionKudos}
+                onChange={(e) => setAssignmentCompletionKudos(parseInt(e.target.value))}
+                type="number"
+              />
+              <TextField
+                id="weeklyTaskCompletionKudos"
+                label="Weekly Task Completion Kudos"
+                variant="outlined"
+                value={weeklyTaskCompletionKudos}
+                onChange={(e) => setWeeklyTaskCompletionKudos(parseInt(e.target.value))}
+                type="number"
+              />
+              <TextField
+                id="forumPostKudos"
+                label="Forum Post Kudos"
+                variant="outlined"
+                value={forumPostKudos}
+                onChange={(e) => setForumPostKudos(parseInt(e.target.value))}
+                type="number"
+              />
+              <TextField
+                id="forumPostAnswer"
+                label="Forum Post Answer Kudos"
+                variant="outlined"
+                value={forumPostAnswer}
+                onChange={(e) => setForumPostAnswer(parseInt(e.target.value))}
+                type="number"
+              />
+              <TextField
+                id="forumPostCorrectAnswer"
+                label="Forum Post Correct Answer Kudos"
+                variant="outlined"
+                value={forumPostCorrectAnswer}
+                onChange={(e) => setForumPostCorrectAnswer(parseInt(e.target.value))}
+                type="number"
+              />
+              <TextField
+                id="attendance"
+                label="Attendance Kudos"
+                variant="outlined"
+                value={attendance}
+                onChange={(e) => setAttendance(parseInt(e.target.value))}
+                type="number"
+              />
               <TextField
                 id="Tags"
                 label="Tags"
