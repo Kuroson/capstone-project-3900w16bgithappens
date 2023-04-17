@@ -106,8 +106,8 @@ const OnlineClassPage = ({ courseData, onlineClassData }: OnlineClassPageProps):
   return (
     <>
       <Head>
-        <title>Course page</title>
-        <meta name="description" content="Home page" />
+        <title>{onlineClassData.title}</title>
+        <meta name="description" content="Online class page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />

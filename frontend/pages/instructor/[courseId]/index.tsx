@@ -97,8 +97,8 @@ const AdminCoursePage = ({ courseData }: AdminCoursePageProps): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Course page</title>
-        <meta name="description" content="Home page" />
+        <title>{courseData.title}</title>
+        <meta name="description" content="Course page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />

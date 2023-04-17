@@ -105,7 +105,7 @@ const MarketPlacePage = ({ avatars }: MarketPlacePageProps): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Marketplace page</title>
+        <title>Marketplace</title>
         <meta name="description" content="Marketplace page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

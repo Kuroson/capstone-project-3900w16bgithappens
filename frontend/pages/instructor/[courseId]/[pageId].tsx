@@ -87,14 +87,11 @@ const AdminCoursePage = ({
     router.push(`/instructor/${courseData._id}`);
   };
 
-  console.log("THIS is " + dynamicWorkload);
-  console.log(pageData);
-
   return (
     <>
       <Head>
-        <title>Course page</title>
-        <meta name="description" content="Home page" />
+        <title>{pageData.title}</title>
+        <meta name="description" content="Content page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />

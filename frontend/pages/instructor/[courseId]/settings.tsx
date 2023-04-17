@@ -173,8 +173,8 @@ const UpdateSettingsPage = ({ courseData }: UpdateSettingsPageProps): JSX.Elemen
   return (
     <>
       <Head>
-        <title>Admin page</title>
-        <meta name="description" content="Home page" />
+        <title>Update Course Details</title>
+        <meta name="description" content="Update course details page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} />

@@ -153,8 +153,8 @@ const CreateCourse = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Admin page</title>
-        <meta name="description" content="Home page" />
+        <title>Create a new course</title>
+        <meta name="description" content="Create a new course" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} routes={defaultAdminRoutes} />

@@ -55,8 +55,8 @@ const Admin = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Admin page</title>
-        <meta name="description" content="Home page" />
+        <title>Instructor Home Page</title>
+        <meta name="description" content="Instructor home page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} routes={defaultAdminRoutes} />

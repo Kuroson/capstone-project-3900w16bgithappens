@@ -89,9 +89,6 @@ const CoursePage = ({ courseData, pageData }: CoursePageProps): JSX.Element => {
     pageData.workload,
   );
 
-  console.log("This is");
-  console.log(dynamicWorkload);
-
   React.useEffect(() => {
     // Build user data for user context
     if (user.userDetails !== null) {
@@ -109,8 +106,8 @@ const CoursePage = ({ courseData, pageData }: CoursePageProps): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Course page</title>
-        <meta name="description" content="Home page" />
+        <title>{pageData.title}</title>
+        <meta name="description" content="Course content page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <StudentNavBar userDetails={userDetails} courseData={courseData} />

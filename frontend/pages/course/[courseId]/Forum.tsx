@@ -48,7 +48,7 @@ const ForumPage = ({ courseData }: ForumPageProps): JSX.Element => {
     <>
       <Head>
         <title>Forum</title>
-        <meta name="description" content="Create forum test" />
+        <meta name="description" content="Forum" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <StudentNavBar userDetails={userDetails} courseData={courseData} />

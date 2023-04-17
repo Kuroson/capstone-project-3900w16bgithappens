@@ -50,8 +50,8 @@ const StudentWorkloadPage = ({
   return (
     <>
       <Head>
-        <title>Add Workload Overview</title>
-        <meta name="description" content="Add Workload Overview" />
+        <title>Workload Overview</title>
+        <meta name="description" content="Workload Overview page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <StudentNavBar userDetails={userDetails} courseData={courseData} />

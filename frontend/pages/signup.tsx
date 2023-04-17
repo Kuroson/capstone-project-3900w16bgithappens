@@ -161,7 +161,7 @@ const SignUpPage = ({ CLIENT_BACKEND_URL }: SignUpPageProps): JSX.Element => {
     <>
       <Head>
         <title>Sign Up</title>
-        <meta name="description" content="Sign Up" />
+        <meta name="description" content="Sign Up Page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <EmptyNavBar />
