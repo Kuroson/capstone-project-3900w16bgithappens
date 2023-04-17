@@ -74,7 +74,7 @@ const CreateCourse = (): JSX.Element => {
   const handleCreateCourse = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if ([code, title, session, description].some((x) => x.length === 0)) {
+    if ([code, title, session, description, tags].some((x) => x.length === 0)) {
       toast.error("Please fill out all fields");
       return;
     }
@@ -111,6 +111,7 @@ const CreateCourse = (): JSX.Element => {
       description,
       icon,
       kudosValues,
+      tags: tags.split(","),
     };
 
     setButtonLoading(true);
