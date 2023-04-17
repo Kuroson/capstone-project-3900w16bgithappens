@@ -7,8 +7,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import relativeTimePlugin from "dayjs/plugin/relativeTime";
 import utcPlugin from "dayjs/plugin/utc";
-import { OnlineClassInterface } from "models/onlineClass.model";
-import { FullWeekInterface } from "models/week.model";
 import { useAuthUser } from "next-firebase-auth";
 import { HttpException } from "util/HttpExceptions";
 import {
@@ -17,6 +15,8 @@ import {
   deleteWeek,
   updateWeek,
 } from "util/api/workloadApi";
+import { OnlineClassInterface } from "models/onlineClass.model";
+import { FullWeekInterface } from "models/week.model";
 import EditPanelButtons from "../EditPanelButtons";
 import TasksSection from "../task/TasksSection";
 

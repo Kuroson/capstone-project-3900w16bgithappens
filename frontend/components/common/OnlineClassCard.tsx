@@ -1,9 +1,9 @@
 import React from "react";
 import YouTube from "react-youtube";
 import Link from "next/link";
-import { OnlineClassUserInformation } from "models/onlineClass.model";
 import moment from "moment";
 import { youtubeURLParser } from "util/util";
+import { OnlineClassUserInformation } from "models/onlineClass.model";
 
 type OnlineClassCardProps = {
   onlineClass: OnlineClassUserInformation;

@@ -1,9 +1,6 @@
 import React from "react";
 import Head from "next/head";
 import { Button } from "@mui/material";
-import { UserCourseInformation } from "models/course.model";
-import { OnlineClassFull } from "models/onlineClass.model";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import {
@@ -20,6 +17,9 @@ import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import initAuth from "util/firebase";
 import { adminRouteAccess } from "util/util";
+import { UserCourseInformation } from "models/course.model";
+import { OnlineClassFull } from "models/onlineClass.model";
+import { UserDetails } from "models/user.model";
 
 initAuth(); // SSR maybe, i think...
 

@@ -5,9 +5,6 @@ import { useRouter } from "next/router";
 import { LoadingButton } from "@mui/lab";
 import { Avatar, Button, FormControlLabel, Switch, TextField } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
-import { UserCourseInformation } from "models/course.model";
-import { KudosValuesType } from "models/kudosValue.model";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer, Loading } from "components";
@@ -17,6 +14,9 @@ import { UpdateCoursePayloadRequest, updateCourse } from "util/api/courseApi";
 import { getUserCourseDetails } from "util/api/courseApi";
 import initAuth from "util/firebase";
 import { adminRouteAccess } from "util/util";
+import { UserCourseInformation } from "models/course.model";
+import { KudosValuesType } from "models/kudosValue.model";
+import { UserDetails } from "models/user.model";
 
 initAuth(); // SSR maybe, i think...
 

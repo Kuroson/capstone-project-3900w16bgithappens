@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import Head from "next/head";
 import { LoadingButton } from "@mui/lab";
 import { TextField } from "@mui/material";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer, Loading } from "components";
@@ -13,6 +12,7 @@ import { useUser } from "util/UserContext";
 import { adminInstructorSet } from "util/api/userApi";
 import initAuth from "util/firebase";
 import { adminRouteAccess } from "util/util";
+import { UserDetails } from "models/user.model";
 
 initAuth(); // SSR maybe, i think...
 

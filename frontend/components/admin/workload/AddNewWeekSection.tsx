@@ -4,10 +4,10 @@ import { Button, TextField } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import { FullWeekInterface } from "models/week.model";
 import { useAuthUser } from "next-firebase-auth";
 import { HttpException } from "util/HttpExceptions";
 import { createNewWeek } from "util/api/workloadApi";
+import { FullWeekInterface } from "models/week.model";
 
 type AddNewWeekSectionProps = {
   courseId: string;

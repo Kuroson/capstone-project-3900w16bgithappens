@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Head from "next/head";
-import { UserCourseInformation } from "models/course.model";
-import { OnlineClassInterface } from "models/onlineClass.model";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, Loading, OnlineClassCard, StudentNavBar } from "components";
@@ -11,6 +8,9 @@ import Leaderboard from "components/common/Leaderboard";
 import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import initAuth from "util/firebase";
+import { UserCourseInformation } from "models/course.model";
+import { OnlineClassInterface } from "models/onlineClass.model";
+import { UserDetails } from "models/user.model";
 
 initAuth();
 

@@ -3,9 +3,6 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import AddIcon from "@mui/icons-material/Add";
-import { AssignmentListType, CreateAssignmentType } from "models/assignment.model";
-import { UserCourseInformation } from "models/course.model";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer, Loading } from "components";
@@ -19,6 +16,9 @@ import { createNewAssignment, getListOfAssignments } from "util/api/assignmentAp
 import { getUserCourseDetails } from "util/api/courseApi";
 import initAuth from "util/firebase";
 import { adminRouteAccess } from "util/util";
+import { AssignmentListType, CreateAssignmentType } from "models/assignment.model";
+import { UserCourseInformation } from "models/course.model";
+import { UserDetails } from "models/user.model";
 
 initAuth(); // SSR maybe, i think...
 

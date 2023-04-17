@@ -2,9 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
-import { UserCourseInformation } from "models/course.model";
-import { QuizListType } from "models/quiz.model";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, Loading, StudentNavBar } from "components";
@@ -16,6 +13,9 @@ import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { getListOfQuizzes } from "util/api/quizApi";
 import initAuth from "util/firebase";
+import { UserCourseInformation } from "models/course.model";
+import { QuizListType } from "models/quiz.model";
+import { UserDetails } from "models/user.model";
 
 initAuth();
 

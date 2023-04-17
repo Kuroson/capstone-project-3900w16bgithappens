@@ -17,12 +17,12 @@ import {
   TextField,
 } from "@mui/material";
 import { getAuth, signOut } from "firebase/auth";
-import { UserCourseInformation } from "models/course.model";
-import { UserDetails, getRoleText } from "models/user.model";
 import { useAuthUser } from "next-firebase-auth";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { createNewPage } from "util/api/pageApi";
+import { UserCourseInformation } from "models/course.model";
+import { UserDetails, getRoleText } from "models/user.model";
 import CourseDetails from "./CourseDetails";
 import NavBar, { Routes } from "./NavBar";
 import UserDetailsSection from "./UserDetailSection";

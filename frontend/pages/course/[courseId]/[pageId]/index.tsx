@@ -3,11 +3,6 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Typography } from "@mui/material";
-import { ResourceInterface } from "models";
-import { UserCourseInformation } from "models/course.model";
-import { PageFull } from "models/page.model";
-import { UserDetails } from "models/user.model";
-import { FullWeekInterface } from "models/week.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, Loading, StudentNavBar } from "components";
@@ -16,6 +11,11 @@ import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { getFileDownloadLink } from "util/api/resourceApi";
 import initAuth from "util/firebase";
+import { ResourceInterface } from "models";
+import { UserCourseInformation } from "models/course.model";
+import { PageFull } from "models/page.model";
+import { UserDetails } from "models/user.model";
+import { FullWeekInterface } from "models/week.model";
 
 initAuth(); // SSR maybe, i think...
 

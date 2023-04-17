@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { Checkbox, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { FullTaskInterface } from "models/task.model";
 import { useAuthUser } from "next-firebase-auth";
 import { CompleteTaskPayloadRequest, completeTask } from "util/api/workloadApi";
+import { FullTaskInterface } from "models/task.model";
 
 type SingleUncompleteTaskProps = {
   task: FullTaskInterface;

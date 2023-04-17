@@ -1,7 +1,7 @@
 import React from "react";
 import { Divider } from "@mui/material";
-import { FullPostInfo } from "models/post.model";
 import moment from "moment";
+import { FullPostInfo } from "models/post.model";
 
 type ForumPostCardProps = {
   post: FullPostInfo;

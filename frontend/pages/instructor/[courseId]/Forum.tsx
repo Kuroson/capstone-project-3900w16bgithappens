@@ -1,8 +1,5 @@
 import React from "react";
 import Head from "next/head";
-import { UserCourseInformation } from "models/course.model";
-import { FullPostInfo } from "models/post.model";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer, Loading, PostColumn, ThreadListColumn } from "components";
@@ -10,6 +7,9 @@ import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import initAuth from "util/firebase";
 import { adminRouteAccess } from "util/util";
+import { UserCourseInformation } from "models/course.model";
+import { FullPostInfo } from "models/post.model";
+import { UserDetails } from "models/user.model";
 
 initAuth(); // SSR maybe, i think...
 

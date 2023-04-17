@@ -5,16 +5,6 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { ExpandMore } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import {
-  AnalyticsGradesType,
-  AnalyticsQuestionsType,
-  AnalyticsTagSummaryType,
-  AssignmentGrade,
-  GradeType,
-  QuizGrade,
-} from "models/analytics.model";
-import { UserCourseInformation } from "models/course.model";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, Loading, StudentNavBar } from "components";
@@ -30,6 +20,16 @@ import {
 } from "util/api/analyticsApi";
 import { getUserCourseDetails } from "util/api/courseApi";
 import initAuth from "util/firebase";
+import {
+  AnalyticsGradesType,
+  AnalyticsQuestionsType,
+  AnalyticsTagSummaryType,
+  AssignmentGrade,
+  GradeType,
+  QuizGrade,
+} from "models/analytics.model";
+import { UserCourseInformation } from "models/course.model";
+import { UserDetails } from "models/user.model";
 
 initAuth(); // SSR maybe, i think...
 

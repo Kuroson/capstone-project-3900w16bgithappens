@@ -7,7 +7,6 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import SavingsIcon from "@mui/icons-material/Savings";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import { Card } from "@mui/material";
-import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, Loading, StudentNavBar } from "components";
@@ -19,6 +18,7 @@ import { CLIENT_BACKEND_URL } from "util/api/api";
 import { Avatar, buyAvatar, getAvatars } from "util/api/avatarApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
+import { UserDetails } from "models/user.model";
 
 initAuth(); // SSR maybe, i think...
 
