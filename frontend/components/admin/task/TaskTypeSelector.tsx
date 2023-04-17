@@ -47,6 +47,7 @@ const TaskTypeSelector = ({
     } else if (taskType === "assignment") {
       getAssignments(courseId, authUser, setAssignments);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskType]);
 
   const handleChange = async (event: SelectChangeEvent) => {
