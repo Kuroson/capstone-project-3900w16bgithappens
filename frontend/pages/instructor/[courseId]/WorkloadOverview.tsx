@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { UserCourseInformation } from "models/course.model";
 import { UserDetails } from "models/user.model";
-import { FullWorkloadInfo, WorkloadInterface } from "models/workload.model";
+import { FullWorkloadInfo } from "models/workload.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer, Loading, WorkloadSection } from "components";

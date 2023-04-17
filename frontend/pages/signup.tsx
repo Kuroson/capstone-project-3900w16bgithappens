@@ -9,8 +9,7 @@ import { GetStaticProps } from "next";
 import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { ContentContainer, EmptyNavBar } from "components";
 import { HttpException } from "util/HttpExceptions";
-import { useUser } from "util/UserContext";
-import { CLIENT_BACKEND_URL, apiPost } from "util/api/api";
+import { CLIENT_BACKEND_URL } from "util/api/api";
 import { registerNewUser } from "util/api/userApi";
 import { isValidEmail, isValidPassword } from "util/authVerficiation";
 

@@ -13,7 +13,6 @@ import {
   AuthAction,
   useAuthUser,
   withAuthUser,
-  withAuthUserSSR,
   withAuthUserTokenSSR,
 } from "next-firebase-auth";
 import { AdminNavBar, ContentContainer, Loading } from "components";

@@ -7,7 +7,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
-  Avatar,
   Button,
   FormControl,
   FormControlLabel,
@@ -17,7 +16,6 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
 import { getAuth, signOut } from "firebase/auth";
 import { UserCourseInformation } from "models/course.model";
 import { UserDetails, getRoleText } from "models/user.model";

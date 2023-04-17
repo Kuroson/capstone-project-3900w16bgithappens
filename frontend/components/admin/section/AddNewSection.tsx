@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { Button, IconButton, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { SectionFull } from "models/section.model";
 import { useAuthUser } from "next-firebase-auth";
 import { HttpException } from "util/HttpExceptions";

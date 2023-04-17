@@ -1,14 +1,14 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { Box, maxWidth } from "@mui/system";
+import { Box } from "@mui/system";
 import { AssignmentListType } from "models/assignment.model";
 import { OnlineClassInterface } from "models/onlineClass.model";
 import { QuizListType } from "models/quiz.model";
 import { AuthUserContext, useAuthUser } from "next-firebase-auth";
 import { HttpException } from "util/HttpExceptions";
 import { getListOfAssignments } from "util/api/assignmentApi";
-import { getListOfQuizzes, getQuizInfoAdmin } from "util/api/quizApi";
+import { getListOfQuizzes } from "util/api/quizApi";
 
 type TaskTypeSelectorProps = {
   courseId: string;

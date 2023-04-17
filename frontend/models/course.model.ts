@@ -1,11 +1,8 @@
 import {
   MongooseDocument,
   MongooseId,
-  PageInterface,
-  ResourceInterface,
-  SectionInterface,
 } from "models";
-import { BasicForumInfo, ForumInterface, FullForumInfo } from "./forum.model";
+import { FullForumInfo } from "./forum.model";
 import { KudosValuesInterface } from "./kudosValue.model";
 import { OnlineClassInterface } from "./onlineClass.model";
 import { PageFull } from "./page.model";

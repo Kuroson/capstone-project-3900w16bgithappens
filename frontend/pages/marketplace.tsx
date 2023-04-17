@@ -16,7 +16,7 @@ import PageHeader from "components/common/PageHeader";
 import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { CLIENT_BACKEND_URL } from "util/api/api";
-import { Avatar, AvatarMap, buyAvatar, getAvatars } from "util/api/avatarApi";
+import { Avatar, buyAvatar, getAvatars } from "util/api/avatarApi";
 import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 

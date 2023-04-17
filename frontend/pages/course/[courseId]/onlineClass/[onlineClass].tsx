@@ -1,26 +1,19 @@
 import React from "react";
-import { toast } from "react-toastify";
 import Head from "next/head";
-import { LoadingButton } from "@mui/lab";
-import { Button } from "@mui/material";
 import { UserCourseInformation } from "models/course.model";
 import { OnlineClassFull } from "models/onlineClass.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import {
-  AdminNavBar,
   ChatSection,
   ContentContainer,
-  EditOnlineClassSection,
   Loading,
   OnlineClassVideoSection,
   StudentNavBar,
 } from "components";
-import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
-import { endOnlineClass, sendOnlineClassMessage, startOnlineClass } from "util/api/onlineClassApi";
 import initAuth from "util/firebase";
 
 initAuth(); // SSR maybe, i think...

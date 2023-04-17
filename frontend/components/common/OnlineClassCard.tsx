@@ -1,7 +1,6 @@
 import React from "react";
 import YouTube from "react-youtube";
 import Link from "next/link";
-import { Avatar } from "@mui/material";
 import { OnlineClassUserInformation } from "models/onlineClass.model";
 import moment from "moment";
 import { youtubeURLParser } from "util/util";

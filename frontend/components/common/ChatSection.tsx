@@ -6,7 +6,6 @@ import { MessageInterface } from "models/message.model";
 import { OnlineClassFull } from "models/onlineClass.model";
 import moment from "moment";
 import { useAuthUser } from "next-firebase-auth";
-import CourseId from "pages/course/[courseId]";
 import { HttpException } from "util/HttpExceptions";
 import { getOnlineClassDetails, sendOnlineClassMessage } from "util/api/onlineClassApi";
 

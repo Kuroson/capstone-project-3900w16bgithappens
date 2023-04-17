@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import AddIcon from "@mui/icons-material/Add";
-import dayjs from "dayjs";
 import { UserCourseInformation } from "models/course.model";
 import { CreateQuizType, QuizListType } from "models/quiz.model";
 import { UserDetails } from "models/user.model";

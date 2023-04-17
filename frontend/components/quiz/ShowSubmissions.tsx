@@ -5,7 +5,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Avatar, Button, Card, TextField } from "@mui/material";
 import {
   EachQuestionSubmissionsType,
-  QuizSubmissionsType,
   StudentResponseType,
 } from "models/quiz.model";
 import { useAuthUser } from "next-firebase-auth";

@@ -2,15 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
-import HomeIcon from "@mui/icons-material/Home";
-import dayjs from "dayjs";
 import { UserCourseInformation } from "models/course.model";
 import { QuizListType } from "models/quiz.model";
 import { UserDetails } from "models/user.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, Loading, StudentNavBar } from "components";
-import { Routes } from "components/Layout/NavBars/NavBar";
 import Card from "components/common/Card";
 import PageHeader from "components/common/PageHeader";
 import StudentQuiz from "components/quiz/StudentQuiz";
@@ -18,7 +15,6 @@ import { HttpException } from "util/HttpExceptions";
 import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { getListOfQuizzes } from "util/api/quizApi";
-import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 
 initAuth();

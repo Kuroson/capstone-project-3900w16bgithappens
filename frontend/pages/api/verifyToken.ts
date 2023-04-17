@@ -1,4 +1,3 @@
-import { getAuth } from "firebase-admin/auth";
 import { NextApiRequest, NextApiResponse } from "next";
 import { verifyIdToken } from "next-firebase-auth";
 import { HttpException } from "util/HttpExceptions";

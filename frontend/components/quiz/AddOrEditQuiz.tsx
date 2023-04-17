@@ -7,7 +7,6 @@ import dayjs, { Dayjs } from "dayjs";
 import { CreateQuizType, QuizBasicInfo } from "models/quiz.model";
 import PageHeader from "components/common/PageHeader";
 import TitleWithIcon from "components/common/TitleWithIcon";
-import styles from "./EditQuiz.module.scss";
 
 type AddOrEditQuizProps = {
   handleAddNewQuiz?: (newQuiz: CreateQuizType) => void;

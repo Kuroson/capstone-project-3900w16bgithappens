@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { toast } from "react-toastify";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Typography } from "@mui/material";
@@ -12,14 +11,10 @@ import { FullWeekInterface } from "models/week.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
 import { ContentContainer, Loading, StudentNavBar } from "components";
-import { Routes } from "components/Layout/NavBars/NavBar";
-import SingleEditableWeekSection from "components/admin/workload/SingleEditableWeekSection";
 import SingleStudentWeekSection from "components/workloadOverview/workload/SingleStudentWeekSection";
-import StudentWorkloadSection from "components/workloadOverview/workload/StudentWorkloadSection";
 import { useUser } from "util/UserContext";
 import { getUserCourseDetails } from "util/api/courseApi";
 import { getFileDownloadLink } from "util/api/resourceApi";
-import { getUserDetails } from "util/api/userApi";
 import initAuth from "util/firebase";
 
 initAuth(); // SSR maybe, i think...

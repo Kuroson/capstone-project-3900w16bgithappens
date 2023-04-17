@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Head from "next/head";
-import dayjs from "dayjs";
 import { AssignmentListType } from "models/assignment.model";
 import { UserCourseInformation } from "models/course.model";
 import { UserDetails } from "models/user.model";

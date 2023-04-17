@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Checkbox, TextField } from "@mui/material";
-import dayjs from "dayjs";
 import { QuizInfoType, ResponsesType } from "models/quiz.model";
 import { useAuthUser } from "next-firebase-auth";
 import PageHeader from "components/common/PageHeader";

@@ -5,7 +5,7 @@ import { UserDetails } from "models/user.model";
 import { FullWorkloadInfo } from "models/workload.model";
 import { GetServerSideProps } from "next";
 import { AuthAction, useAuthUser, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
-import { AdminNavBar, ContentContainer, Loading, StudentNavBar } from "components";
+import { ContentContainer, Loading, StudentNavBar } from "components";
 import PageHeader from "components/common/PageHeader";
 import StudentWorkloadSection from "components/workloadOverview/workload/StudentWorkloadSection";
 import { useUser } from "util/UserContext";
