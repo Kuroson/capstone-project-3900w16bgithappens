@@ -107,7 +107,7 @@ const MarketPlacePage = ({ avatars }: MarketPlacePageProps): JSX.Element => {
       <Head>
         <title>Marketplace page</title>
         <meta name="description" content="Marketplace page" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <StudentNavBar userDetails={userDetails} routes={studentRoutes} />
       <ContentContainer>

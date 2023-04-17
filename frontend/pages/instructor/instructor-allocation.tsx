@@ -90,7 +90,7 @@ const InstructorAllocationPage = (): JSX.Element => {
       <Head>
         <title>Admin Allocation page</title>
         <meta name="description" content="Admin Allocation Page" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} routes={defaultAdminRoutes} />
       <ContentContainer>

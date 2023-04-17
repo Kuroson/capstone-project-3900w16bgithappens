@@ -101,7 +101,7 @@ const Quiz = ({ courseData }: QuizProps): JSX.Element => {
       <Head>
         <title>Quiz</title>
         <meta name="description" content="Quiz" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />
       <ContentContainer>

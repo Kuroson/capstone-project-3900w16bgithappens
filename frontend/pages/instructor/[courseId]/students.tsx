@@ -119,7 +119,7 @@ const AddStudentsPage = ({ courseData }: AddStudentPageProps): JSX.Element => {
       <Head>
         <title>Add Students</title>
         <meta name="description" content="Add students to a page" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} />
       <ContentContainer>

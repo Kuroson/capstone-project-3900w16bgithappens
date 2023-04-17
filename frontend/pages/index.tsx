@@ -179,7 +179,7 @@ const HomePage = (): JSX.Element => {
       <Head>
         <title>Home page</title>
         <meta name="description" content="Home page" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <StudentNavBar userDetails={userDetails} routes={studentRoutes} />
       <ContentContainer>

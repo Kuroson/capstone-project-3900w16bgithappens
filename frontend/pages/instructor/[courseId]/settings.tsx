@@ -175,7 +175,7 @@ const UpdateSettingsPage = ({ courseData }: UpdateSettingsPageProps): JSX.Elemen
       <Head>
         <title>Admin page</title>
         <meta name="description" content="Home page" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} />
       <ContentContainer>

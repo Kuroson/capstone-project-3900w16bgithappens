@@ -86,7 +86,7 @@ const Analytics = ({ courseData }: AnalyticsProps): JSX.Element => {
       <Head>
         <title>Analytics</title>
         <meta name="description" content="Analytics" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />
       <ContentContainer>

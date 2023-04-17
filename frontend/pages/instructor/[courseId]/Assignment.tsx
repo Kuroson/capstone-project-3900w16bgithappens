@@ -105,7 +105,7 @@ const Assignment = ({ courseData }: AssignmentProps): JSX.Element => {
       <Head>
         <title>Assignment</title>
         <meta name="description" content="Assignment" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />
       <ContentContainer>

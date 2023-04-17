@@ -53,7 +53,7 @@ const WorkloadOverviewPage = ({
       <Head>
         <title>Add Workload Overview</title>
         <meta name="description" content="Add Workload Overview" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />
       <ContentContainer>

@@ -52,7 +52,7 @@ const StudentWorkloadPage = ({
       <Head>
         <title>Add Workload Overview</title>
         <meta name="description" content="Add Workload Overview" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <StudentNavBar userDetails={userDetails} courseData={courseData} />
       <ContentContainer>

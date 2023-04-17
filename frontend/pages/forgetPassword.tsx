@@ -62,7 +62,7 @@ const ForgetPasswordPage = (): JSX.Element => {
     <>
       <Head>
         <title>Forget Password</title>
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="Forget password page" />
       </Head>
       <EmptyNavBar />

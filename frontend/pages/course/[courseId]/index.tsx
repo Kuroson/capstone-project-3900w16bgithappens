@@ -68,7 +68,7 @@ const StudentCoursePage = ({ courseData }: StudentCoursePageProps): JSX.Element 
       <Head>
         <title>{`${courseData.code} ${courseData.session}`}</title>
         <meta name="description" content={courseData.description} />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <StudentNavBar userDetails={userDetails} courseData={courseData} />
       <ContentContainer>

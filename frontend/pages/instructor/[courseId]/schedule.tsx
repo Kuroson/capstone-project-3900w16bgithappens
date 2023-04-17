@@ -89,7 +89,7 @@ const SchedulePage = ({ courseData }: SchedulePageProps): JSX.Element => {
       <Head>
         <title>Schedule New Lecture</title>
         <meta name="description" content="Schedule New Lecture" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} showAddPage={true} />
       <ContentContainer>
