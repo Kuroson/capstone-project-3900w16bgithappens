@@ -134,9 +134,9 @@ const UpdateSettingsPage = ({ courseData }: UpdateSettingsPageProps): JSX.Elemen
       </Head>
       <AdminNavBar userDetails={userDetails} courseData={courseData} />
       <ContentContainer>
-        <div className="py-5 px-9">
-          <h1>Update Course</h1>
-          <p>Update any desired items in the course</p>
+        <div className="py-5 px-9 w-full flex flex-col">
+          <h1 className="text-center text-4xl">Update Course</h1>
+          <p className="text-center">Update any desired items in the course</p>
         </div>
         <form
           className="flex flex-col items-center justify-center gap-6"
@@ -153,58 +153,63 @@ const UpdateSettingsPage = ({ courseData }: UpdateSettingsPageProps): JSX.Elemen
             Upload Icon
             <input hidden accept="image/*" multiple type="file" onChange={handleImageChange} />
           </Button>
-          <div className="flex flex-col gap-6 w-[600px]">
-            <TextField
-              id="Course ID"
-              label="Course Code"
-              variant="outlined"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-            <TextField
-              id="Title"
-              label="Course Title"
-              variant="outlined"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <TextField
-              id="Session"
-              label="Course Session"
-              variant="outlined"
-              value={session}
-              onChange={(e) => setSession(e.target.value)}
-            />
-            <TextField
-              id="Description"
-              label="Description"
-              variant="outlined"
-              multiline
-              rows={9}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <TextField
-              id="Tags"
-              label="Tags"
-              variant="outlined"
-              multiline
-              rows={5}
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-            />
-            <FormControlLabel
-              control={
-                <Switch checked={archived} onChange={(e) => setArchived(e.target.checked)} />
-              }
-              label="Archived"
-            />
-            <p style={{ textAlign: "right" }}>
-              <i>Enter tags as comma separated list</i>
-            </p>
-            <LoadingButton variant="contained" fullWidth type="submit" loading={buttonLoading}>
-              Update
-            </LoadingButton>
+          <div className="w-full flex justify-center">
+            <div className="flex flex-col gap-6 w-[600px] px-5">
+              <TextField
+                id="Course ID"
+                label="Course Code"
+                variant="outlined"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+              <TextField
+                id="Title"
+                label="Course Title"
+                variant="outlined"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <TextField
+                id="Session"
+                label="Course Session"
+                variant="outlined"
+                value={session}
+                onChange={(e) => setSession(e.target.value)}
+              />
+              <TextField
+                id="Description"
+                label="Description"
+                variant="outlined"
+                multiline
+                rows={9}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+
+              <FormControlLabel
+                control={
+                  <Switch checked={archived} onChange={(e) => setArchived(e.target.checked)} />
+                }
+                label="Archived"
+              />
+              <LoadingButton variant="contained" fullWidth type="submit" loading={buttonLoading}>
+                Update
+              </LoadingButton>
+            </div>
+            <div className="flex flex-col gap-6 w-[600px] px-5">
+              <TextField
+                id="Tags"
+                label="Tags"
+                variant="outlined"
+                multiline
+                rows={5}
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+              />
+              <p style={{ textAlign: "right" }}>
+                <i>Enter tags as comma separated list</i>
+              </p>
+            </div>
           </div>
         </form>
       </ContentContainer>
