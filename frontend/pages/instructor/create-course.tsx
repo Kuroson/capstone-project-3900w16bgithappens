@@ -47,6 +47,8 @@ const CreateCourse = (): JSX.Element => {
   const [forumPostCorrectAnswer, setForumPostCorrectAnswer] = React.useState<number>(100);
   const [attendance, setAttendance] = React.useState<number>(100);
 
+  const [tags, setTags] = React.useState("");
+
   React.useEffect(() => {
     // Build user data for user context
     if (user.userDetails !== null) {
@@ -269,6 +271,18 @@ const CreateCourse = (): JSX.Element => {
                 onChange={(e) => setAttendance(parseInt(e.target.value))}
                 type="number"
               />
+              <TextField
+                id="Tags"
+                label="Tags"
+                variant="outlined"
+                multiline
+                rows={5}
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+              />
+              <p style={{ textAlign: "right" }}>
+                <i>Enter tags as comma separated list</i>
+              </p>
             </div>
           </div>
         </form>
