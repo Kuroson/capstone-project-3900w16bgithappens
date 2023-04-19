@@ -3,8 +3,9 @@
 - Image: `LUbuntu-22.04.2-desktop-amd64.iso`
 - Hardware:
   - 4 Processors, 1 core per processor
-  - 8GB ram
+  - 8GB ram (min 3GB ram)
   - Port `8080` and `3000` are free and not utilised by other applications
+  - Internet connection
 - Software Prerequisites:
   - NodeJS: `18.16.0`
   - npm: `9.5.1`
@@ -89,7 +90,11 @@ The contents of the folder should look as follows:
 
 ```bash
 tree -L 1
+```
 
+The following output is expected:
+
+```bash
 .
 ├── backend
 ├── docker-compose.local.yml
