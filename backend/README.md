@@ -2,9 +2,9 @@
 
 ## How to Run
 
-TODO
+See [this](../HOW_TO_RUN.md) or [this](../HOW_TO_RUN_DOCKER.md)
 
 ## Versioning
 
 -   `node`: 16.x, 18.x
--   `yarn`: 1.12.x
+-   `yarn`: 1.12.19
