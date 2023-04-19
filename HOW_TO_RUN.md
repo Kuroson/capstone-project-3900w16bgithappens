@@ -95,6 +95,8 @@ tree -L 1
 ├── docker-compose.local.yml
 ├── docker-compose.yml
 ├── frontend
+├── HOW_TO_RUN_DOCKER.md
+├── HOW_TO_RUN.md
 ├── README.md
 └── work-diaries
 ```
@@ -123,12 +125,12 @@ $ cross-env NODE_ENV=development nodemon
 [nodemon] watching extensions: js,ts,json
 [nodemon] starting `ts-node -r tsconfig-paths/register --transpile-only src/server.ts`
 body-parser deprecated undefined extended: provide extended option src/app.ts:20:35
-2023-04-19 21:59:26 info: =================================
-2023-04-19 21:59:26 info: ======= ENV: development =======
-2023-04-19 21:59:26 info: 🚀 App listening on the port 8080
-2023-04-19 21:59:26 info: == Visit http://localhost:8080 ==
-2023-04-19 21:59:26 info: =================================
-2023-04-19 21:59:27 info: Connected to external MongoDB
+2023-04-19 22:21:21 info: =================================
+2023-04-19 22:21:21 info: ======= ENV: development =======
+2023-04-19 22:21:21 info: 🚀 App listening on the port 8080
+2023-04-19 22:21:21 info: == Visit http://localhost:8080 ==
+2023-04-19 22:21:21 info: =================================
+2023-04-19 22:21:21 info: Connected to external MongoDB
 ```
 
 5. Install dependencies for the frontend
@@ -149,7 +151,8 @@ yarn dev
 The following initial terminal output should be expected:
 
 ```
- next dev
+yarn run v1.22.19
+$ next dev
 ready - started server on 0.0.0.0:3000, url: http://localhost:3000
 info  - Loaded env from /home/ubuntu/Desktop/gitHappensFinalSoftwareQuality/frontend/.env.local
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
@@ -157,7 +160,7 @@ This information is used to shape Next.js' roadmap and prioritize features.
 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
 https://nextjs.org/telemetry
 
-event - compiled client and server successfully in 5s (1644 modules)
+event - compiled client and server successfully in 4.7s (1644 modules)
 ```
 
 # 4. Using the Application
