@@ -123,9 +123,6 @@ cd gitHappensFinalSoftwareQuality
 
 The contents of the folder should look as follows:
 
-<!-- TODO UPDATE THIS PLS -->
-<!-- `tree -L 1` -->
-
 ```bash
 tree -L 1
 ```
@@ -144,7 +141,7 @@ The following output is expected:
 └── work-diaries
 ```
 
-3. Run `docker compose` to build and run the application
+1. Run `docker compose` to build and run the application
 
 This process might take a while to build the images and run the containers.
 
