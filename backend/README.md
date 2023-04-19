@@ -2,7 +2,7 @@
 
 ## How to Run
 
-See [this](../HOW_TO_RUN.md) or [this](../HOW_TO_RUN_DOCKER.md)
+See [manual setup](../HOW_TO_RUN.md) or [docker setup](../HOW_TO_RUN_DOCKER.md)
 
 ## Versioning
 
