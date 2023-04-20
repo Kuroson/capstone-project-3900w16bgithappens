@@ -103,7 +103,7 @@ The following output is expected:
 └── work-diaries
 ```
 
-1. Install the dependencies for the backend
+3. Install the dependencies for the backend
 
 ```bash
 cd backend
