@@ -63,7 +63,7 @@ jobs:
           EMAIL_ENABLE: false
           USE_LOCAL_MONGO: true
           USE_DOCKER_INTERNAL_MONGO: false
-        run: yarn test -t
+        run: pnpm test -t
       - name: Stop docker compose
         if: always()
         run: docker compose -f "../docker-compose.local.yml" down
@@ -219,7 +219,7 @@ jobs:
       - name: Cypress e2e
         working-directory: "./frontend"
         run: |
-          yarn start-server-and-test "docker compose -f \"../docker-compose.local.yml\" up" http://localhost:3000 cypress:headless
+          pnpm start-server-and-test "docker compose -f \"../docker-compose.local.yml\" up" http://localhost:3000 cypress:headless
       - name: Stop docker compose
         if: always()
         run: docker compose -f "docker-compose.local.yml" down
