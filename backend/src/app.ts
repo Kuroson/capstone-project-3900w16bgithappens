@@ -11,7 +11,7 @@ import { connect, set } from "mongoose";
 import morgan from "morgan";
 import { exit } from "process";
 
-export const app = express();
+export const app: ReturnType<typeof express> = express();
 
 app.use("/public", express.static("public")); // https://github.com/expressjs/cors/issues/104
 app.use(express.json({ limit: "50mb" }));
