@@ -45,7 +45,7 @@ jobs:
           EMAIL_ENABLE: false
         run: yarn build
       - name: Start local MongoDB
-        run: docker compose -f "../docker compose.local.yml" up -d mongodb
+        run: docker compose -f "../docker-compose.local.yml" up -d mongodb
       - name: Wait 10 seconds for it to be healthy
         run: sleep 10
       - name: Start test
@@ -62,7 +62,7 @@ jobs:
         run: yarn test -t
       - name: Stop docker compose
         if: always()
-        run: docker compose -f "../docker compose.local.yml" down
+        run: docker compose -f "../docker-compose.local.yml" down
   # backend-deploy:
   #   runs-on: ubuntu-latest
   #   needs: [backend]
@@ -203,11 +203,11 @@ jobs:
           NEXT_PUBLIC_COOKIE_SECURE: false
         run: env >> .env.local
       - name: Docker compose build
-        run: docker compose -f "docker compose.local.yml" build
+        run: docker compose -f "docker-compose.local.yml" build
       - name: Cypress e2e
         working-directory: "./frontend"
         run: |
-          yarn start-server-and-test "docker compose -f \"../docker compose.local.yml\" up" http://localhost:3000 cypress:headless
+          yarn start-server-and-test "docker compose -f \"../docker-compose.local.yml\" up" http://localhost:3000 cypress:headless
       - name: Stop docker compose
         if: always()
-        run: docker compose -f "docker compose.local.yml" down
+        run: docker compose -f "docker-compose.local.yml" down
