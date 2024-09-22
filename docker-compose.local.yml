@@ -6,6 +6,7 @@ services:
     image: 3900-githappens-frontend
     build:
       context: ./frontend
+      target: dev
     restart: unless-stopped
     networks:
       - 3900-network
@@ -17,10 +18,13 @@ services:
       - /app/.next
     depends_on:
       - mongodb
+    command: pnpm run dev
+    working_dir: /app
   backend:
     image: 3900-githappens-backend
     build:
       context: ./backend
+      target: dev
     restart: unless-stopped
     environment:
       - USE_LOCAL_MONGO=true
@@ -34,6 +38,8 @@ services:
       - /app/node_modules
     depends_on:
       - mongodb
+    command: pnpm run dev
+    working_dir: /app
   mongodb:
     image: mongo
     restart: unless-stopped

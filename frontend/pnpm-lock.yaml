@@ -21,7 +21,7 @@ importers:
         specifier: ^5.11.16
         version: 5.11.16(@mui/material@5.11.16(@emotion/react@11.10.6(@types/react@18.0.33)(react@18.2.0))(@emotion/styled@11.10.6(@emotion/react@11.10.6(@types/react@18.0.33)(react@18.2.0))(@types/react@18.0.33)(react@18.2.0))(@types/react@18.0.33)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.0.33)(react@18.2.0)
       '@mui/lab':
-        specifier: ^5.0.0-alpha.125
+        specifier: 5.0.0-alpha.125
         version: 5.0.0-alpha.125(@emotion/react@11.10.6(@types/react@18.0.33)(react@18.2.0))(@emotion/styled@11.10.6(@emotion/react@11.10.6(@types/react@18.0.33)(react@18.2.0))(@types/react@18.0.33)(react@18.2.0))(@mui/material@5.11.16(@emotion/react@11.10.6(@types/react@18.0.33)(react@18.2.0))(@emotion/styled@11.10.6(@emotion/react@11.10.6(@types/react@18.0.33)(react@18.2.0))(@types/react@18.0.33)(react@18.2.0))(@types/react@18.0.33)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.0.33)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@mui/material':
         specifier: ^5.11.16
@@ -48,7 +48,7 @@ importers:
         specifier: 9.15.0
         version: 9.15.0
       firebase-admin:
-        specifier: ^11.4.1
+        specifier: ^11.5.0
         version: 11.5.0
       moment:
         specifier: ^2.29.4
@@ -57,7 +57,7 @@ importers:
         specifier: ^13.2.4
         version: 13.2.4(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.60.0)
       next-firebase-auth:
-        specifier: ^1.0.0-canary.19
+        specifier: 1.0.0-canary.19
         version: 1.0.0-canary.19(firebase-admin@11.5.0)(firebase@9.15.0)(next@13.2.4(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.60.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       postcss:
         specifier: ^8.4.21
@@ -1320,8 +1320,8 @@ packages:
     resolution: {integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==}
     engines: {node: '>= 6'}
 
-  caniuse-lite@1.0.30001474:
-    resolution: {integrity: sha512-iaIZ8gVrWfemh5DG3T9/YqarVZoYf0r188IjaGwx68j4Pf0SGY6CQkmJUIE+NZHkkecQGohzXmBGEwWDr9aM3Q==}
+  caniuse-lite@1.0.30001662:
+    resolution: {integrity: sha512-sgMUVwLmGseH8ZIrm1d51UbrhqMCH3jvS7gF/M6byuHOnKyLOBL7W8yz5V02OHwgLGA36o/AFhWzzh4uc5aqTA==}
 
   caseless@0.12.0:
     resolution: {integrity: sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==}
@@ -4773,7 +4773,7 @@ snapshots:
   autoprefixer@10.4.14(postcss@8.4.21):
     dependencies:
       browserslist: 4.21.5
-      caniuse-lite: 1.0.30001474
+      caniuse-lite: 1.0.30001662
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -4838,7 +4838,7 @@ snapshots:
 
   browserslist@4.21.5:
     dependencies:
-      caniuse-lite: 1.0.30001474
+      caniuse-lite: 1.0.30001662
       electron-to-chromium: 1.4.311
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10(browserslist@4.21.5)
@@ -4863,7 +4863,7 @@ snapshots:
 
   camelcase-css@2.0.1: {}
 
-  caniuse-lite@1.0.30001474: {}
+  caniuse-lite@1.0.30001662: {}
 
   caseless@0.12.0: {}
 
@@ -6412,7 +6412,7 @@ snapshots:
     dependencies:
       '@next/env': 13.2.4
       '@swc/helpers': 0.4.14
-      caniuse-lite: 1.0.30001474
+      caniuse-lite: 1.0.30001662
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
