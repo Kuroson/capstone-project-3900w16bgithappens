@@ -1,17 +1,49 @@
-FROM node:20-alpine
+FROM node:20-alpine AS dev
 
 WORKDIR /app
+COPY ./ ./
 
-# Install dependencies
-COPY package.json /app
-COPY yarn.lock /app
-RUN yarn install --frozen-lockfile
+RUN corepack enable
+RUN corepack prepare pnpm@9 --activate
+RUN pnpm install --frozen-lockfile
 
-# Copy source files
-COPY . /app
+FROM node:20-alpine AS builder
 
-# TODO: https://geshan.com.np/blog/2020/11/nodejs-with-docker/#2.2-multi-stage-docker-file-to-support-nodejs-docker-in-production
+ENV NODE_ENV=production
+WORKDIR /app
 
-EXPOSE 8080
+COPY --from=dev /app/node_modules node_modules
+COPY ./ ./
 
-ENTRYPOINT yarn run dev
+RUN corepack enable
+RUN corepack prepare pnpm@9 --activate
+RUN pnpm run build
+
+FROM node:20-alpine AS prod-deps
+
+ENV NODE_ENV=production
+WORKDIR /app
+
+COPY ./ ./
+
+RUN corepack enable
+RUN corepack prepare pnpm@9 --activate
+RUN pnpm install --frozen-lockfile --prod
+
+FROM node:20-alpine AS prod
+
+ENV NODE_ENV=production
+WORKDIR /app
+
+RUN corepack enable
+RUN corepack prepare pnpm@9 --activate
+
+COPY --from=builder /app/dist dist
+COPY --from=builder /app/package.json package.json
+COPY --from=builder /app/pnpm-lock.yaml pnpm-lock.yaml
+COPY --from=prod-deps /app/node_modules node_modules
+
+ENV PORT=3000
+EXPOSE 3000
+
+CMD ["pnpm", "run", "start:noBuild"]
