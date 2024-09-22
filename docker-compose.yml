@@ -1,12 +1,12 @@
-version: "3.8"
-
 services:
   frontend:
     environment:
       - NEXT_PUBLIC_BACKEND_URL=http://backend:8080
       - NEXT_PUBLIC_DOCKER=true
     image: 3900-githappens-frontend
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: dev
     restart: unless-stopped
     networks:
       - 3900-network
@@ -16,9 +16,13 @@ services:
       - ./frontend:/app
       - /app/node_modules
       - /app/.next
+    working_dir: /app
+    command: pnpm run dev
   backend:
     image: 3900-githappens-backend
-    build: ./backend
+    build:
+      context: ./backend
+      target: dev
     restart: unless-stopped
     networks:
       - 3900-network
@@ -27,6 +31,8 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+    working_dir: /app
+    command: pnpm run dev
 networks:
   3900-network:
     driver: bridge

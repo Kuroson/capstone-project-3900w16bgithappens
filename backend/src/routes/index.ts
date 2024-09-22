@@ -77,7 +77,7 @@ import { sendChatMessageController } from "./onlineClasses/sendMessageOnlineClas
 import { startOnlineClassController } from "./onlineClasses/startOnlineClass.route";
 import { updateOnlineClassController } from "./onlineClasses/updateOnlineClass.route";
 
-export const indexRouter = Router();
+export const indexRouter: Router = Router();
 
 // Base routes
 indexRouter.get("/", indexController);
