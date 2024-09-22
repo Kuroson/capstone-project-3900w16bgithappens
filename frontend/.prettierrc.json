@@ -25,5 +25,6 @@
     "^styles(/)?(.*)$",
     "^models(/)?(.*)$",
     "^[./]"
-  ]
+  ],
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }
